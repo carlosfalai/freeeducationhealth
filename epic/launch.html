@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FreeEducationHealth · Epic launch</title>
+  <script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
+  <script src="config.js"></script>
+  <style>
+    body { font: 15px/1.5 -apple-system, Segoe UI, Roboto, Arial, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 16px; color: #1f2d3d; }
+    code { background: #eef2f6; padding: 1px 6px; border-radius: 4px; }
+    a { color: #2c6fb5; }
+  </style>
+</head>
+<body>
+  <p id="status">Launching against Epic&hellip;</p>
+  <script>
+    (function () {
+      var cfg = window.EPIC_CONFIG || {};
+      var statusEl = document.getElementById('status');
+
+      if (!cfg.clientId || /YOUR_EPIC_NON_PRODUCTION_CLIENT_ID/.test(cfg.clientId)) {
+        statusEl.innerHTML =
+          'Edit <code>epic/config.js</code> first: paste your own Epic <b>Non-Production ' +
+          'Client ID</b> there, after registering a free app at ' +
+          '<a href="https://fhir.epic.com" target="_blank" rel="noopener">fhir.epic.com</a>. ' +
+          'See <code>epic/README.md</code> for the exact steps.';
+        return;
+      }
+
+      // Standalone launch (this page opened directly, e.g. for local sandbox testing)
+      // passes `iss` explicitly. An EHR launch (opened from inside a live Epic session)
+      // instead arrives with `?iss=...&launch=...` in the query string; fhirclient reads
+      // those automatically, so we only force our own `iss` when neither is present.
+      var params = new URLSearchParams(window.location.search);
+      var isEhrLaunch = params.has('launch') && params.has('iss');
+
+      FHIR.oauth2.authorize({
+        clientId: cfg.clientId,
+        scope: cfg.scope,
+        redirectUri: cfg.redirectUri,
+        iss: isEhrLaunch ? undefined : cfg.fhirBase
+      });
+    })();
+  </script>
+</body>
+</html>

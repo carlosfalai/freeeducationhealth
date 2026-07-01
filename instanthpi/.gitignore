@@ -1,0 +1,22 @@
+# Runtime secrets -- never commit real credentials.
+.env
+
+# Runtime data -- these directories hold real patient case content once a
+# physician runs this against their own Spruce account. They must never be
+# committed, per this repo's hard PHI rule.
+carousel/cards/*.json
+!carousel/cards/.gitkeep
+spruce/.handled.json
+
+# Physician's own signature image, if they point SIGNATURE_IMAGE_PATH here.
+signature*.png
+signature*.jpg
+
+# Generated/filled PDFs (may contain patient content).
+*.pdf
+!pdf/sample-referral.pdf.example
+
+# Standard.
+node_modules/
+__pycache__/
+*.pyc

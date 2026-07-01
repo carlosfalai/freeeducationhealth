@@ -1,0 +1,25 @@
+{
+  "name": "freeeducationhealth-bot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Patient-facing Telegram front-end for FreeEducationHealth's core/ AI panel. Self-hosted: bring your own Telegram bot token and AI provider keys.",
+  "license": "MIT",
+  "main": "index.cjs",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "accept-consent": "node accept-consent.cjs",
+    "start": "node index.cjs",
+    "test": "jest"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "grammy": "^1.44.0"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "jest": "^30.4.2"
+  }
+}

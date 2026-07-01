@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/freeeducationhealth/core/schema/intake.schema.json",
+  "title": "IntakeAnswers",
+  "description": "Structured intake captured from a patient/user before it is handed to core/panel for a recommendation. Produced by any front-end (bot/, instanthpi/, epic/) and passed as the first argument to getRecommendation(). Contains no billing/EMR identifiers -- this is clinical-intake shape only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["chiefComplaint", "followUps"],
+  "properties": {
+    "intakeId": {
+      "type": "string",
+      "description": "Opaque, front-end-generated id for correlating this intake with a later recommendation in logs. Not a patient identifier -- front-ends MUST NOT put PHI (name, health-card number, phone, address) in this field."
+    },
+    "locale": {
+      "type": "string",
+      "description": "BCP-47 language tag the intake was collected in and the recommendation should be produced in, e.g. 'en', 'fr-CA', 'sw', 'ht'.",
+      "examples": ["en", "fr-CA", "sw", "ht", "hi", "am"]
+    },
+    "jurisdiction": {
+      "type": ["string", "null"],
+      "description": "Optional ISO 3166-1/2 style region hint (e.g. 'CA-QC', 'KE', 'BD') used only to select jurisdiction-aware billing code suggestions downstream. Never required -- the patient-facing bot front-end should normally omit this entirely.",
+      "examples": ["CA-QC", "KE", "BD", null]
+    },
+    "chiefComplaint": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The primary reason for the encounter, in the patient's or clinician's own words."
+    },
+    "onsetAndDuration": {
+      "type": ["string", "null"],
+      "description": "Free-text description of when the problem started and how it has evolved, if collected."
+    },
+    "followUps": {
+      "type": "array",
+      "description": "Ordered list of targeted follow-up question/answer pairs collected during the intake flow (e.g. HPI-style OPQRST, review-of-systems, or a track-specific questionnaire). May be empty only if chiefComplaint alone was collected (e.g. a very early triage gate).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["question", "answer"],
+        "properties": {
+          "question": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The exact question text presented to the patient/user."
+          },
+          "answer": {
+            "type": ["string", "boolean", "number", "null"],
+            "description": "The answer given. null means the question was asked but skipped/unknown/not applicable."
+          },
+          "topic": {
+            "type": ["string", "null"],
+            "description": "Optional tag grouping this Q/A under a clinical topic (e.g. 'red-flag-screen', 'medication-history', 'ros-respiratory') to help panel/ weight relevance.",
+            "examples": ["red-flag-screen", "medication-history", "ros-respiratory", null]
+          }
+        }
+      }
+    },
+    "relevantHistory": {
+      "type": "array",
+      "description": "Optional structured items the front-end already knows (e.g. pulled from an EMR by epic/, or previously given by a returning patient in bot/). Not required -- core/ must produce a usable recommendation with this array empty.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "value"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["condition", "medication", "allergy", "priorEpisode", "other"],
+            "description": "What kind of history item this is."
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Free-text value, e.g. a condition name, a medication and dose, an allergy."
+          }
+        }
+      }
+    },
+    "freeTextNotes": {
+      "type": ["string", "null"],
+      "description": "Any additional free-text the patient/user or front-end wants passed straight through to the panel, beyond the structured chiefComplaint/followUps. Optional."
+    },
+    "ageRange": {
+      "type": ["string", "null"],
+      "description": "Coarse age bracket only, never a date of birth or exact age tied to identity. Front-ends SHOULD prefer a bracket over an exact age to reduce re-identification risk in logs.",
+      "examples": ["0-1", "2-11", "12-17", "18-39", "40-64", "65+", null]
+    },
+    "sex": {
+      "type": ["string", "null"],
+      "enum": ["male", "female", "unspecified", null],
+      "description": "Biological sex, when clinically relevant and volunteered. Optional."
+    }
+  }
+}

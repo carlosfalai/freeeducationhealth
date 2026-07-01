@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>FreeEducationHealth · Epic SMART on FHIR</title>
+<script src="https://cdn.jsdelivr.net/npm/fhirclient/build/fhir-client.js"></script>
+<script src="config.js"></script>
+<style>
+  :root { --ink:#1f2d3d; --blue:#2c6fb5; --bg:#f4f6f9; --card:#fff; --muted:#6b7a8d; --ok:#1e8e5a; --warn:#b9500e; --bad:#c0392b; }
+  * { box-sizing: border-box; }
+  body { font: 14px/1.55 -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: var(--bg); color: var(--ink); }
+  header { background: var(--blue); color: #fff; padding: 14px 22px; }
+  header b { font-size: 18px; letter-spacing: .3px; }
+  header span { opacity: .85; font-size: 12px; margin-left: 8px; }
+  .wrap { max-width: 880px; margin: 18px auto; padding: 0 16px; display: grid; gap: 14px; }
+  .card { background: var(--card); border: 1px solid #e3e8ee; border-radius: 10px; padding: 16px 18px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+  .card h3 { margin: 0 0 10px; font-size: 13px; text-transform: uppercase; letter-spacing: .6px; color: var(--blue); }
+  .sub { color: var(--muted); font-size: 12.5px; }
+  ul { margin: 6px 0 10px; padding-left: 18px; }
+  li { margin: 3px 0; }
+  label { display: block; font-weight: 600; font-size: 12.5px; margin: 10px 0 4px; }
+  input[type=text], textarea, select { width: 100%; padding: 7px 9px; border: 1px solid #cfd8e3; border-radius: 6px; font: inherit; }
+  textarea { min-height: 60px; resize: vertical; }
+  button { cursor: pointer; background: var(--blue); color: #fff; border: none; border-radius: 7px; padding: 9px 16px; font: inherit; font-weight: 600; }
+  button:disabled { opacity: .5; cursor: default; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .banner { border-radius: 8px; padding: 10px 14px; font-size: 13px; }
+  .banner.info { background: #eaf2fb; color: var(--blue); }
+  .banner.divergence { background: #fff3e0; color: var(--warn); border: 1px solid #f4d29b; }
+  .banner.redflag { background: #fdecec; color: var(--bad); border: 1px solid #f3b7b0; }
+  .consideration { border-left: 3px solid var(--blue); padding: 6px 10px; margin: 6px 0; background: #f7f9fc; border-radius: 0 6px 6px 0; }
+  .confidence { font-size: 11px; color: var(--muted); }
+  .err { color: var(--bad); }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  td, th { text-align: left; padding: 4px 8px; border-bottom: 1px solid #eef1f5; }
+</style>
+</head>
+<body>
+<header><b>FreeEducationHealth</b><span>Epic SMART on FHIR &middot; read chart &rarr; draft panel recommendation</span></header>
+<div class="wrap" id="wrap">
+  <div class="banner info">
+    Draft for clinician review only &mdash; not a diagnosis, not sent to the patient, and nothing here is
+    written back to Epic. See <code>epic/README.md</code> for the write-back gate.
+  </div>
+  <div class="card" id="status">Connecting to Epic&hellip;</div>
+</div>
+
+<script>
+(function () {
+  var wrap = document.getElementById('wrap');
+  var statusEl = document.getElementById('status');
+
+  function esc(s) {
+    return (s == null ? '' : String(s)).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // -- FHIR resource -> plain-text helpers (browser only sees these, never
+  // sends raw FHIR JSON onward -- see lib/fhir-to-intake.cjs on the server
+  // side for the next step of the pipeline). --------------------------------
+  function patientName(pt) {
+    var n = pt && pt.name && pt.name[0];
+    return n ? ((n.given || []).join(' ') + ' ' + (n.family || '')).trim() : '(unnamed)';
+  }
+  function exactAge(dob) {
+    if (!dob) return null;
+    var d = new Date(dob), t = new Date();
+    var a = t.getFullYear() - d.getFullYear();
+    if (t.getMonth() < d.getMonth() || (t.getMonth() === d.getMonth() && t.getDate() < d.getDate())) a--;
+    return a;
+  }
+  // Buckets exact age into the coarse range core/schema/intake.schema.json
+  // expects (ageRange), rather than ever forwarding an exact age/DOB into
+  // the AI panel call -- see core/INTERFACE.md's PHI note.
+  function ageRangeBucket(dob) {
+    var a = exactAge(dob);
+    if (a == null) return null;
+    if (a <= 1) return '0-1';
+    if (a <= 11) return '2-11';
+    if (a <= 17) return '12-17';
+    if (a <= 39) return '18-39';
+    if (a <= 64) return '40-64';
+    return '65+';
+  }
+  function sexFromGender(gender) {
+    if (gender === 'male' || gender === 'female') return gender;
+    if (gender === 'other' || gender === 'unknown') return 'unspecified';
+    return null;
+  }
+  function codeText(x) {
+    return (x && x.code && (x.code.text || (x.code.coding && x.code.coding[0] && x.code.coding[0].display))) || '';
+  }
+  function medText(m) {
+    var mc = m && m.medicationCodeableConcept;
+    return (mc && (mc.text || (mc.coding && mc.coding[0] && mc.coding[0].display))) || '';
+  }
+  function obsText(o) {
+    var v = o.valueQuantity ? (o.valueQuantity.value + ' ' + (o.valueQuantity.unit || '')) : '';
+    var label = codeText(o) || 'vital';
+    return v ? (label + ': ' + v) : label;
+  }
+
+  function tile(n, label) {
+    return '<div style="text-align:center;background:#f7f9fc;border:1px solid #e6ebf1;border-radius:8px;padding:10px">' +
+      '<b style="display:block;font-size:20px;color:var(--blue)">' + n + '</b>' +
+      '<span style="font-size:11px;color:var(--muted)">' + esc(label) + '</span></div>';
+  }
+  function listBlock(title, arr) {
+    return '<b>' + esc(title) + '</b><ul>' +
+      (arr.slice(0, 10).map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') || '<li class="sub">none on file</li>') +
+      '</ul>';
+  }
+
+  function renderIntakeForm(chart) {
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML =
+      '<h3>Presenting complaint</h3>' +
+      '<div class="sub">Only the fields below (plus the chart lists above, minus the patient’s name/MRN) are sent to the AI panel. ' +
+      'See core/schema/intake.schema.json.</div>' +
+      '<label for="cc">Chief complaint *</label>' +
+      '<input type="text" id="cc" placeholder="e.g. 3 days of worsening cough and low-grade fever" />' +
+      '<label for="onset">Onset and duration</label>' +
+      '<input type="text" id="onset" placeholder="e.g. started 3 days ago, gradually worse" />' +
+      '<div class="row">' +
+      '<div><label for="assoc">Associated symptoms</label><input type="text" id="assoc" /></div>' +
+      '<div><label for="modifiers">What makes it better or worse?</label><input type="text" id="modifiers" /></div>' +
+      '</div>' +
+      '<label for="severity">Severity (patient’s own words or 1&ndash;10)</label>' +
+      '<input type="text" id="severity" />' +
+      '<label for="notes">Additional free-text notes</label>' +
+      '<textarea id="notes"></textarea>' +
+      '<div class="row">' +
+      '<div><label for="jurisdiction">Jurisdiction (optional, for billing suggestions)</label>' +
+      '<input type="text" id="jurisdiction" placeholder="e.g. CA-QC, US, KE" /></div>' +
+      '<div><label for="locale">Output language (BCP-47)</label>' +
+      '<input type="text" id="locale" value="en" /></div>' +
+      '</div>' +
+      '<div style="margin-top:12px"><button id="submitBtn" type="button">Get panel draft</button> ' +
+      '<span id="submitErr" class="err sub"></span></div>';
+    wrap.appendChild(card);
+
+    document.getElementById('submitBtn').addEventListener('click', function () {
+      var cc = document.getElementById('cc').value.trim();
+      var errEl = document.getElementById('submitErr');
+      if (!cc) { errEl.textContent = 'Chief complaint is required.'; return; }
+      errEl.textContent = '';
+
+      var followUps = [
+        { question: 'Associated symptoms?', answer: document.getElementById('assoc').value.trim() || null },
+        { question: 'What makes it better or worse?', answer: document.getElementById('modifiers').value.trim() || null },
+        { question: 'Severity?', answer: document.getElementById('severity').value.trim() || null }
+      ].filter(function (f) { return f.answer; });
+
+      var body = {
+        chiefComplaint: cc,
+        onsetAndDuration: document.getElementById('onset').value.trim() || null,
+        followUps: followUps,
+        freeTextNotes: document.getElementById('notes').value.trim() || null,
+        jurisdiction: document.getElementById('jurisdiction').value.trim() || null,
+        locale: document.getElementById('locale').value.trim() || 'en',
+        ageRange: chart.ageRange,
+        sex: chart.sex,
+        problems: chart.problems,
+        medications: chart.medications,
+        allergies: chart.allergies,
+        vitals: chart.vitals
+      };
+
+      var btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Consulting panel…';
+
+      fetch('/api/recommendation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      })
+        .then(function (resp) { return resp.json().then(function (j) { return { ok: resp.ok, j: j }; }); })
+        .then(function (r) {
+          btn.disabled = false;
+          btn.textContent = 'Get panel draft';
+          if (!r.ok) { errEl.textContent = (r.j && r.j.error) || 'Request failed.'; return; }
+          renderRecommendation(r.j);
+        })
+        .catch(function (e) {
+          btn.disabled = false;
+          btn.textContent = 'Get panel draft';
+          errEl.textContent = e.message;
+        });
+    });
+  }
+
+  function renderRecommendation(rec) {
+    var old = document.getElementById('recCard');
+    if (old) old.remove();
+    var card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'recCard';
+
+    var html = '<h3>Panel draft</h3>';
+
+    if (rec.divergenceFlag) {
+      html += '<div class="banner divergence">The AI panel disagreed materially on this case. ' +
+        'Treat the considerations below as more uncertain than usual and review carefully.</div>';
+    }
+    if (rec.redFlags && rec.redFlags.length) {
+      html += '<div class="banner redflag"><b>Red flags raised:</b><ul>' +
+        rec.redFlags.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul></div>';
+    }
+
+    html += '<b>Considerations</b>';
+    html += (rec.considerations || []).map(function (c) {
+      return '<div class="consideration">' + esc(c.text) +
+        '<div class="confidence">panel confidence: ' + Math.round((c.confidence || 0) * 100) + '%</div></div>';
+    }).join('') || '<div class="sub">none returned</div>';
+
+    html += '<b>Suggested next steps</b><ol>' +
+      (rec.suggestedNextSteps || []).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>';
+
+    if (rec.billingSuggestions && rec.billingSuggestions.length) {
+      html += '<b>Billing suggestions</b><table><tr><th>Code</th><th>Description</th><th>Jurisdiction</th></tr>' +
+        rec.billingSuggestions.map(function (b) {
+          return '<tr><td>' + esc(b.code) + '</td><td>' + esc(b.description) + '</td><td>' + esc(b.jurisdiction) + '</td></tr>';
+        }).join('') + '</table>';
+    }
+
+    html += '<b>Plain-language summary</b><p>' + esc(rec.plainLanguageSummary) + '</p>';
+
+    if (rec.panelMeta) {
+      html += '<div class="sub">providers consulted: ' + esc((rec.panelMeta.providersConsulted || []).join(', ') || 'none') +
+        ' &middot; panel size: ' + esc(rec.panelMeta.panelSize) +
+        ' &middot; generated: ' + esc(rec.panelMeta.generatedAt) + '</div>';
+    }
+
+    card.innerHTML = html;
+    wrap.appendChild(card);
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  if (!window.EPIC_CONFIG || !window.EPIC_CONFIG.clientId) {
+    statusEl.innerHTML = '<span class="err">config.js is missing EPIC_CONFIG. Launch from launch.html.</span>';
+    return;
+  }
+
+  FHIR.oauth2.ready().then(function (client) {
+    return client.patient.read().then(function (pt) {
+      return Promise.all([
+        client.request('Condition?patient=' + client.patient.id, { flat: true }).catch(function () { return []; }),
+        client.request('MedicationRequest?patient=' + client.patient.id, { flat: true }).catch(function () { return []; }),
+        client.request('AllergyIntolerance?patient=' + client.patient.id, { flat: true }).catch(function () { return []; }),
+        client.request('Observation?patient=' + client.patient.id + '&category=vital-signs', { flat: true }).catch(function () { return []; })
+      ]).then(function (r) {
+        var cond = r[0] || [], med = r[1] || [], alg = r[2] || [], vit = r[3] || [];
+        var chart = {
+          problems: cond.map(codeText).filter(Boolean),
+          medications: med.map(medText).filter(Boolean),
+          allergies: alg.map(codeText).filter(Boolean),
+          vitals: vit.map(obsText).filter(Boolean).slice(0, 8),
+          ageRange: ageRangeBucket(pt.birthDate),
+          sex: sexFromGender(pt.gender)
+        };
+
+        wrap.removeChild(statusEl);
+        var summary = document.createElement('div');
+        summary.className = 'card';
+        summary.innerHTML =
+          '<div style="font-size:19px;font-weight:700">' + esc(patientName(pt)) + '</div>' +
+          '<div class="sub">' + esc(chart.ageRange || '?') + ' &middot; ' + esc(pt.gender || '') +
+          ' &middot; MRN ' + esc(pt.id) +
+          ' <span style="display:block;margin-top:2px">(shown here only &mdash; only the age range and sex above are sent to the AI panel, never the name/MRN)</span></div>' +
+          '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin-top:10px">' +
+          tile(cond.length, 'Problems') + tile(med.length, 'Medications') + tile(alg.length, 'Allergies') + tile(vit.length, 'Vitals') +
+          '</div>';
+        wrap.appendChild(summary);
+
+        var history = document.createElement('div');
+        history.className = 'card';
+        history.innerHTML = '<h3>Chart pulled live from Epic (FHIR R4)</h3>' +
+          listBlock('Problem list', chart.problems) + listBlock('Medications', chart.medications) +
+          listBlock('Allergies', chart.allergies) + listBlock('Recent vitals', chart.vitals);
+        wrap.appendChild(history);
+
+        renderIntakeForm(chart);
+      });
+    });
+  }).catch(function (e) {
+    statusEl.innerHTML = '<span class="err">Not connected: ' + esc((e && e.message) || e) + '</span><br>' +
+      '<span class="sub">Re-launch from <code>launch.html</code>. If this says "invalid client", a freshly ' +
+      'created Epic sandbox client ID can take up to ~1 hour to propagate.</span>';
+  });
+})();
+</script>
+</body>
+</html>

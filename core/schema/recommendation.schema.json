@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/freeeducationhealth/core/schema/recommendation.schema.json",
+  "title": "RecommendationObject",
+  "description": "Structured output of core's N-model AI panel, returned by getRecommendation(intakeAnswers, config). This is the single contract every front-end (bot/, instanthpi/, epic/) consumes -- none of them talk to AI providers directly. Independent models in the panel must reach consensus; material disagreement is surfaced via divergenceFlag rather than silently resolved.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "considerations",
+    "divergenceFlag",
+    "redFlags",
+    "suggestedNextSteps",
+    "plainLanguageSummary"
+  ],
+  "properties": {
+    "considerations": {
+      "type": "array",
+      "description": "Ranked list of clinical possibilities/considerations the panel discussed. This is deliberately framed as 'considerations', not a diagnosis -- front-ends must not relabel it as one.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text", "confidence"],
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Plain-language statement of the consideration, e.g. 'Could be consistent with a viral upper respiratory infection.'"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Panel's aggregate confidence in this consideration, 0 (least) to 1 (most). Reflects agreement across panel members, not certainty of diagnosis."
+          }
+        }
+      }
+    },
+    "divergenceFlag": {
+      "type": "boolean",
+      "description": "True if the AI panel members disagreed materially (e.g. conflicting red-flag calls, or considerations that don't overlap at all). When true, front-ends SHOULD surface this to the user/physician explicitly rather than silently presenting a single blended answer -- this flag is the substitute for physician oversight in deployments with no reviewing clinician."
+    },
+    "redFlags": {
+      "type": "array",
+      "description": "Urgent findings raised by the intake answers that warrant seeking care sooner rather than later, stated in plain language. Empty array means the panel identified no urgent findings -- it does NOT mean the situation is guaranteed benign.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "examples": [
+        ["Difficulty breathing at rest", "Chest pain spreading to the arm or jaw", "Confusion or trouble staying awake"]
+      ]
+    },
+    "suggestedNextSteps": {
+      "type": "array",
+      "description": "Concrete, actionable next steps calibrated for someone who may have no doctor reachable nearby -- NOT a generic 'see a doctor' list. Each entry should be one self-contained instruction: what self-care to try at home, what specific change would mean it's time to travel to the nearest clinic/hospital, what to bring or say if they do travel, or how to safely monitor over the next hours/days. Order matters: least-invasive/most-immediately-actionable steps first.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "examples": [
+        [
+          "Drink small sips of clean water or oral rehydration solution every 15 minutes to prevent dehydration.",
+          "Keep track of how many times vomiting or diarrhea occurs in the next 6 hours.",
+          "If unable to keep any fluids down for more than 8 hours, or if you see blood, travel to the nearest clinic or hospital as soon as possible.",
+          "If a clinic is more than a few hours away and symptoms are worsening, do not wait for them to become severe before starting the journey."
+        ]
+      ]
+    },
+    "billingSuggestions": {
+      "type": ["array", "null"],
+      "description": "Jurisdiction-aware billing code suggestions for the treating clinician's own records (e.g. RAMQ codes for Quebec, CPT-style generic codes elsewhere). Optional and nullable -- the patient-facing bot front-end will typically omit or ignore this entirely; only physician-facing front-ends (instanthpi/, epic/) are expected to use it. Never presented to the patient.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "description", "jurisdiction"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The billing code itself, in whatever format the jurisdiction uses.",
+            "examples": ["15773", "99213"]
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Plain-language description of what the code covers."
+          },
+          "jurisdiction": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Which billing scheme this code belongs to, e.g. a RAMQ (Quebec) code, or a generic CPT-style code for jurisdictions without a specified public scheme.",
+            "examples": ["RAMQ-QC", "CPT-generic", "NHS-UK"]
+          }
+        }
+      }
+    },
+    "plainLanguageSummary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A short, plain-language summary of the whole recommendation suitable for direct display to the patient/user, written at a level that assumes no medical background and no reliable follow-up access to a clinician."
+    },
+    "panelMeta": {
+      "type": ["object", "null"],
+      "description": "Optional diagnostic metadata about how the panel produced this recommendation. Not required for front-ends to render, but useful for logging/debugging self-hosted deployments.",
+      "additionalProperties": false,
+      "properties": {
+        "providersConsulted": {
+          "type": "array",
+          "description": "Names/ids of the AI providers that participated in this panel run.",
+          "items": { "type": "string" }
+        },
+        "panelSize": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "How many independent model responses were aggregated into this recommendation."
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the recommendation was generated."
+        }
+      }
+    }
+  }
+}

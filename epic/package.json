@@ -1,0 +1,14 @@
+{
+  "name": "freeeducationhealth-epic",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FreeEducationHealth epic/ front-end -- SMART on FHIR (Epic sandbox) read + AI-panel draft, self-hosted, bring your own Epic app registration and AI provider keys.",
+  "main": "server.cjs",
+  "scripts": {
+    "start": "node server.cjs"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "fhirclient": "^2.6.3"
+  }
+}

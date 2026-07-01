@@ -1,0 +1,22 @@
+{
+  "name": "instanthpi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Physician-facing 'brain' front-end for FreeEducationHealth: Spruce triage, AI-panel-assisted case review cards (carousel), PDF generation/filling, and outbound fax. Runs against a self-hoster's own credentials -- no shared infrastructure, no license fee. See RUNBOOK.md.",
+  "license": "MIT",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "carousel": "node carousel/cards-server.cjs",
+    "spruce:list": "node spruce/client.cjs list",
+    "pdf:sample": "node pdf/generate.cjs"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pdf-lib": "^1.17.1"
+  }
+}
