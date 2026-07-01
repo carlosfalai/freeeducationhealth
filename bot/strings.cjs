@@ -20,7 +20,9 @@ const STRINGS = {
       'It cannot examine you, cannot diagnose you, and cannot replace medical care. ' +
       'If this is a medical emergency (e.g. severe difficulty breathing, chest pain, ' +
       'heavy bleeding, loss of consciousness, a severe injury), seek emergency help ' +
-      'immediately through whatever means are available to you -- do not wait for a reply here.',
+      'immediately through whatever means are available to you -- do not wait for a reply here. ' +
+      'Please do not share identifying details in this chat -- your full name, phone number, ' +
+      'health card/ID number, or exact home address are never needed to answer a health question here.',
 
     askChiefComplaint:
       "What's the main problem or symptom that's bothering you today? " +
