@@ -222,6 +222,10 @@ text like "Dr. Example Physician" and "Jane Example."
 
 ## Getting more detail
 
+- `docs/diagrams.md` — five diagrams of how everything fits together (they
+  render as pictures when viewed on GitHub): the whole system, a patient's
+  journey, a physician's daily loop, the multi-AI panel, and why there is
+  no central server.
 - `CLAUDE.md` — the same setup information, written for an AI agent to
   execute directly, plus a set of hard safety rules.
 - `INTEGRATION.md` — if you're a hospital or clinic that wants to call

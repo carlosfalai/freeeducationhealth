@@ -102,6 +102,10 @@ answer.
   gallery (referral PDF, review card, recommendation JSON, all placeholder
   data) with short lessons on reading each one, before you've configured
   anything.
+- **Prefer pictures?** [`docs/diagrams.md`](docs/diagrams.md) — five
+  diagrams (rendered right on GitHub): the whole system, the patient's
+  journey, the physician's daily loop, inside the multi-AI panel, and the
+  no-central-server deployment topology.
 - **Want the design reasoning?** `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`
   and `docs/physician-brain-components.md`.
 
