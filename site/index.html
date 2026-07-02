@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FreeEducationHealth — free health help you run yourself</title>
+<meta name="description" content="A free health helper you run on your own computer. Several different AIs check each other's answers, and you get plain-language information plus a summary to bring to a real doctor. Self-hosted, open source, no central server.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Free · open source · self-hosted</span>
+    <h1>Free health help you run yourself.</h1>
+    <p class="lede">Your family describes symptoms. Several different AIs check
+      each other's answers. You get plain-language information and a one-page
+      summary you can bring to a real doctor. It runs on your own computer, so
+      there is no company in the middle holding your family's health questions.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#who">Find your starting point</a>
+      <a class="btn btn-ghost" href="how-it-works.html">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>Not one AI. A panel that has to agree.</h2>
+    <p>An ordinary health chatbot is one AI answering alone, and whatever it
+      gets wrong goes straight to you. This is different: every answer is
+      cross-checked by two or more <strong>different</strong> AIs — for example
+      ChatGPT, Google Gemini, and DeepSeek.</p>
+  </div>
+  <div class="wrap">
+    <ul class="checklist narrow">
+      <li>The same symptom answers go to each AI separately.</li>
+      <li>They have to agree before you are shown anything.</li>
+      <li>When they disagree in a way that matters, it tells you — it never hides one AI's confident guess.</li>
+      <li>If any single AI flags a warning sign, that warning is kept.</li>
+      <li>If too few of them answer properly, it refuses to answer rather than falling back to just one.</li>
+    </ul>
+    <p class="narrow muted">This cross-check is the biggest difference from an
+      ordinary health chatbot — a built-in second and third opinion. <a href="how-it-works.html">See exactly how it works →</a></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="panel tint">
+      <h2>Everyone runs their own copy</h2>
+      <p class="narrow">The word we use for this is "healthcare blockchain," but
+        there are no coins and nothing to buy. It borrows one idea from Bitcoin:
+        instead of one company running one service for everyone, every person
+        keeps their own complete copy of the software — like owning your own
+        cookbook instead of depending on a single restaurant.</p>
+      <p class="narrow">Once you have downloaded it, it is yours and it keeps
+        working no matter what happens to any company, server, or even to this
+        project. That is the whole point: health help that cannot be quietly
+        switched off, and that you can pass to family the way you'd copy a file.
+        <a href="concept.html">Read the idea in plain words →</a></p>
+    </div>
+  </div>
+</section>
+
+<section id="who" class="section-lead">
+  <div class="wrap">
+    <h2>Who are you? Start with your own page.</h2>
+    <p class="muted narrow">You install only the piece that fits you — each has
+      its own simple download and instructions. Pick one:</p>
+    <div class="cards">
+      <a class="card card-link" href="patients.html">
+        <div class="who">Patients &amp; families</div>
+        <h3>A health helper for your household</h3>
+        <p>A Telegram chat helper: describe symptoms, get plain-language information and a summary for your next doctor visit.</p>
+        <span class="go">Start here →</span>
+      </a>
+      <a class="card card-link" href="physicians.html">
+        <div class="who">Physicians</div>
+        <h3>Automate your own paperwork</h3>
+        <p>Reads your Spruce inbox and drafts replies, referrals, and faxes with the AI panel. You approve every one.</p>
+        <span class="go">Start here →</span>
+      </a>
+      <a class="card card-link" href="clinics.html">
+        <div class="who">Clinics</div>
+        <h3>Waiting-room check-in</h3>
+        <p>Patients answer intake on a tablet while they wait; the physician gets a ready-made pre-visit summary.</p>
+        <span class="go">Start here →</span>
+      </a>
+      <a class="card card-link" href="hospitals.html">
+        <div class="who">Hospitals</div>
+        <h3>Read Epic charts, safely</h3>
+        <p>Reads a chart via SMART on FHIR (read-only, sandbox-first) and shows an AI-panel-reviewed set of considerations.</p>
+        <span class="go">Start here →</span>
+      </a>
+      <a class="card card-link" href="individuals.html">
+        <div class="who">Individuals <span class="tag exp">experimental</span></div>
+        <h3>Understand your own history</h3>
+        <p>Paste your own past records and get a plain-language education report plus a portable summary PDF.</p>
+        <span class="go">Start here →</span>
+      </a>
+      <a class="card card-link" href="download.html">
+        <div class="who">Just looking</div>
+        <h3>Downloads &amp; rebuild</h3>
+        <p>Every piece as a self-contained download — including this whole website, so anyone can re-host it.</p>
+        <span class="go">See downloads →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="warn narrow">
+      <strong>This is not a doctor, and not emergency care.</strong> It helps you
+      prepare for real care and understand your options; it does not diagnose or
+      treat. In an emergency, get in-person help immediately. Self-hosting it does
+      not by itself make it "HIPAA compliant."
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

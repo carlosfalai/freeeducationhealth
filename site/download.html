@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download &amp; rebuild — FreeEducationHealth</title>
+<meta name="description" content="Install only the piece you need — patient bot, physician brain, clinic kiosk, Epic reader, or the docs. Every download is a self-contained zip, and this whole website can be re-hosted by anyone if the original ever goes down.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a class="active" href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Free · open source · self-hosted</span>
+    <h1>Download &amp; rebuild.</h1>
+    <p class="lede">You install only the piece you need — the patient bot, the
+      physician brain, the clinic kiosk, the Epic reader, or just the reading.
+      And everything here, including this website itself, can be downloaded and
+      re-hosted by anyone, so it keeps working no matter what happens to any one
+      copy.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#bundles">See the downloads</a>
+      <a class="btn btn-ghost" href="#rebuild">Rebuild this website</a>
+    </div>
+  </div>
+</section>
+
+<section id="bundles" class="section-lead">
+  <div class="wrap">
+    <h2>Pick the one bundle that fits you</h2>
+    <p class="muted narrow">Each download is a self-contained zip, built fresh
+      from the current source. You do not need the whole project to run one
+      piece. The download links below point to the project's releases page.</p>
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Bundle</th>
+          <th>What it is</th>
+          <th>Start page</th>
+          <th>Download</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>bot-only</strong><br><span class="muted">Patients &amp; families</span></td>
+          <td>core/ plus bot/ and the root docs — the patient-facing Telegram bot on its own.</td>
+          <td><a href="patients.html">Patients &amp; families</a></td>
+          <td><a href="#">from the project's releases page</a></td>
+        </tr>
+        <tr>
+          <td><strong>instanthpi-only</strong><br><span class="muted">Physicians</span></td>
+          <td>core/ plus instanthpi/ and the root docs — the physician brain on its own.</td>
+          <td><a href="physicians.html">Physicians</a></td>
+          <td><a href="#">from the project's releases page</a></td>
+        </tr>
+        <tr>
+          <td><strong>clinic-kiosk</strong><br><span class="muted">Clinics</span></td>
+          <td>core/ plus kiosk/ plus instanthpi/ and the root docs — the waiting-room kiosk together with the physician review carousel it files cards into.</td>
+          <td><a href="clinics.html">Clinics</a></td>
+          <td><a href="#">from the project's releases page</a></td>
+        </tr>
+        <tr>
+          <td><strong>epic-only</strong><br><span class="muted">Hospitals</span></td>
+          <td>core/ plus epic/ and the root docs — the hospital bundle for Epic via SMART on FHIR, read-only.</td>
+          <td><a href="hospitals.html">Hospitals</a></td>
+          <td><a href="#">from the project's releases page</a></td>
+        </tr>
+        <tr>
+          <td><strong>history-insights</strong> <span class="tag exp">experimental</span><br><span class="muted">Individuals</span></td>
+          <td>core/ plus history-insights/ plus bot/deidentify.cjs and the root docs — for individuals; the analysis step uses the local PII scrub, which is why deidentify.cjs ships with it.</td>
+          <td><a href="individuals.html">Individuals</a></td>
+          <td><a href="#">from the project's releases page</a></td>
+        </tr>
+        <tr>
+          <td><strong>docs-only</strong><br><span class="muted">Reading only</span></td>
+          <td>Everything under docs/ plus README, SETUP, CLAUDE and INTEGRATION — for reading and evaluating the project without running any code.</td>
+          <td><a href="how-it-works.html">How it works</a></td>
+          <td><a href="#">from the project's releases page</a></td>
+        </tr>
+        <tr>
+          <td><strong>full</strong><br><span class="muted">Everything</span></td>
+          <td>The entire repo — all modules, docs, and tests. Pick this if you want everything, or haven't decided yet which front-end you'll run.</td>
+          <td><a href="index.html#who">Start point chooser</a></td>
+          <td><a href="#">from the project's releases page</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="narrow muted">Prefer to build the zips yourself from a checkout of
+      the repo? Run <code>node package-releases.cjs</code> and the same bundles
+      are written to <code>dist/</code>, fresh from the current source each run.
+      It needs only Node — no npm install and no external zip utility.</p>
+  </div>
+</section>
+
+<section id="rebuild">
+  <div class="wrap">
+    <div class="panel tint">
+      <h2>Rebuild this website if it goes down</h2>
+      <p class="narrow">This whole site is plain static HTML. There is no build
+        step, no framework, and no external dependency — one stylesheet and a
+        few pages that work when opened straight from a folder. Every download
+        above already includes the <code>site/</code> folder, so a copy of this
+        website travels with the project.</p>
+      <p class="narrow">If the original site is ever unavailable, taken down, or
+        attacked, anyone holding a copy can bring it back. Re-hosting it is just
+        copying a folder to any static host.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="steps narrow">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Get the site/ folder</h3>
+          <p>Take it from the <strong>full</strong> download or from a checkout
+            of the repository. It is a complete website on its own — no other
+            files are required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Host it as-is</h3>
+          <p>Point a static host at the folder. It deploys unchanged to
+            Cloudflare Pages: create a Pages project, set the build output to the
+            <code>site/</code> directory, and leave the build command empty.
+            Any other static host works the same way, and you can even open
+            <code>index.html</code> by double-clicking it locally.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>Share the copy</h3>
+          <p>Because there is no central server and nothing to configure, the
+            copy you host is a full, working mirror. Health information that
+            cannot be quietly switched off is the whole point.</p>
+        </div>
+      </div>
+    </div>
+    <div class="code narrow">
+<span class="c"># Cloudflare Pages: no build command, output = the site folder</span>
+Build command:      <span class="c">(leave empty)</span>
+Build output dir:   site
+<span class="c"># Or open it with no host at all:</span>
+open site/index.html
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="callout narrow">
+      <strong>What's guaranteed clean.</strong> Every bundle is built only from
+      version-controlled files, so credentials, patient data, generated PDFs,
+      and signature images are never included. Anything git ignores stays out of
+      the zip, and a final safety check re-verifies each file before it is
+      packaged.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="warn narrow">
+      <strong>This is not a doctor, and not emergency care.</strong> Downloading
+      and running it does not diagnose or treat, and self-hosting it does not by
+      itself make any deployment "HIPAA compliant." This project recommends no
+      AI provider over another; every self-hoster brings their own accounts. It
+      was built and tested with Claude Code, but any capable assistant works. In
+      an emergency, get in-person help immediately.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

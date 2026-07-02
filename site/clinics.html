@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For clinics — FreeEducationHealth</title>
+<meta name="description" content="Set up a waiting-room check-in kiosk on a tablet: patients answer structured intake while they wait, a multi-AI panel reviews it, and a pre-visit summary card is ready for the physician. Free, open source, self-hosted.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">For clinics</span>
+    <h1>A waiting-room check-in that's ready before you walk in.</h1>
+    <p class="lede">Patients answer the same structured intake a careful history
+      would cover, right on a tablet while they wait. A multi-AI panel reviews
+      it, and by the time the physician walks in, a ready-made pre-visit summary
+      card is waiting in the review queue.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="download.html">Get the clinic bundle</a>
+      <a class="btn btn-ghost" href="how-it-works.html">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>What this is</h2>
+    <p>You are setting up a waiting-room check-in kiosk: a webpage on a tablet,
+      iPad, or spare phone at reception. While the patient waits, they answer the
+      same structured intake a careful history would cover, a multi-AI panel
+      reviews it, and by the time the physician walks in, a premade pre-visit
+      summary card is waiting in their review queue.</p>
+    <p>It standardizes and speeds up intake. It does not replace anything about
+      the visit itself.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="narrow">What you need</h2>
+    <ul class="checklist narrow">
+      <li>Any computer at the clinic to run the small kiosk server, plus a tablet or phone on the <strong>same local network</strong> to show the check-in page.</li>
+      <li>At least 2 AI provider API keys (or a local model via Ollama).</li>
+      <li>No patient logins and no app installs. Patients just use the page.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap">
+    <h2>Set it up in three steps</h2>
+    <div class="steps">
+
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Download your piece (only this one)</h3>
+          <p>Get the clinic kiosk bundle, <strong>freeeducationhealth-clinic-kiosk.zip</strong>,
+            and unzip it. It includes both the kiosk and the physician review side
+            (the carousel the kiosk files cards into), so one download covers the
+            whole clinic loop. <a href="download.html">Downloads &amp; rebuild →</a></p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Install a free AI assistant (recommended path)</h3>
+          <p>Built and tested with Claude Code; any capable coding agent works.
+            Install it one of these ways:</p>
+          <div class="code">
+<span class="c"># Windows (PowerShell)</span><br>
+irm https://claude.ai/install.ps1 | iex<br><br>
+<span class="c"># macOS / Linux</span><br>
+curl -fsSL https://claude.ai/install.sh | bash<br><br>
+<span class="c"># or via Node.js</span><br>
+npm install -g @anthropic-ai/claude-code
+          </div>
+          <p>Open a terminal <strong>inside the unzipped folder</strong>, run
+            <strong>claude</strong>, sign in, and ask it:</p>
+          <div class="callout">Set this up for me. We are a clinic and want the
+            waiting-room kiosk. Configure the AI providers, start the kiosk server,
+            show me the check-in page, submit one test intake with fake data, and
+            show me the card it filed for the physician.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>Or set it up yourself</h3>
+          <p>Follow <strong>SETUP.md</strong>, the section "Setting up kiosk/
+            (clinic waiting rooms)," then <strong>kiosk/README.md</strong>. In short:</p>
+          <div class="code">
+<span class="c"># configure your AI providers</span><br>
+kiosk/panel.config.js<br><br>
+<span class="c"># start the kiosk server</span><br>
+node server.cjs<br><br>
+<span class="c"># open on the tablet, on the same network</span><br>
+http://&lt;that-computer&gt;:4646/
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="narrow">Ground rules for the waiting room</h2>
+    <div class="warn narrow">
+      <strong>The kiosk speeds up intake; it does not replace any part of the visit.</strong>
+      It does not diagnose or treat, and self-hosting it does not by itself make it
+      "HIPAA compliant." Keep these ground rules in place:
+    </div>
+    <ul class="checklist narrow">
+      <li>Keep the kiosk page on the clinic's own network only. The check-in page is deliberately open (patients don't log in); reading the filed cards stays behind the review carousel's PIN.</li>
+      <li>The welcome screen tells patients not to type names, phone numbers, or health-card numbers. The front desk repeating that once makes it stick.</li>
+      <li>The physician reviews every card. The kiosk never talks to patients about their case and never sends anything anywhere on its own.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

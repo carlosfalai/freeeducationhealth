@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1300" font-family="Georgia, 'Times New Roman', serif" role="img" aria-label="A panel of minds: two or more independent AIs answer separately, must agree, and disagreement is shown.">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0%" stop-color="#12514a"/>
+      <stop offset="60%" stop-color="#0c3b37"/>
+      <stop offset="100%" stop-color="#082a27"/>
+    </radialGradient>
+    <linearGradient id="brass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0d98a"/>
+      <stop offset="45%" stop-color="#d4af58"/>
+      <stop offset="100%" stop-color="#9c7a34"/>
+    </linearGradient>
+    <linearGradient id="brassH" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9c7a34"/>
+      <stop offset="50%" stop-color="#f0d98a"/>
+      <stop offset="100%" stop-color="#9c7a34"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="1300" fill="url(#bg)"/>
+
+  <!-- sunburst rays behind the crest -->
+  <g transform="translate(500,340)" fill="#d4af58" opacity="0.16">
+    <g id="rays">
+      <polygon points="0,0 -12,-460 12,-460"/>
+    </g>
+    <use href="#rays" transform="rotate(18)"/>
+    <use href="#rays" transform="rotate(36)"/>
+    <use href="#rays" transform="rotate(54)"/>
+    <use href="#rays" transform="rotate(72)"/>
+    <use href="#rays" transform="rotate(90)"/>
+    <use href="#rays" transform="rotate(108)"/>
+    <use href="#rays" transform="rotate(126)"/>
+    <use href="#rays" transform="rotate(144)"/>
+    <use href="#rays" transform="rotate(162)"/>
+    <use href="#rays" transform="rotate(180)"/>
+    <use href="#rays" transform="rotate(-18)"/>
+    <use href="#rays" transform="rotate(-36)"/>
+    <use href="#rays" transform="rotate(-54)"/>
+    <use href="#rays" transform="rotate(-72)"/>
+    <use href="#rays" transform="rotate(-90)"/>
+    <use href="#rays" transform="rotate(-108)"/>
+    <use href="#rays" transform="rotate(-126)"/>
+    <use href="#rays" transform="rotate(-144)"/>
+    <use href="#rays" transform="rotate(-162)"/>
+  </g>
+
+  <!-- stepped deco frame -->
+  <g fill="none" stroke="url(#brass)" stroke-width="4">
+    <rect x="34" y="34" width="932" height="1232"/>
+    <rect x="50" y="50" width="900" height="1200" stroke-width="2"/>
+  </g>
+  <g fill="url(#brass)">
+    <rect x="30" y="30" width="70" height="10"/><rect x="30" y="30" width="10" height="70"/>
+    <rect x="900" y="30" width="70" height="10"/><rect x="960" y="30" width="10" height="70"/>
+    <rect x="30" y="1260" width="70" height="10"/><rect x="30" y="1200" width="10" height="70"/>
+    <rect x="900" y="1260" width="70" height="10"/><rect x="960" y="1200" width="10" height="70"/>
+  </g>
+
+  <!-- title -->
+  <text x="500" y="150" text-anchor="middle" fill="url(#brassH)" font-size="70" letter-spacing="6" font-weight="bold">THE PANEL</text>
+  <g stroke="url(#brassH)" stroke-width="3"><line x1="250" y1="178" x2="750" y2="178"/></g>
+  <text x="500" y="220" text-anchor="middle" fill="#e9dcb8" font-size="27" letter-spacing="4" font-style="italic">not one machine — a council of minds</text>
+
+  <!-- central verdict shield with three medallions -->
+  <!-- three AI medallions -->
+  <g>
+    <!-- connecting lines to center -->
+    <g stroke="url(#brass)" stroke-width="3" opacity="0.85">
+      <line x1="235" y1="470" x2="500" y2="620"/>
+      <line x1="500" y1="430" x2="500" y2="620"/>
+      <line x1="765" y1="470" x2="500" y2="620"/>
+    </g>
+
+    <!-- medallion template -->
+    <g>
+      <circle cx="235" cy="440" r="86" fill="#0c3b37" stroke="url(#brass)" stroke-width="5"/>
+      <circle cx="235" cy="440" r="70" fill="none" stroke="#d4af58" stroke-width="1.5"/>
+      <text x="235" y="428" text-anchor="middle" fill="url(#brassH)" font-size="24" font-weight="bold" letter-spacing="1">AI</text>
+      <text x="235" y="462" text-anchor="middle" fill="#e9dcb8" font-size="20">ONE</text>
+    </g>
+    <g>
+      <circle cx="500" cy="360" r="86" fill="#0c3b37" stroke="url(#brass)" stroke-width="5"/>
+      <circle cx="500" cy="360" r="70" fill="none" stroke="#d4af58" stroke-width="1.5"/>
+      <text x="500" y="348" text-anchor="middle" fill="url(#brassH)" font-size="24" font-weight="bold" letter-spacing="1">AI</text>
+      <text x="500" y="382" text-anchor="middle" fill="#e9dcb8" font-size="20">TWO</text>
+    </g>
+    <g>
+      <circle cx="765" cy="440" r="86" fill="#0c3b37" stroke="url(#brass)" stroke-width="5"/>
+      <circle cx="765" cy="440" r="70" fill="none" stroke="#d4af58" stroke-width="1.5"/>
+      <text x="765" y="428" text-anchor="middle" fill="url(#brassH)" font-size="24" font-weight="bold" letter-spacing="1">AI</text>
+      <text x="765" y="462" text-anchor="middle" fill="#e9dcb8" font-size="20">THREE</text>
+    </g>
+  </g>
+
+  <!-- verdict crest -->
+  <g transform="translate(500,700)">
+    <path d="M -130,-80 L 130,-80 L 130,40 Q 130,120 0,160 Q -130,120 -130,40 Z" fill="#0c3b37" stroke="url(#brass)" stroke-width="6"/>
+    <path d="M -108,-62 L 108,-62 L 108,34 Q 108,102 0,136 Q -108,102 -108,34 Z" fill="none" stroke="#d4af58" stroke-width="1.5"/>
+    <text x="0" y="-18" text-anchor="middle" fill="url(#brassH)" font-size="30" font-weight="bold" letter-spacing="2">THEY MUST</text>
+    <text x="0" y="24" text-anchor="middle" fill="url(#brassH)" font-size="42" font-weight="bold" letter-spacing="3">AGREE</text>
+    <text x="0" y="74" text-anchor="middle" fill="#e9dcb8" font-size="19" font-style="italic">or you are told they didn't</text>
+  </g>
+
+  <!-- lower banner: the rules -->
+  <g transform="translate(500,900)">
+    <line x1="-380" y1="0" x2="380" y2="0" stroke="url(#brassH)" stroke-width="3"/>
+    <text x="0" y="46" text-anchor="middle" fill="url(#brassH)" font-size="26" letter-spacing="3" font-weight="bold">THE LAW OF THE PANEL</text>
+  </g>
+
+  <g font-size="24" fill="#e9dcb8">
+    <g transform="translate(150,985)">
+      <circle cx="0" cy="-8" r="16" fill="none" stroke="url(#brass)" stroke-width="3"/>
+      <text x="0" y="-1" text-anchor="middle" fill="url(#brassH)" font-size="20" font-weight="bold">I</text>
+      <text x="34" y="0">Each mind answers the same case alone.</text>
+    </g>
+    <g transform="translate(150,1035)">
+      <circle cx="0" cy="-8" r="16" fill="none" stroke="url(#brass)" stroke-width="3"/>
+      <text x="0" y="-1" text-anchor="middle" fill="url(#brassH)" font-size="20" font-weight="bold">II</text>
+      <text x="34" y="0">A warning from any one mind is kept.</text>
+    </g>
+    <g transform="translate(150,1085)">
+      <circle cx="0" cy="-8" r="16" fill="none" stroke="url(#brass)" stroke-width="3"/>
+      <text x="0" y="-1" text-anchor="middle" fill="url(#brassH)" font-size="18" font-weight="bold">III</text>
+      <text x="34" y="0">Disagreement is shown, never hidden.</text>
+    </g>
+    <g transform="translate(150,1135)">
+      <circle cx="0" cy="-8" r="16" fill="none" stroke="url(#brass)" stroke-width="3"/>
+      <text x="0" y="-1" text-anchor="middle" fill="url(#brassH)" font-size="18" font-weight="bold">IV</text>
+      <text x="34" y="0">Too few answers, and it refuses to speak.</text>
+    </g>
+  </g>
+
+  <text x="500" y="1225" text-anchor="middle" fill="#c9a24b" font-size="20" letter-spacing="4" font-style="italic">FREE  ·  EDUCATION  ·  HEALTH</text>
+</svg>

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For hospitals &amp; health systems — FreeEducationHealth</title>
+<meta name="description" content="A read-only Epic integration you host yourself. It reads a chart via SMART on FHIR, pre-populates a structured history, and shows what a multi-AI panel makes of it. Sandbox-first, never writes back to Epic, no vendor server in the loop.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Hospitals &amp; health systems</span>
+    <h1>Read Epic charts, safely.</h1>
+    <p class="lede">You are evaluating a read-only Epic integration: it reads a
+      patient's chart via SMART on FHIR — problems, medications, allergies,
+      observations — pre-populates a structured history, and shows the clinician
+      what a multi-AI panel makes of it. Considerations, red flags, and
+      disagreements between models are surfaced rather than hidden. It never
+      writes anything back into Epic.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#download">Download your piece</a>
+      <a class="btn btn-ghost" href="#compliance">For your compliance review</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <p>It runs sandbox-first against Epic's public test server, so your team can
+      evaluate the whole flow before any real credentials or governance
+      conversations happen.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="panel tint">
+      <h2>Two deployment models — both fully supported</h2>
+      <p class="narrow">Run it on your own on-premises server, or in your own
+        cloud tenant. Nothing in this architecture depends on anyone else's
+        infrastructure — there is no vendor server in the loop, which your
+        compliance review will want to know first.</p>
+      <p class="narrow">Prefer wiring it into your own portal or EMR tooling
+        instead of using this front-end? <code>INTEGRATION.md</code> documents
+        how to call the engine (<code>core/</code>) directly from your own code.</p>
+    </div>
+  </div>
+</section>
+
+<section id="download" class="section-lead">
+  <div class="wrap">
+    <h2>Set it up in three steps</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Download your piece (only this one)</h3>
+          <p>Download and unzip <a href="download.html">freeeducationhealth-epic-only.zip</a>.
+            This is the single piece you need — nothing else from the project is required.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Install an AI coding agent (recommended path)</h3>
+          <p>Built and tested with Claude Code; any capable coding agent works.
+            Install it, then open a terminal inside the unzipped folder, run
+            <code>claude</code>, sign in, and ask it to set the app up for you.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>Or set it up yourself by hand</h3>
+          <p>Follow <code>SETUP.md</code> section "Setting up epic/ (hospitals/clinics
+            using Epic)", then <code>epic/README.md</code>, using the commands below.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h3>Install the coding agent</h3>
+    <div class="code">
+<span class="c"># Windows (PowerShell)</span>
+irm https://claude.ai/install.ps1 | iex
+
+<span class="c"># macOS / Linux</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="c"># or via Node.js</span>
+npm install -g @anthropic-ai/claude-code
+    </div>
+    <p class="narrow">Open a terminal inside the unzipped folder, run
+      <code>claude</code>, sign in, and type:</p>
+    <div class="callout narrow">
+      Set this up for me against Epic's public sandbox. Register the app details
+      with me, configure the AI providers, start the server, and walk me through
+      one test patient end to end.
+    </div>
+
+    <h3>Or do it by hand</h3>
+    <p class="narrow">Get a free developer account at fhir.epic.com, paste the
+      Client ID into <code>epic/config.js</code>, list providers in
+      <code>epic/panel.config.js</code>, then:</p>
+    <div class="code">
+npm install &amp;&amp; npm start
+
+<span class="c"># then open in your browser</span>
+http://localhost:3000/launch.html
+    </div>
+  </div>
+</section>
+
+<section id="compliance">
+  <div class="wrap">
+    <h2>For your compliance review</h2>
+    <ul class="checklist narrow">
+      <li>Read-only by design; write-back (DocumentReference) is gated behind
+        explicit per-site sponsor approval and ships disabled.</li>
+      <li>Self-hosting does not by itself make a deployment "HIPAA compliant" —
+        that depends on your own arrangements (e.g. a BAA) with whichever AI
+        provider you configure. <code>docs/hipaa-bedrock-guide.md</code>
+        documents one BAA-covered path; local models keep chart text on your own
+        infrastructure entirely.</li>
+      <li>The engine persists nothing and has no side effects; every front-end is
+        responsible for its own I/O (<code>core/INTERFACE.md</code>).</li>
+    </ul>
+    <div class="warn narrow">
+      <strong>This is not a doctor, and not emergency care.</strong> It reads a
+      chart and surfaces AI-panel-reviewed considerations for a clinician to
+      weigh; it does not diagnose or treat. Sandbox-first, never writes back to
+      Epic. Self-hosting it does not by itself make it "HIPAA compliant."
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

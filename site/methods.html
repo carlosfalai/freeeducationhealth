@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Published methods for physicians — FreeEducationHealth</title>
+<meta name="description" content="The intake and automation methods used in the originating practice, published for any physician to adopt: a fixed 16-question intake battery delivered by form, secure messaging, or waiting-room kiosk; a cross-checked AI panel; and a review-card pattern where nothing sends itself.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Published methods</span>
+    <h1>Intake and automation methods, published.</h1>
+    <p class="lede">These are the intake methods used in the originating
+      practice, generalized so any physician anywhere can adopt them. One
+      question battery, three ways to deliver it, one review pattern — and
+      the physician approves everything.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <p>Everything on this page is generalized: no patient content, no
+      proprietary data, nothing tied to one country's health system. The
+      order of service is deliberate: first the places where no help is
+      coming — regions with one physician for tens of thousands of people —
+      then self-reliant families preparing for the day care is out of reach,
+      and only then convenience. A structured, cross-checked AI consultation
+      costs on the order of a few cents of computing. Keeping that from the
+      people who need it most is no longer a resource problem; it is a
+      choice. Publishing these methods is part of refusing to keep making
+      it.</p>
+    <div class="warn">
+      <strong>What this never claims.</strong> None of this replaces a
+      physician. In the physician version, the physician reviews and
+      approves everything and remains the author of record. Nothing here is
+      emergency care, and nothing here tells anyone to medicate themselves —
+      self-medication is one of the documented drivers of drug resistance
+      worldwide.
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>1. Why structured intake</h2>
+    <p>Free-form chat is a poor way to take a medical history — for a human
+      trainee and for an AI alike. Medicine solved this problem long ago:
+      every medical school teaches a fixed architecture for the history of
+      present illness, and a careful clinician asks roughly the same
+      skeleton of questions in the same order, every time, precisely so
+      nothing is missed. The idea behind every method below is to give the
+      AI the same schooling — a fixed question architecture that runs before
+      any reasoning happens, instead of letting a conversation wander and
+      hoping the important facts surface.</p>
+    <p>A good intake battery, whatever its exact wording, covers this
+      sequence:</p>
+    <ul class="checklist">
+      <li><strong>Chief complaint</strong> — the main problem, in the patient's own words.</li>
+      <li><strong>Onset and duration</strong> — when it started, how it has evolved.</li>
+      <li><strong>Severity</strong> — a 0–10 scale, or a functional equivalent.</li>
+      <li><strong>Modifiers</strong> — what makes it better, what makes it worse.</li>
+      <li><strong>Red-flag screen</strong> — the small set of symptoms that mean seek care now, asked explicitly rather than waited for.</li>
+      <li><strong>Context</strong> — medications, allergies, relevant history, and what the patient themselves thinks, fears, and expects.</li>
+    </ul>
+    <p>Fixed architecture beats free chat for three reasons: completeness
+      (the red-flag screen is always asked, not sometimes volunteered),
+      comparability (every case arrives in the same shape, so review is fast
+      and the AI panel's input is consistent), and teaching (patients who go
+      through a structured intake learn to describe their own health
+      clearly, to anyone, anywhere — which was always the point).</p>
+    <p class="muted">The three methods below are the same battery delivered
+      through three different doors. The battery is the constant; the
+      channel is whatever the practice and the patient actually have.</p>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>2. Method A — Form-based intake (the original method)</h2>
+    <p>The original and simplest method: send the patient a link to a fixed,
+      structured web form. Any form tool works — Formsite-class hosted form
+      builders, Google Forms, or the kiosk module's own self-hosted page.
+      The essential property is not the tool; it is that every answer comes
+      back as a named, structured field rather than a paragraph to be
+      mined.</p>
+  </div>
+  <div class="wrap narrow">
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><h3>Patient asks for a consultation</h3><p>By phone, message, or in person.</p></div></div>
+      <div class="step"><div class="n">2</div><div><h3>The practice sends one link</h3><p>To the fixed structured intake form.</p></div></div>
+      <div class="step"><div class="n">3</div><div><h3>The patient answers at their own pace</h3><p>The full battery, in their own words.</p></div></div>
+      <div class="step"><div class="n">4</div><div><h3>Answers return as structured fields</h3><p>Every case arrives in the same shape.</p></div></div>
+      <div class="step"><div class="n">5</div><div><h3>The AI panel drafts</h3><p>A draft HPI narrative plus considerations: possible explanations with stated confidence, red flags restated, suggested next steps.</p></div></div>
+      <div class="step"><div class="n">6</div><div><h3>The physician reviews</h3><p>Checks the draft against the raw answers, edits, decides. Nothing reaches the patient until then.</p></div></div>
+    </div>
+  </div>
+  <div class="wrap narrow">
+    <h3>A generic 16-question general intake battery</h3>
+    <p>A <strong>starting template</strong>, not a prescription. Physicians
+      adapt the wording, language, and emphasis to their own population and
+      jurisdiction; specialty practices replace the middle questions with
+      their own. What should survive any adaptation is the skeleton:
+      complaint → onset → course → severity → modifiers → associated
+      symptoms → red flags → context → the patient's own perspective.</p>
+  </div>
+  <div class="wrap">
+    <table class="tbl">
+      <thead><tr><th>#</th><th>Question</th><th>What it captures</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>What is the main problem you would like help with today?</td><td>Chief complaint</td></tr>
+        <tr><td>2</td><td>When did it start?</td><td>Onset</td></tr>
+        <tr><td>3</td><td>Since it started, has it been getting better, worse, or staying the same?</td><td>Course</td></tr>
+        <tr><td>4</td><td>On a scale of 0 to 10, how severe is it at its worst?</td><td>Severity</td></tr>
+        <tr><td>5</td><td>What makes it better?</td><td>Modifier</td></tr>
+        <tr><td>6</td><td>What makes it worse?</td><td>Modifier</td></tr>
+        <tr><td>7</td><td>Have you noticed any other symptoms along with it?</td><td>Associated symptoms</td></tr>
+        <tr><td>8</td><td>Do you currently have any of the following: difficulty breathing, chest pain, fainting, new confusion, heavy bleeding, or the worst pain of your life? If yes, which?</td><td>Red-flag screen</td></tr>
+        <tr><td>9</td><td>Have you had a fever? If it was measured, how high?</td><td>Red flag / associated</td></tr>
+        <tr><td>10</td><td>Has anything like this ever happened before? What happened then?</td><td>Prior episodes</td></tr>
+        <tr><td>11</td><td>What medications do you take, including anything over the counter or herbal?</td><td>Medications</td></tr>
+        <tr><td>12</td><td>Do you have any allergies to medications?</td><td>Allergies</td></tr>
+        <tr><td>13</td><td>Do you have any ongoing medical conditions?</td><td>Relevant history</td></tr>
+        <tr><td>14</td><td>Have you had any surgeries or hospital stays relevant to this problem?</td><td>Relevant history</td></tr>
+        <tr><td>15</td><td>If it could apply to you: is there any chance of pregnancy?</td><td>Pregnancy, if applicable</td></tr>
+        <tr><td>16</td><td>What do you think might be going on, is there anything you are especially worried about, and what are you hoping can be done today?</td><td>Ideas, concerns, expectations</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="wrap narrow">
+    <p class="muted">Question 8 is the red-flag screen and is the one
+      question that should never be cut. Question 16 is the one most often
+      cut and most worth keeping — it routinely changes what the right reply
+      is.</p>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>3. Method B — Messaging-based intake</h2>
+    <p>The same battery, delivered over secure messaging when a form link is
+      not the natural channel — because the patient is already in a message
+      thread, or because a form tool is not available.</p>
+    <ul class="checklist">
+      <li><strong>The battery goes out as one message</strong>, all questions together, not a drip-fed interrogation. The patient answers in one sitting, in their own words, on their own time.</li>
+      <li><strong>On reply, the system drafts two things for review:</strong> a short recap paragraph restating the case in the patient's own words — a summary the patient could read and say "yes, that's what I said" — and a <strong>short</strong> set of targeted follow-up questions chosen to discriminate between the leading possibilities. Five to ten questions that actually narrow the field, not another generic battery.</li>
+      <li><strong>Never re-ask what was answered.</strong> A follow-up that repeats an answered question tells the patient nobody read their message. The follow-up set contains only what is genuinely missing or genuinely discriminating.</li>
+      <li><strong>Photos only when the presentation is visible</strong> — a rash, a wound, a swelling. Not speculatively, and never as a substitute for examination when examination is what the case needs.</li>
+    </ul>
+    <div class="panel tint">
+      <p style="margin-bottom:0"><strong>One refinement worth adopting:</strong>
+        when a patient's first message already contains a detailed history —
+        timeline, symptoms, modifiers — skip the full battery. Send the recap
+        paragraph confirming what they said plus only the targeted questions
+        that are actually missing. The battery is for thin openers ("I need a
+        consultation"), not a wall every patient must climb.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>4. Method C — Waiting-room kiosk intake</h2>
+    <p>The same battery on a tablet at reception. A patient walks in,
+      answers the questions on a browser page with large touch targets — one
+      question per screen, every question after the first skippable — and is
+      told to have a seat. By the time the physician calls them in, a
+      premade pre-visit card is waiting in the review queue: the patient's
+      answers, the AI panel's considerations and red flags, and a drafted
+      set of talking points.</p>
+    <p>Safety properties any kiosk implementation should keep:</p>
+    <ul class="checklist">
+      <li>A YES on the red-flag screen tells the patient to alert reception staff immediately, in person — it does not wait for any AI.</li>
+      <li>The AI's output is never shown on the kiosk. The patient sees only a thank-you screen; the reasoning goes to the physician's queue.</li>
+      <li>No identity fields. The intake has nowhere to put a name, phone number, or health-card number; reception already has identity, and the physician matches the card to the person they call in.</li>
+      <li>The screen clears itself after submission and wipes half-finished answers after inactivity, so no patient sees another's entries.</li>
+      <li>The kiosk endpoint is write-only: it accepts submissions and cannot list or return cases.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>5. The review-card pattern</h2>
+    <p>Every AI draft, from any of the three methods, becomes exactly one
+      reviewable unit: a card. The card format is documented in full in the
+      project's <code>instanthpi/carousel/card-schema.md</code>; the pattern
+      is what matters and is worth adopting even in a completely different
+      implementation. One card carries:</p>
+    <ul class="checklist">
+      <li><strong>What the patient said</strong> — the structured intake answers, kept verbatim for audit, plus a short case summary written for the physician's eyes.</li>
+      <li><strong>The panel output</strong> — considerations with confidence, a divergence flag when the independent models disagreed, red flags, and suggested next steps. Disagreement is shown, never hidden.</li>
+      <li><strong>Numbered plan options</strong> — the realistic actions for this specific case: reply only; reply plus a document; reply plus a fax; or "none," meaning the physician handles it outside the tool. When red flags are present, the urgent option is option 1, never buried.</li>
+      <li><strong>A pre-drafted reply</strong> — patient-facing text the physician can approve as written, edit, or discard.</li>
+    </ul>
+    <div class="callout"><strong>Nothing sends itself.</strong> The
+      physician's verbs are approve (optionally editing the reply), dismiss
+      (with a reason), or none. A card that is never approved never acts.
+      Approval and execution are recorded separately, so there is always an
+      audit trail of who decided what and what was actually sent. The AI
+      prepares, the physician disposes.</div>
+    <p>The review queue sits behind the physician's own PIN, and if a new
+      message arrives from the patient after a card was built, the case
+      correctly re-enters the queue instead of being silently treated as
+      handled.</p>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>6. Document generation and fax</h2>
+    <p>Approved cards often need paper: a referral letter, a lab
+      requisition, a completed form. Two distinct tools cover this —
+      generating a drafted letter or requisition as a PDF from scratch, and
+      filling a third party's existing blank fillable PDF field-for-field
+      from what the chart documents, leaving unknowns blank rather than
+      guessing.</p>
+    <ul class="checklist">
+      <li><strong>PDFs are unsigned by default.</strong> No signature image ships with the tools, and automation never applies one. The physician signs — that act stays human, deliberate, and theirs.</li>
+      <li><strong>Faxing goes through the physician's own fax account</strong> — their own credentials with their own provider, consistent with the project's no-shared-infrastructure principle. A fax is sent only as the execution of an approved card, never speculatively.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>7. Adoption notes for different countries</h2>
+    <p>Nothing in these methods depends on one country's messaging platform,
+      form vendor, fax provider, or billing system. To adopt them:</p>
+    <ul class="checklist">
+      <li><strong>Any messaging channel works</strong> — whatever secure messaging is lawful and usual in your jurisdiction. The reference implementation speaks to one such platform; the client is deliberately thin and documented for adaptation.</li>
+      <li><strong>Any form tool works</strong> — hosted form builders, Google Forms, or the self-hosted kiosk page. The requirement is structured fields out, not any particular vendor.</li>
+      <li><strong>Any fax or document channel works, or none</strong> — some systems have abandoned fax entirely; the card's plan options simply reflect what is actually possible locally.</li>
+      <li><strong>Translate the battery, keep the skeleton</strong> — the 16 questions are a template; the sequence is the invariant.</li>
+      <li><strong>Check your own rules</strong> — privacy law, telemedicine rules, and professional obligations differ by jurisdiction. The tools carry a jurisdiction field through to the AI panel and keep identity out of AI inputs by design, but compliance is the adopting physician's to verify, as it is for any tool in their practice.</li>
+    </ul>
+  </div>
+  <div class="wrap">
+    <div class="cards">
+      <div class="card">
+        <h3>The battery</h3>
+        <p>A fixed question architecture asked before any reasoning happens — the same skeleton every time, so nothing is missed.</p>
+      </div>
+      <div class="card">
+        <h3>The panel</h3>
+        <p>More than one independent AI cross-checking every draft, with disagreement shown. Never a single model presented as an oracle.</p>
+      </div>
+      <div class="card">
+        <h3>Physician review</h3>
+        <p>Every draft becomes a card, every card waits for the physician, and nothing sends itself. The physician approves everything and is the author of record.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap narrow">
+    <p>These methods were built and tested with Claude Code driving the
+      tooling; any capable AI assistant works. The point was never the
+      assistant — it is that a careful intake, a cross-checked panel, and a
+      physician who remains in charge fit together into a practice any
+      physician can run on their own machines, for the cost of a few cents
+      of computing per case.</p>
+    <p class="center"><a class="btn btn-primary" href="physicians.html">For physicians</a> <a class="btn btn-ghost" href="download.html">Download &amp; rebuild</a></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <div class="panel tint">
+      <h3>Worked example, ready to rebuild</h3>
+      <p style="margin-bottom:0">Method A exists as a complete, published worked
+        example — the form-to-report robot — with the full code, a one-click
+        block your AI coding assistant can build from, a fully local Ollama
+        version, real cost numbers, and the security basis.
+        <a href="method-form-robot.html">See the worked example →</a></p>
+      <p style="margin-bottom:0">There is also a zero-infrastructure variant — dictation plus strict templates in any chatbot, with a one-click template pack and the free DeckStation dock: <a href="method-templates.html">the template method →</a></p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

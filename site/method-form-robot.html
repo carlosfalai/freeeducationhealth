@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Worked example: the form-to-report robot — FreeEducationHealth</title>
+<meta name="description" content="A published, rebuildable intake method: a structured form feeds a spreadsheet, a small robot turns each submission into a fixed four-section clinical report for the physician, then deletes the row. Google version and fully local Ollama version, with one-click instructions for an AI coding assistant.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Published method · worked example</span>
+    <h1>The form-to-report robot</h1>
+    <p class="lede">The original form-based intake method, published so any
+      physician can rebuild it in an afternoon: a patient fills a structured
+      form, a small robot turns the answers into a fixed four-section clinical
+      report in your inbox, then deletes its tracks. Two versions below — one on
+      your Google account, one fully local with Ollama — each with a one-click
+      block you can hand to an AI coding assistant to build it for you.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>What you need</h2>
+    <ul class="checklist">
+      <li><strong>Your own accounts, always.</strong> Nothing here is shared: your form, your spreadsheet or computer, your AI key, your professional email.</li>
+      <li><strong>A structured intake form.</strong> Google Forms (or any Formsite-class builder that writes rows to a sheet) asking the fixed battery: chief complaint, onset, trigger, location, description, aggravating/relieving, severity, evolution, associated symptoms, treatments tried and effect, chronic conditions, allergies, pregnancy if applicable, anything else.</li>
+      <li><strong>Your own AI API key</strong> — stored in Script Properties or an environment variable, never pasted into code. (The local version needs no key at all.)</li>
+      <li><strong>Your professional email address</strong> — the report is delivered only there.</li>
+      <li>About 15 minutes with an AI coding assistant, or an afternoon by hand.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>How it works</h2>
+    <div class="code">Patient fills the form
+        │
+        ▼
+Row appears in the spreadsheet ──► trigger fires
+        │
+        ▼
+Robot reads the structured fields
+        │
+        ▼
+One AI call fills a FIXED four-section report:
+  1. Horizontal timeline of the illness (exact dates, day counts)
+  2. Clinical reasoning decision flow (known / unknown / rule out)
+  3. Teaching block (pearls, differentials, management, board Q&amp;A)
+  4. Patient confirmation paragraph — second person, plain words,
+     in the patient's own language, ending with 10 gentle questions
+        │
+        ▼
+Report emailed to the physician ──► row DELETED from the sheet</div>
+    <div class="callout">Two choices carry the method. <strong>The output is a
+      template, not an essay</strong> — a fixed structure is what makes AI output
+      reviewable at a glance and consistent across hundreds of cases. And
+      <strong>the spreadsheet is a conveyor belt, not a chart</strong> — the row
+      is deleted once the report is sent; the record of care lives in your chart
+      system, where records belong.</div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>Version 1 — on your Google account</h2>
+    <p>Copy the block below with one click and paste it into an AI coding
+      assistant (built and tested with Claude Code; any capable assistant
+      works) opened anywhere on your computer. It contains the complete
+      instructions and the complete code. The assistant will walk you through
+      the rest and ask only for what must be yours.</p>
+    <p><button class="btn btn-primary" type="button" data-copy="cc-google">Copy the full build instructions</button> <span class="muted" id="copied-cc-google" hidden>Copied.</span></p>
+    <div class="code" style="max-height:460px;overflow:auto"><pre id="cc-google" style="margin:0;white-space:pre-wrap">You are my coding assistant. Build me the "form-to-report robot" from
+FreeEducationHealth (freeeducationhealth.example/method-form-robot):
+an intake pipeline on MY OWN Google account. I am a physician (or setting
+this up for one). Walk me through each step and ask me only for the values
+marked YOURS. Never ask me to paste an API key into code or chat logs that
+get shared; keys go in Script Properties only.
+
+STEPS YOU WILL DO WITH ME:
+1. Create a Google Form asking this fixed intake battery, feeding a Google
+   Sheet: Patient ID (a case number, NOT a name), Gender, Age, Chief
+   complaint, Start date, Trigger, Location, Description, Aggravating,
+   Relieving, Severity 0-10, Evolution, Associated symptoms, Treatments
+   tried, Treatment effectiveness, Chronic conditions, Allergies,
+   Pregnant/breastfeeding (skip for male patients), Additional.
+2. Open the Sheet's Apps Script editor and install the code below.
+3. In Project Settings -&gt; Script Properties set:
+     AI_API_KEY      = (YOURS - my AI provider key)
+     DOCTOR_EMAIL    = (YOURS - my professional email)
+4. Adjust the FIELDS column indexes to match my sheet's actual columns.
+5. Help me write the getSystemPrompt() template: a report with EXACTLY 4
+   sections - (1) horizontal ASCII timeline with real dates and Day N
+   markers using only text Unicode (no color emoji, email clients break);
+   (2) a clinical reasoning decision flow: what we know / what we need /
+   must rule out / decision / action; (3) a teaching block: 3 diagnostic
+   pearls, 3 presentation hallmarks, 3 differentials with distinguishing
+   clues, evidence-based management, follow-up, one board-style question
+   with answer and explanation; (4) a patient confirmation paragraph in
+   MY PATIENTS' LANGUAGE (ask me which), strictly second person, plain
+   everyday words, starting with a "just to confirm, you are..." recap
+   and ending with 10 gentle follow-up questions.
+6. Run the menu item Setup to install the trigger, then test with an
+   OBVIOUSLY FAKE patient before any real use.
+7. Explain to me, in plain words, where patient text travels in this
+   pipeline (form -&gt; Google -&gt; my AI provider -&gt; my inbox) and what my
+   compliance duties are in my country. If I handle identifiable data in
+   a covered jurisdiction, recommend the BAA-covered route (e.g. AWS
+   Bedrock) instead of a direct consumer API, and help me set that up.
+
+THE CODE (install in Apps Script; do not modify the security model):
+
+const CONFIG = Object.freeze({
+  API_URL: 'https://api.anthropic.com/v1/messages', // or my provider's endpoint
+  API_VERSION: '2023-06-01',
+  MODEL: 'claude-haiku-4-5',
+  MAX_TOKENS: 8000,
+  DOCTOR_EMAIL:
+    PropertiesService.getScriptProperties().getProperty('DOCTOR_EMAIL') ||
+    'you@your-practice.example',
+  SENDER_NAME: 'intake-robot',
+});
+
+function getApiKey_() {
+  const key = PropertiesService.getScriptProperties().getProperty('AI_API_KEY');
+  if (!key) throw new Error('Set AI_API_KEY in Script Properties first.');
+  return key;
+}
+
+// Map your sheet's columns here (0-based indexes into the row).
+const FIELDS = [
+  { label: 'Patient ID', index: 3 },
+  { label: 'Gender', index: 4 },
+  { label: 'Age', index: 5 },
+  { label: 'Chief complaint', index: 6 },
+  { label: 'Start date', index: 7 },
+  { label: 'Trigger', index: 8 },
+  { label: 'Location', index: 9 },
+  { label: 'Description', index: 10 },
+  { label: 'Aggravating', index: 11 },
+  { label: 'Relieving', index: 12 },
+  { label: 'Severity', index: 13 },
+  { label: 'Evolution', index: 14 },
+  { label: 'Associated symptoms', index: 15 },
+  { label: 'Treatments tried', index: 16 },
+  { label: 'Treatment effectiveness', index: 17 },
+  { label: 'Chronic conditions', index: 18 },
+  { label: 'Allergies', index: 19 },
+  { label: 'Pregnant/breastfeeding', index: 20 },
+  { label: 'Additional', index: 21 },
+];
+const LAST_COLUMN = 22;
+
+function setupTrigger() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet();
+  ScriptApp.getProjectTriggers().forEach((t) =&gt; ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('onNewRow').forSpreadsheet(sheet).onChange().create();
+  SpreadsheetApp.getUi().alert('Enabled', 'Auto-processing active.',
+    SpreadsheetApp.getUi().ButtonSet.OK);
+}
+
+function onNewRow(e) {
+  try {
+    if (e?.changeType !== 'INSERT_ROW') return;
+    const sheet = SpreadsheetApp.getActiveSheet();
+    const lastRow = sheet.getLastRow();
+    if (lastRow &lt; 2) return;
+    const rowData = sheet.getRange(lastRow, 1, 1, LAST_COLUMN).getValues()[0];
+    if (!rowData || rowData.length &lt; LAST_COLUMN) throw new Error('Invalid row');
+    sendEmail(callModel(createPrompt(rowData)), rowData);
+    // Data minimization: the pipeline keeps nothing. The chart lives in
+    // your record system, not in this spreadsheet.
+    sheet.deleteRow(lastRow);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+function createPrompt(rowData) {
+  return FIELDS.map(({ label, index }) =&gt;
+    `${label}: ${rowData[index] ?? ''}`).join('\n');
+}
+
+function getSystemPrompt() {
+  // Built with the assistant in step 5 — the fixed 4-section template.
+  return 'Output ONLY valid HTML starting with &lt;!DOCTYPE html&gt;. ' +
+    'Generate a report with EXACTLY these 4 sections... (template here)';
+}
+
+function callModel(prompt) {
+  const response = UrlFetchApp.fetch(CONFIG.API_URL, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': getApiKey_(),
+      'anthropic-version': CONFIG.API_VERSION,
+    },
+    payload: JSON.stringify({
+      model: CONFIG.MODEL,
+      max_tokens: CONFIG.MAX_TOKENS,
+      temperature: 0.1,
+      system: getSystemPrompt(),
+      messages: [{ role: 'user', content: prompt }],
+    }),
+    muteHttpExceptions: true,
+  });
+  const result = JSON.parse(response.getContentText());
+  if (result.error) throw new Error(result.error.message);
+  return (result.content?.[0]?.text ?? '')
+    .replace(/```html\n?/g, '').replace(/```\n?/g, '').trim();
+}
+
+function sendEmail(htmlContent, rowData) {
+  GmailApp.sendEmail(
+    CONFIG.DOCTOR_EMAIL,
+    `Intake report for "${rowData[3] ?? 'Unknown'}"`,
+    'See HTML.',
+    { htmlBody: htmlContent, name: CONFIG.SENDER_NAME }
+  );
+}
+
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu('IntakeRobot')
+    .addItem('Setup', 'setupTrigger').addToUi();
+}</pre></div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>What a consultation actually costs</h2>
+    <p>Prices move — check the providers' pages. As of mid-2026, with a typical
+      consultation of roughly 2,500 input tokens and 4,000 output tokens:</p>
+    <table class="tbl">
+      <tr><th>Path</th><th>Approx. price</th><th>Per consultation</th><th>When to choose it</th></tr>
+      <tr>
+        <td><strong>Claude Haiku 4.5 on AWS Bedrock</strong></td>
+        <td>~$1 / M in · ~$5 / M out</td>
+        <td><strong>≈ 2–3 cents</strong></td>
+        <td><strong>Choose a BAA-covered route whenever identifiable patient data is involved</strong> in a jurisdiction with a compliance framework. Bedrock is one worked example of that category: a signed BAA (the HIPAA path in the US), managed keys, audit logging, regional data residency. Equivalent covered offerings from other clouds serve the same purpose.</td>
+      </tr>
+      <tr>
+        <td>Claude Haiku 4.5, direct API</td>
+        <td>same</td>
+        <td>≈ 2–3 cents</td>
+        <td>Same model without the compliance wrapper — for de-identified or educational use.</td>
+      </tr>
+      <tr>
+        <td>DeepSeek (current chat model)</td>
+        <td>~$0.28 / M in · ~$0.42 / M out</td>
+        <td><strong>≈ a quarter of a cent</strong></td>
+        <td>One example of the low-cost tier that fits education-mode and de-identified use, and the multi-AI panel's second and third seats. Roughly 10× cheaper; no BAA. Comparable budget models exist from several providers.</td>
+      </tr>
+      <tr>
+        <td><strong>Ollama, fully local (below)</strong></td>
+        <td>free after download</td>
+        <td><strong>≈ 0 — electricity only</strong></td>
+        <td>Nothing leaves your machine at all. The right choice where privacy must be absolute or connectivity is unreliable.</td>
+      </tr>
+    </table>
+    <div class="callout"><strong>Read it two ways.</strong> Practically: choose by
+      data sensitivity, not price — with identifiable data, the ~10× premium for
+      the BAA-covered path is three cents well spent. Morally: even the expensive
+      path is pennies. This is the number behind our claim that leaving the
+      poorest without structured guidance is a choice, not a resource problem.</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>The security basis of this system</h2>
+    <h3>Built into the design</h3>
+    <ul class="checklist">
+      <li><strong>No third-party server of ours.</strong> Your form, your spreadsheet or computer, your script, your email — the only outside party is the AI provider you chose (and none at all in the local version).</li>
+      <li><strong>Data minimization by construction.</strong> The row is deleted after the report sends; the pipeline accumulates nothing that could be breached later. The record of care lives in your chart system.</li>
+      <li><strong>One recipient.</strong> Reports go only to the physician. No machine ever messages a patient in this pipeline.</li>
+      <li><strong>A fixed template resists prompt games</strong> — and makes drift or tampering obvious on review.</li>
+    </ul>
+    <h3>Your responsibilities — the part no script can do</h3>
+    <ul class="checklist">
+      <li><strong>Never hardcode an API key.</strong> A key in code is one paste, one screen share, one repository push away from public — and a leaked key lets strangers spend on your account. Keys live in Script Properties or environment variables, and are treated as burned the moment they appear anywhere else. Rotate immediately if exposed.</li>
+      <li><strong>Know where patient text travels:</strong> form → the form host → the AI provider → your inbox. Handling identifiable data in a covered jurisdiction means covering each hop (e.g. a Google Workspace agreement, plus a BAA-covered AI path). Can't cover a hop? Then run intake on a case number and join identity only inside your chart system.</li>
+      <li><strong>Restrict the form and the sheet.</strong> The link is for patients; the sheet and the script are yours alone.</li>
+      <li><strong>Email is the weakest hop.</strong> The inbox that receives reports needs strong authentication; it briefly holds clinical content.</li>
+      <li><strong>Test with fake patients only</strong>, and keep yourself in the loop: the report is a draft for your judgment, never an answer sent onward by a machine.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>Version 2 — fully local, with Ollama (nothing leaves your machine)</h2>
+    <p>The same conveyor-belt pattern, with every hop on your own computer: a
+      local intake page instead of a hosted form, a folder of reports instead of
+      email, and a local model instead of a cloud API. No key, no account, no
+      internet needed once the model is downloaded. Copy the block and hand it
+      to your AI coding assistant:</p>
+    <p><button class="btn btn-primary" type="button" data-copy="cc-local">Copy the local-version build instructions</button> <span class="muted" id="copied-cc-local" hidden>Copied.</span></p>
+    <div class="code" style="max-height:460px;overflow:auto"><pre id="cc-local" style="margin:0;white-space:pre-wrap">You are my coding assistant. Build me the fully LOCAL version of the
+FreeEducationHealth "form-to-report robot": an intake pipeline that runs
+entirely on my own computer with Ollama, so no patient text ever leaves
+this machine. Walk me through every step; assume I do not code.
+
+STEPS YOU WILL DO WITH ME:
+1. Install Ollama (https://ollama.com — Windows/Mac/Linux installers) and
+   pull a capable general model, e.g.:  ollama pull llama3.1:8b
+   (If my computer is strong, suggest a larger model; if weak, a smaller
+   one. Explain the tradeoff simply.)
+2. Install Node.js LTS if missing (https://nodejs.org).
+3. Create a folder called intake-robot with the single file below
+   (server.cjs), then run:  node server.cjs
+4. Open http://localhost:8787 on this computer (or a tablet on my own
+   network) — that is the patient intake page. Each submission becomes a
+   file in reports/ named by case number and time, containing the fixed
+   four-section report. Nothing is emailed and nothing goes online.
+5. Help me adapt the intake questions and the report template to my
+   language and my practice (same 4 sections as the Google version:
+   timeline, reasoning flow, teaching block, and a second-person
+   plain-language confirmation paragraph ending in 10 gentle questions).
+6. Test with an OBVIOUSLY FAKE patient first. Remind me: reports/ holds
+   clinical drafts, so it stays on this machine, disk encryption on, and
+   the page is for my own network only — never exposed to the internet.
+
+THE CODE (server.cjs — single file, no dependencies beyond Node 18+):
+
+'use strict';
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const PORT = 8787;
+const OLLAMA_URL = 'http://localhost:11434/api/chat';
+const MODEL = process.env.INTAKE_MODEL || 'llama3.1:8b';
+const REPORTS_DIR = path.join(__dirname, 'reports');
+if (!fs.existsSync(REPORTS_DIR)) fs.mkdirSync(REPORTS_DIR);
+
+const QUESTIONS = [
+  ['caseId', 'Case number (not a name)'],
+  ['gender', 'Gender'],
+  ['age', 'Age'],
+  ['complaint', 'What is the main problem?'],
+  ['start', 'When did it start? (date)'],
+  ['trigger', 'Did anything seem to set it off?'],
+  ['location', 'Where in the body is it?'],
+  ['description', 'Describe how it feels'],
+  ['aggravating', 'What makes it worse?'],
+  ['relieving', 'What makes it better?'],
+  ['severity', 'How bad is it, 0 to 10?'],
+  ['evolution', 'Getting better, worse, or stable?'],
+  ['associated', 'Any other symptoms with it?'],
+  ['treatments', 'What have you tried?'],
+  ['effect', 'Did that help?'],
+  ['conditions', 'Any long-term health conditions?'],
+  ['allergies', 'Any allergies?'],
+  ['pregnancy', 'Pregnant or breastfeeding? (if applicable)'],
+  ['additional', 'Anything else to add?'],
+];
+
+const SYSTEM_PROMPT = [
+  'You draft a clinical intake report for a physician. Output plain HTML',
+  'starting with &lt;!DOCTYPE html&gt;, with EXACTLY four sections:',
+  '1. Horizontal text timeline of the illness with dates and Day N markers',
+  '   (text characters only).',
+  '2. Clinical reasoning decision flow: what we know / what we need /',
+  '   must rule out / decision / suggested next steps for the PHYSICIAN.',
+  '3. Teaching block: 3 diagnostic pearls, 3 hallmarks, 3 differentials',
+  '   with distinguishing clues, evidence-based management, follow-up.',
+  '4. A confirmation paragraph addressed to the patient in plain everyday',
+  '   words, second person, starting "Just to confirm: you are..." and',
+  '   ending with 10 gentle follow-up questions.',
+  'This is a DRAFT for a physician to review. Never invent facts not in',
+  'the intake. Flag any red-flag symptoms prominently at the top.',
+].join('\n');
+
+function formPage() {
+  const fields = QUESTIONS.map(([k, label]) =&gt;
+    `&lt;label&gt;${label}&lt;br&gt;&lt;input name="${k}" style="width:100%"&gt;&lt;/label&gt;&lt;br&gt;&lt;br&gt;`
+  ).join('');
+  return `&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;
+&lt;title&gt;Check-in&lt;/title&gt;&lt;/head&gt;
+&lt;body style="font-family:sans-serif;max-width:640px;margin:2rem auto;padding:0 1rem"&gt;
+&lt;h2&gt;Check-in&lt;/h2&gt;
+&lt;p&gt;Please answer what you can. Do not type your name or ID numbers —
+your case number is enough. This prepares your visit; it is not a
+diagnosis, and in an emergency seek help immediately.&lt;/p&gt;
+&lt;form method="POST" action="/submit"&gt;${fields}
+&lt;button style="padding:.7rem 1.4rem"&gt;Send&lt;/button&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;`;
+}
+
+async function draftReport(answers) {
+  const intake = QUESTIONS.map(([k, label]) =&gt;
+    `${label}: ${answers[k] || ''}`).join('\n');
+  const res = await fetch(OLLAMA_URL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      model: MODEL, stream: false,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: intake },
+      ],
+    }),
+  });
+  if (!res.ok) throw new Error('Ollama error HTTP ' + res.status);
+  const data = await res.json();
+  return (data.message &amp;&amp; data.message.content) || '';
+}
+
+const server = http.createServer(async (req, res) =&gt; {
+  if (req.method === 'GET' &amp;&amp; req.url === '/') {
+    res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+    return res.end(formPage());
+  }
+  if (req.method === 'POST' &amp;&amp; req.url === '/submit') {
+    let body = '';
+    req.on('data', (c) =&gt; { body += c; if (body.length &gt; 1e6) req.destroy(); });
+    req.on('end', async () =&gt; {
+      try {
+        const answers = Object.fromEntries(new URLSearchParams(body));
+        const caseId = (answers.caseId || 'case').replace(/[^a-zA-Z0-9_-]/g, '');
+        const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const report = await draftReport(answers);
+        fs.writeFileSync(path.join(REPORTS_DIR, `${caseId}_${stamp}.html`),
+          report, 'utf8');
+        res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+        res.end('&lt;p style="font-family:sans-serif"&gt;Received — thank you. ' +
+          'Your clinician will review it with you.&lt;/p&gt;');
+      } catch (e) {
+        res.writeHead(500, { 'content-type': 'text/plain' });
+        res.end('Something went wrong; please tell the clinic. ' + e.message);
+      }
+    });
+    return;
+  }
+  res.writeHead(404); res.end('Not found');
+});
+
+server.listen(PORT, () =&gt; {
+  console.log(`Intake robot: http://localhost:${PORT}`);
+  console.log(`Model: ${MODEL} via ${OLLAMA_URL}`);
+  console.log(`Reports are written to: ${REPORTS_DIR}`);
+  console.log('Local use only — do not expose this to the internet.');
+});</pre></div>
+    <div class="warn"><strong>Local rules.</strong> The intake page is for your
+      own device or clinic network only — never exposed to the internet. The
+      <code>reports/</code> folder holds clinical drafts: keep disk encryption
+      on, and treat the machine like the filing cabinet it now is. The patient
+      never sees the report; a clinician reviews every draft. And the same line
+      as always: this drafts and prepares — it does not diagnose, treat, or
+      replace a physician.</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow center">
+    <p><a class="btn btn-ghost" href="methods.html">All published methods</a>
+       <a class="btn btn-ghost" href="physicians.html">Start as a physician</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+<script>
+// One-click copy for the build-instruction blocks. Self-contained, no
+// external code — consistent with the site's download-and-rebuild rule.
+document.querySelectorAll('button[data-copy]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var pre = document.getElementById(btn.getAttribute('data-copy'));
+    var note = document.getElementById('copied-' + btn.getAttribute('data-copy'));
+    function done() { if (note) { note.hidden = false; setTimeout(function () { note.hidden = true; }, 2500); } }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(pre.textContent).then(done, fallback);
+    } else { fallback(); }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      try { document.execCommand('copy'); done(); } catch (e) {}
+    }
+  });
+});
+</script>
+
+</body>
+</html>
