@@ -54,8 +54,8 @@ interface PanelConfig {
   // and credential the self-hoster configured for it. Providers are the
   // self-hoster's own accounts -- there is no shared/hosted key.
   providers: Array<{
-    name: string;          // e.g. "anthropic", "deepseek", "openai", "openai-compatible"
-    model: string;         // e.g. "claude-sonnet-5", "deepseek-chat", "gpt-4o", "llama3" (local)
+    name: string;          // e.g. "anthropic", "deepseek", "openai", "gemini", "openai-compatible"
+    model: string;         // e.g. "claude-sonnet-5", "deepseek-chat", "gpt-4o", "gemini-2.5-flash", "llama3" (local)
     apiKeyEnvVar: string;  // name of the env var holding the credential, e.g. "ANTHROPIC_API_KEY"
     baseUrl?: string;      // required for "openai-compatible" (local/Ollama), optional otherwise
   }>;

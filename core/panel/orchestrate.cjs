@@ -23,6 +23,7 @@ const { assertValidRecommendation } = require('../schema/validate.cjs');
 const anthropic = require('../providers/anthropic.cjs');
 const deepseek = require('../providers/deepseek.cjs');
 const openai = require('../providers/openai.cjs');
+const gemini = require('../providers/gemini.cjs');
 const local = require('../providers/local.cjs');
 
 /** Maps PanelConfig.providers[].name -> the adapter module that handles it. */
@@ -30,6 +31,7 @@ const PROVIDER_REGISTRY = {
   anthropic,
   deepseek,
   openai,
+  gemini,
   local,
   'openai-compatible': local,
 };

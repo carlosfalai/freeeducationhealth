@@ -54,11 +54,29 @@ Sign in when it asks (a Claude subscription or API key), then type:
 The agent reads the folder's own runbook and does the rest, asking you
 only for the things that must be yours (your bot token, your AI keys).
 
-## Step 3 — or set it up yourself, by hand
+## Step 3 — or run the setup wizard yourself
 
-Open `SETUP.md` in the unzipped folder and follow the section **"Setting
-up the Telegram bot (patients)."** Then read `bot/README.md` for the
-details. No agent required.
+You do not strictly need an agent. Open a terminal in the unzipped folder
+and run:
+
+```
+node bot/setup.cjs
+```
+
+It is a friendly question-and-answer wizard. It asks whether you use a
+coding agent, then helps you connect **your own** keys for two or more
+different AIs (it suggests OpenAI/ChatGPT, Google Gemini, and DeepSeek,
+with the link to get each), typing them in hidden so they never show on
+screen. It writes your settings file for you and never sends anything
+anywhere. Then:
+
+```
+node bot/accept-consent.cjs
+node bot/index.cjs
+```
+
+Prefer editing files by hand? `SETUP.md` section **"Setting up the
+Telegram bot (patients)"** and `bot/README.md` cover that too.
 
 ## Before you rely on it
 

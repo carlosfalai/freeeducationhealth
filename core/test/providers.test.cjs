@@ -6,6 +6,7 @@ const assert = require('node:assert/strict');
 const callAnthropic = require('../providers/anthropic.cjs');
 const callDeepseek = require('../providers/deepseek.cjs');
 const callOpenAI = require('../providers/openai.cjs');
+const callGemini = require('../providers/gemini.cjs');
 const callLocal = require('../providers/local.cjs');
 
 const ORIGINAL_FETCH = global.fetch;
@@ -89,6 +90,49 @@ test('openai adapter uses OpenAI chat-completions shape', async () => {
 
   const text = await callOpenAI({ systemPrompt: 'sys', userPrompt: 'usr' }, {});
   assert.equal(text, 'hi from gpt');
+});
+
+test('gemini adapter throws a clear error when the API key env var is unset', async () => {
+  delete process.env.GEMINI_API_KEY;
+  await assert.rejects(
+    () => callGemini({ systemPrompt: 's', userPrompt: 'u' }, {}),
+    /GEMINI_API_KEY/
+  );
+});
+
+test('gemini adapter sends generateContent shape (system instruction + contents) and parses parts', async () => {
+  process.env.GEMINI_API_KEY = 'gm-key';
+  let capturedUrl;
+  let capturedOptions;
+  global.fetch = async (url, options) => {
+    capturedUrl = url;
+    capturedOptions = options;
+    return new Response(
+      JSON.stringify({ candidates: [{ content: { parts: [{ text: 'hi from ' }, { text: 'gemini' }] } }] }),
+      { status: 200 }
+    );
+  };
+
+  const text = await callGemini({ systemPrompt: 'sys', userPrompt: 'usr' }, { model: 'gemini-2.5-flash' });
+  assert.equal(text, 'hi from gemini');
+  assert.match(capturedUrl, /models\/gemini-2\.5-flash:generateContent$/);
+  assert.equal(capturedOptions.headers['x-goog-api-key'], 'gm-key');
+  const body = JSON.parse(capturedOptions.body);
+  assert.equal(body.systemInstruction.parts[0].text, 'sys');
+  assert.equal(body.contents[0].parts[0].text, 'usr');
+});
+
+test('gemini adapter surfaces a blocked prompt (candidates but no text) as a thrown error', async () => {
+  process.env.GEMINI_API_KEY = 'gm-key';
+  global.fetch = async () =>
+    new Response(JSON.stringify({ candidates: [{ finishReason: 'SAFETY' }], promptFeedback: { blockReason: 'SAFETY' } }), {
+      status: 200,
+    });
+
+  await assert.rejects(
+    () => callGemini({ systemPrompt: 's', userPrompt: 'u' }, {}),
+    /prompt blocked: SAFETY/
+  );
 });
 
 test('local adapter throws when no baseUrl is configured anywhere', async () => {
