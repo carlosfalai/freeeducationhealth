@@ -49,8 +49,8 @@ below, in order, for each run.
    single-model answer -- surface the failure to the physician instead.
 6. Guidance language must be genuinely actionable for someone who may have
    no doctor reachable nearby -- when drafting `suggestedNextSteps` content
-   or reviewing what `core/` produced, this is the bar (see the root design
-   spec, `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`).
+   or reviewing what `core/` produced, this is the bar (see the design
+   record, `docs/design-decisions.md`).
 
 ## One-time setup
 

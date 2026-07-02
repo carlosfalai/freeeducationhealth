@@ -8,10 +8,12 @@ before running anything.
 
 If you want the *design rationale* behind any decision below (why no shared
 server, why panelSize >= 2, why billing suggestions never reach patients,
-etc.), it lives in `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`
-and `docs/physician-brain-components.md`. You don't need to read those to
+etc.), it lives in `docs/design-decisions.md` and
+`docs/physician-brain-components.md`. You don't need to read those to
 complete setup — this file is self-contained for that — but read them before
-changing architecture or writing public-facing copy.
+changing architecture or writing public-facing copy. (The maintainer's
+fuller internal design notes live under `docs/superpowers/`, which is
+git-ignored and absent from public checkouts — do not expect it to exist.)
 
 ## What this project is
 
@@ -66,7 +68,7 @@ freeeducationhealth/
     cli.cjs                  <- entry point: file/stdin -> report on stdout, optional --pdf export
     pdf-export.cjs           <- self-contained pdf-lib export (portable patient PDF)
   docs/
-    superpowers/specs/      <- design spec (internal rationale; do not copy personal narrative into public docs)
+    design-decisions.md     <- public design record (mission + architecture rationale)
     physician-brain-components.md
 ```
 
@@ -324,10 +326,10 @@ providers and performs one `core/` panel run per section.
    Every capability here is bring-your-own-credentials, self-hosted. If a
    task seems to imply adding billing, a shared API key, or a
    Carlos-operated backend, stop and flag it instead of building it.
-5. **Keep `core/persona/` generic-only.** The design spec's PHI-scrub gate
-   (`docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`) is a
-   hard requirement: real mined practice-style data does not enter this
-   repo until an adversarial PHI-scrub pass is verified clean. Until told
+5. **Keep `core/persona/` generic-only.** The PHI-scrub gate
+   (`docs/design-decisions.md`, Licensing section) is a hard requirement:
+   real mined practice-style data does not enter this repo until an
+   adversarial PHI-scrub pass is verified clean. Until told
    otherwise, treat `core/persona/style-guide.md`'s existing generic content
    as the ceiling, not a starting point to add more specific data to.
 6. **`panelSize` is never allowed to drop below 2**, in any front-end's
@@ -338,10 +340,11 @@ providers and performs one `core/` panel run per section.
    applies to anything you draft into `suggestedNextSteps`-shaped content
    or FAQ/help copy.
 8. When writing public-facing copy (README, SETUP, marketing text), do not
-   copy personal narrative, anecdotes, or "how I built this" stories from
-   `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md` — that
-   file explicitly marks its personal-journey content as internal-only.
-   State facts (cost, architecture, mission) plainly instead.
+   add personal narrative, anecdotes, or "how it was built" stories — the
+   maintainer's personal-journey content is internal-only by explicit
+   instruction (it lives in the git-ignored `docs/superpowers/`, absent
+   from public checkouts). State facts (cost, architecture, mission)
+   plainly instead.
 
 ## If something in this file is stale
 

@@ -153,5 +153,5 @@ permissively licensed and downloadable as self-contained archives
 (`package-releases.cjs`), so any node can seed new ones. Local physicians
 can work with nearby self-hosted nodes using the same card formats and
 portable summaries. (The longer-term vision of coordinated networks of
-such nodes is recorded in the design spec as a future direction — what is
-drawn above is what ships today.)
+such nodes is recorded in `docs/design-decisions.md` as a future direction
+— what is drawn above is what ships today.)

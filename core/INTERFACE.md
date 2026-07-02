@@ -8,7 +8,7 @@ this shape is preserved.
 
 ## Why this exists
 
-Per `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`,
+Per `docs/design-decisions.md`,
 `core/` has no knowledge of Telegram, Spruce, or Epic. It exposes one stable
 function. Every front-end is just a consumer of that function's input/output
 shape. This lets a hospital extract or independently version `core/` later
@@ -106,7 +106,7 @@ const recommendation = await getRecommendation(intakeAnswers, panelConfig);
 A front-end MAY instead run `core/` behind a local HTTP server (e.g. if a
 front-end is written in a different language/runtime than `core/`, or an
 institution wants to run `core/` as its own versioned service per
-`docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`'s note
+`docs/design-decisions.md`'s note
 that a hospital could "extract or independently version it later"). In that
 case the HTTP contract is:
 

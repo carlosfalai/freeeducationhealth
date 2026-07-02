@@ -6,7 +6,7 @@ run your own bot, with your own Telegram token and your own AI provider
 keys -- there is no shared server and nothing is billed to anyone but you.
 
 This is **not a doctor** and does not replace medical care. See the
-emergency banner every chat opens with, and `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`
+emergency banner every chat opens with, and `docs/design-decisions.md`
 for the project's full design rationale.
 
 ## What this is built against

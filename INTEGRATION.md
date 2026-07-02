@@ -16,7 +16,7 @@ service you operate.
 
 ## Why this is safe to build on independently
 
-Per the design spec (`docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`):
+Per the design record (`docs/design-decisions.md`):
 
 > `core/`'s internals (which providers, how the panel aggregates, how intake
 > questions are sequenced) can change freely as long as this shape is

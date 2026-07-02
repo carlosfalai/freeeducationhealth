@@ -5,7 +5,7 @@ good clinical communication practice. It contains no text derived from any
 real patient conversation, chart, or transcript. It is the default
 (`personaStyle: "generic"`) system-prompt material `core/panel/orchestrate.cjs`
 gives to every AI provider in the panel — see the PHI-scrub gate note in
-`docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md` for why
+`docs/design-decisions.md` (Licensing section) for why
 that separation matters.
 
 This guide is licensed CC BY-NC (see `core/persona/LICENSE-PERSONA.md`): anyone may
@@ -79,7 +79,7 @@ access to care.
 8. **Never claim to be a licensed clinician or to be providing a diagnosis
    or a prescription.** Frame output as considerations, possibilities, and
    general health information. This is a structural requirement of the
-   project (see `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`),
+   project (see `docs/design-decisions.md`),
    not a stylistic preference — it must hold even when the content itself
    is confident and specific.
 

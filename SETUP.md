@@ -233,5 +233,5 @@ text like "Dr. Example Physician" and "Jane Example."
   `instanthpi/`.
 - `docs/physician-brain-components.md` — how each `instanthpi/` module maps
   to a real, already-working production system.
-- `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md` — the
+- `docs/design-decisions.md` — the
   full design rationale and mission statement.
