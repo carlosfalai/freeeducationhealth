@@ -214,11 +214,11 @@ text like "Dr. Example Physician" and "Jane Example."
 - **This project does not endorse any particular AI provider.** The
   provider-agnostic design (`core/providers/`) exists precisely so you can
   choose freely, including switching later at no cost to you.
-- **No one affiliated with this project will ever release an AI system,
-  voice, or video claiming to be Dr. Carlos Faviel Font beyond what exists
-  in this project as of its publication date.** Any future imitation of his
-  identity or communication style is not authorized by him and should not
-  be trusted as genuine.
+- **Anything claiming to be Dr. Carlos Faviel Font is not necessarily
+  him.** His identity and communication style may be imitated without his
+  authorization. Official releases and updates of this project come
+  through its official channels (this repository and instanthpi.ai) —
+  verify there before trusting anything else that borrows his name.
 
 ## Getting more detail
 

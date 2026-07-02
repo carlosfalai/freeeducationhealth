@@ -169,12 +169,12 @@ credentials or patient data.
 
 ## Notices
 
-**Identity.** Carlos Faviel Font will not release further personal AI
-models beyond this project. No future AI system, video, cloned voice, or
-persona claiming to be Dr. Carlos Faviel Font should be treated as
-authentic beyond what exists in this project as published. His likeness
-and communication style may be imitated or synthesized by others without
-his authorization — no such imitation should be mistaken for him.
+**Identity.** This project and its updates are published through its
+official channels: this repository and instanthpi.ai. An AI system, video,
+cloned voice, or persona claiming to be Dr. Carlos Faviel Font may be an
+imitation created without his authorization — do not assume something is
+authentically him just because it uses his name, likeness, or
+communication style. When in doubt, verify against the official channels.
 
 **No AI-provider endorsement.** This project does not recommend any AI
 model or provider over another, and no endorsement of any AI provider is
