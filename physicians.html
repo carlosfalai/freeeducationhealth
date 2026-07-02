@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For physicians — FreeEducationHealth</title>
+<meta name="description" content="Set up the physician brain: your own AI coding-agent session reads your Spruce inbox and drafts replies, referrals, and faxes with a multi-AI panel. You approve every one, and PDFs are unsigned by default. Self-hosted, open source.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">For physicians</span>
+    <h1>Automate your own paperwork.</h1>
+    <p class="lede">You are setting up the physician brain, the tool this whole
+      project grew out of. Your own AI coding-agent session reads your Spruce
+      inbox, drafts replies, referral PDFs, and faxes using a multi-AI panel,
+      and presents each case to you as a review card. Nothing is ever sent
+      until you approve it. The AI drafts; you remain the author of record,
+      exactly as with a scribe or dictation service.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#need">What you need</a>
+      <a class="btn btn-ghost" href="how-it-works.html">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <div class="callout">
+      One physician's real, ongoing experience with this pattern (the author's):
+      on the order of a 70% reduction in documentation workload. That is one
+      practice's experience, stated as such, not a promise.
+    </div>
+  </div>
+</section>
+
+<section id="need">
+  <div class="wrap">
+    <h2>What you need</h2>
+    <ul class="checklist narrow">
+      <li>Your own Spruce Health account and API token.</li>
+      <li>At least 2 AI provider API keys (Anthropic, DeepSeek, OpenAI, or a local model via Ollama).</li>
+      <li>Optional: your own SRFax account for outbound faxing.</li>
+      <li>Optional: your own signature image, kept outside the repo, if you want PDFs pre-signed. Default is a blank signature line, and that default is the safe one.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap">
+    <h2>Set it up</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Download your piece (only this one)</h3>
+          <p>Download and unzip
+            <a href="download.html">freeeducationhealth-instanthpi-only.zip</a>.
+            You install only the physician brain, not the rest of the project.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Install an AI coding agent (this tool is DRIVEN by one)</h3>
+          <p>Unlike the other pieces, the physician brain is not a server you
+            leave running. The coding agent IS the runtime. It reads
+            <code>instanthpi/RUNBOOK.md</code> and works your inbox with you.
+            Built and tested with Claude Code; any capable coding agent can
+            follow the same runbook.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap narrow" style="padding:0">
+      <p class="muted">Install Claude Code (Windows, macOS, Linux, or via Node.js):</p>
+    </div>
+    <div class="code narrow">
+<span class="c"># Windows (PowerShell)</span>
+irm https://claude.ai/install.ps1 | iex
+
+<span class="c"># macOS / Linux</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="c"># Or via Node.js</span>
+npm install -g @anthropic-ai/claude-code
+    </div>
+
+    <div class="wrap narrow" style="padding:0">
+      <p>Then open a terminal inside the unzipped folder, run <code>claude</code>,
+        sign in, and type:</p>
+      <div class="panel">
+        <p style="margin:0">Set this up for me. I am a physician. Read
+          instanthpi/RUNBOOK.md, walk me through my .env credentials, generate
+          the sample PDF so I can see the output quality, and then run
+          verify-hipaa and explain the results.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The two commands worth knowing from day one</h2>
+    <div class="panel tint">
+      <p class="narrow"><strong>"run verify-hipaa and tell me if my setup is
+        compliant"</strong> — the agent runs <code>node verify-hipaa.cjs</code>
+        and explains, in plain language, what passed, what failed, and the one
+        thing no script can check: accepting the AWS Business Associate Addendum
+        is a manual, legal step only you can do (see
+        <code>docs/hipaa-bedrock-guide.md</code>).</p>
+      <p class="narrow" style="margin-bottom:0"><strong>"show me what good output
+        looks like"</strong> — the worked-example gallery
+        (<code>docs/examples/</code> in the docs bundle, or on GitHub) shows a
+        well-filled referral, a review card, and a recommendation object, with
+        lessons on what to reject.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Or read it yourself first</h2>
+    <p class="narrow"><code>instanthpi/RUNBOOK.md</code> is the complete operating
+      manual, and <code>SETUP.md</code> section "Setting up instanthpi/
+      (physicians)" covers the credentials. Patient-identifying data never
+      belongs in what goes to the AI panel; the runbook's hard rules spell this
+      out.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The safety posture, in one paragraph</h2>
+    <div class="callout narrow">
+      Every reviewable action lands as a card; you approve, edit, dismiss, or
+      choose "none" (you handle it off-tool, and the system then sends nothing).
+      PDFs arrive unsigned unless you configured your own signature. The panel
+      hard-fails rather than silently falling back to a single model, and shows
+      you when its models disagreed instead of hiding it.
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="warn narrow">
+      <strong>This is not a doctor, and not emergency care.</strong> It drafts
+      documentation for you to review and approve; it does not diagnose or treat,
+      and it never sends anything on its own. Self-hosting it does not by itself
+      make it "HIPAA compliant."
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow center">
+    <p><a class="btn btn-ghost" href="methods.html">Published methods</a>
+       <a class="btn btn-ghost" href="method-form-robot.html">The form-to-report robot (worked example)</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

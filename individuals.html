@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For individuals — FreeEducationHealth</title>
+<meta name="description" content="Experimental history-insights module: paste your own past diagnoses, medications, and lab results as plain text and get a plain-language education report plus an optional portable summary. Self-hosted, runs on your own computer.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Free · open source · self-hosted</span>
+    <h1>Understand your own health history. <span class="tag exp">experimental</span></h1>
+    <p class="lede">Paste your own past diagnoses, medications, and lab results as
+      plain text, and get back a plain-language education report — organized as
+      FAQs per health topic found in your history — plus an optional PDF summary
+      you can keep on your phone and show any provider you ever see.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="#need">What you need</a>
+      <a class="btn btn-ghost" href="how-it-works.html">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>The history-insights module</h2>
+    <p>You are trying the <strong>history-insights</strong> module: paste your own
+      past diagnoses, medications, and lab results as plain text, and get back a
+      plain-language education report — organized as FAQs per health topic found
+      in your history — plus an optional PDF summary you can keep on your phone
+      and show any provider you ever see. This module is explicitly experimental,
+      and it educates; it does not diagnose or treat.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="warn narrow">
+      <strong>Privacy, stated honestly before you paste anything.</strong> There is
+      no server run by this project — the analysis happens on your own computer.
+      But whichever AI providers you configure will receive the (locally redacted)
+      history text under their own data terms. A local identifier filter strips
+      likely names, phone numbers, and ID numbers first, and it is best-effort, not
+      perfect. The only setup where your history never leaves your machine at all is
+      a fully local model (for example, Ollama). This is not "HIPAA compliance" and
+      the module never claims it.
+    </div>
+  </div>
+</section>
+
+<section id="need" class="section-lead">
+  <div class="wrap">
+    <h2>What you need</h2>
+    <ul class="checklist narrow">
+      <li>At least 2 AI provider API keys, or a local model via Ollama.</li>
+      <li>Your history as a plain text file — even rough notes work.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="steps narrow">
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Download your piece (only this one)</h3>
+          <p>Download and unzip
+            <a href="download.html">freeeducationhealth-history-insights.zip</a>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Install an AI coding agent (recommended path)</h3>
+          <p>Built and tested with Claude Code; any capable coding agent works.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>Or run it yourself</h3>
+          <p>Prefer the command line? Run the module directly with the commands below.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>Step 2 — install an AI coding agent</h2>
+    <p class="muted">Built and tested with Claude Code; any capable coding agent
+      works. Install it one of these ways:</p>
+    <div class="code">
+<span class="c"># Windows (PowerShell)</span>
+irm https://claude.ai/install.ps1 | iex
+
+<span class="c"># macOS / Linux</span>
+curl -fsSL https://claude.ai/install.sh | bash
+
+<span class="c"># or via Node.js</span>
+npm install -g @anthropic-ai/claude-code
+    </div>
+    <p>Open a terminal inside the unzipped folder, run <code>claude</code>, sign in,
+      and type:</p>
+    <div class="callout">
+      Set this up for me. I am an individual using history-insights. Configure my
+      providers, run the offline tests, then do a --dry-run with fake history text
+      and show me exactly what would be sent before I use anything real.
+    </div>
+    <p>That <code>--dry-run</code> step matters: it shows you the exact (redacted)
+      payloads a real run would send, before any real data moves.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>Step 3 — or run it yourself</h2>
+    <div class="code">
+cd history-insights &amp;&amp; npm install
+cp .env.example .env     <span class="c"># list your AI providers</span>
+npm test                 <span class="c"># offline self-check, no AI keys needed</span>
+node cli.cjs --dry-run   <span class="c"># paste fake text, inspect what would be sent</span>
+node cli.cjs my-history.txt --pdf report.pdf   <span class="c"># the real run</span>
+    </div>
+    <p class="muted">Details and limits (English-keyword topics, Latin-script PDF,
+      and the rest): <code>history-insights/README.md</code>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="warn narrow">
+      <strong>This is not a doctor, and not emergency care.</strong> The
+      history-insights module is experimental and educational: it helps you
+      understand your own past records; it does not diagnose or treat. In an
+      emergency, get in-person help immediately. Self-hosting it does not by itself
+      make it "HIPAA compliant."
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

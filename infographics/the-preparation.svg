@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1300" font-family="Georgia, 'Times New Roman', serif" role="img" aria-label="The preparation: the person is coached by a structured intake, and the AI is coached automatically by the project's own files, before any case is answered.">
+  <defs>
+    <radialGradient id="bg2" cx="50%" cy="36%" r="78%">
+      <stop offset="0%" stop-color="#12514a"/>
+      <stop offset="60%" stop-color="#0c3b37"/>
+      <stop offset="100%" stop-color="#082a27"/>
+    </radialGradient>
+    <linearGradient id="brass2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0d98a"/>
+      <stop offset="45%" stop-color="#d4af58"/>
+      <stop offset="100%" stop-color="#9c7a34"/>
+    </linearGradient>
+    <linearGradient id="brassH2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9c7a34"/>
+      <stop offset="50%" stop-color="#f0d98a"/>
+      <stop offset="100%" stop-color="#9c7a34"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1000" height="1300" fill="url(#bg2)"/>
+
+  <!-- stepped deco frame -->
+  <g fill="none" stroke="url(#brass2)" stroke-width="4">
+    <rect x="34" y="34" width="932" height="1232"/>
+    <rect x="50" y="50" width="900" height="1200" stroke-width="2"/>
+  </g>
+  <g fill="url(#brass2)">
+    <rect x="30" y="30" width="70" height="10"/><rect x="30" y="30" width="10" height="70"/>
+    <rect x="900" y="30" width="70" height="10"/><rect x="960" y="30" width="10" height="70"/>
+    <rect x="30" y="1260" width="70" height="10"/><rect x="30" y="1200" width="10" height="70"/>
+    <rect x="900" y="1260" width="70" height="10"/><rect x="960" y="1200" width="10" height="70"/>
+  </g>
+
+  <!-- title -->
+  <text x="500" y="140" text-anchor="middle" fill="url(#brassH2)" font-size="62" letter-spacing="5" font-weight="bold">THE PREPARATION</text>
+  <line x1="230" y1="166" x2="770" y2="166" stroke="url(#brassH2)" stroke-width="3"/>
+  <text x="500" y="208" text-anchor="middle" fill="#e9dcb8" font-size="25" letter-spacing="2" font-style="italic">both the person and the machine are coached before any answer</text>
+
+  <!-- two columns -->
+  <!-- LEFT: THE PERSON -->
+  <g>
+    <circle cx="270" cy="330" r="76" fill="#0c3b37" stroke="url(#brass2)" stroke-width="5"/>
+    <circle cx="270" cy="330" r="61" fill="none" stroke="#d4af58" stroke-width="1.5"/>
+    <!-- stylized figure -->
+    <circle cx="270" cy="308" r="18" fill="none" stroke="url(#brassH2)" stroke-width="4"/>
+    <path d="M 238,366 Q 270,326 302,366" fill="none" stroke="url(#brassH2)" stroke-width="4"/>
+    <text x="270" y="452" text-anchor="middle" fill="url(#brassH2)" font-size="30" letter-spacing="3" font-weight="bold">THE PERSON</text>
+    <text x="270" y="484" text-anchor="middle" fill="#c9a24b" font-size="19" font-style="italic">coached by the intake</text>
+  </g>
+
+  <!-- RIGHT: THE MACHINE -->
+  <g>
+    <circle cx="730" cy="330" r="76" fill="#0c3b37" stroke="url(#brass2)" stroke-width="5"/>
+    <circle cx="730" cy="330" r="61" fill="none" stroke="#d4af58" stroke-width="1.5"/>
+    <!-- stylized cog -->
+    <g transform="translate(730,330)" fill="none" stroke="url(#brassH2)" stroke-width="4">
+      <circle r="24"/>
+      <g stroke-width="6">
+        <line x1="0" y1="-24" x2="0" y2="-38"/>
+        <line x1="0" y1="24" x2="0" y2="38"/>
+        <line x1="-24" y1="0" x2="-38" y2="0"/>
+        <line x1="24" y1="0" x2="38" y2="0"/>
+        <line x1="-17" y1="-17" x2="-27" y2="-27"/>
+        <line x1="17" y1="17" x2="27" y2="27"/>
+        <line x1="17" y1="-17" x2="27" y2="-27"/>
+        <line x1="-17" y1="17" x2="-27" y2="27"/>
+      </g>
+    </g>
+    <text x="730" y="452" text-anchor="middle" fill="url(#brassH2)" font-size="30" letter-spacing="3" font-weight="bold">THE MACHINE</text>
+    <text x="730" y="484" text-anchor="middle" fill="#c9a24b" font-size="19" font-style="italic">coached by our files</text>
+  </g>
+
+  <!-- divider -->
+  <line x1="500" y1="270" x2="500" y2="820" stroke="url(#brass2)" stroke-width="2" opacity="0.5"/>
+
+  <!-- left list -->
+  <g font-size="22" fill="#e9dcb8">
+    <text x="150" y="560" fill="url(#brassH2)" font-size="20" letter-spacing="2" font-weight="bold">WE TEACH THEM TO —</text>
+    <text x="150" y="602">answer the same questions</text>
+    <text x="150" y="632">a careful clinician would ask</text>
+    <text x="150" y="686">learn which warning signs</text>
+    <text x="150" y="716">mean seek care now</text>
+    <text x="150" y="770">arrive at a real visit</text>
+    <text x="150" y="800">already prepared</text>
+  </g>
+
+  <!-- right list -->
+  <g font-size="22" fill="#e9dcb8">
+    <text x="545" y="560" fill="url(#brassH2)" font-size="20" letter-spacing="2" font-weight="bold">WE DRILL IT WITH —</text>
+    <text x="545" y="602">the runbook that governs</text>
+    <text x="545" y="632">how it may act</text>
+    <text x="545" y="686">the clinical style guide</text>
+    <text x="545" y="716">and the intake structure</text>
+    <text x="545" y="770">the safety rules it must</text>
+    <text x="545" y="800">never break</text>
+  </g>
+
+  <!-- convergence banner -->
+  <g transform="translate(500,900)">
+    <path d="M -300,0 L 300,0 L 320,34 L 300,68 L -300,68 L -320,34 Z" fill="#0c3b37" stroke="url(#brass2)" stroke-width="5"/>
+    <text x="0" y="44" text-anchor="middle" fill="url(#brassH2)" font-size="27" letter-spacing="3" font-weight="bold">STRUCTURE BEFORE ANSWER</text>
+  </g>
+
+  <text x="500" y="1030" text-anchor="middle" fill="#e9dcb8" font-size="23" font-style="italic">Medical school gives a doctor a method, not just facts.</text>
+  <text x="500" y="1064" text-anchor="middle" fill="#e9dcb8" font-size="23" font-style="italic">We give the machine the same discipline — automatically,</text>
+  <text x="500" y="1098" text-anchor="middle" fill="#e9dcb8" font-size="23" font-style="italic">from our own files — so it reasons like it was trained,</text>
+  <text x="500" y="1132" text-anchor="middle" fill="#e9dcb8" font-size="23" font-style="italic">not like an off-the-cuff chat.</text>
+
+  <text x="500" y="1210" text-anchor="middle" fill="#c9a24b" font-size="20" letter-spacing="4" font-style="italic">HUMAN MEDSCHOOL FOR A.I.</text>
+</svg>

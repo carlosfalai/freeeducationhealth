@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works — FreeEducationHealth</title>
+<meta name="description" content="How FreeEducationHealth works, drawn in five plain diagrams: which piece is for you, a patient's journey through the bot, a physician's daily loop, inside the multi-AI panel, and the no-center deployment topology.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a class="active" href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">How it works</span>
+    <h1>How it works</h1>
+    <p class="lede">Five plain-language diagrams, from the widest view down to
+      the smallest part. They show what actually ships today: which piece is for
+      you, what happens in a patient's session, a physician's daily loop, what
+      goes on inside the multi-AI panel, and why there is no center to the whole
+      thing.</p>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>Not one AI. A panel that has to agree.</h2>
+    <p>An ordinary health chatbot is one AI answering alone, and whatever it
+      gets wrong goes straight to the person asking. This tool works
+      differently: every copy runs a panel of two or more
+      <strong>different</strong> AIs — you choose which, for example OpenAI's
+      ChatGPT, Google's Gemini, and DeepSeek. The same symptom answers go to
+      each one separately, and here is what the panel does with them.</p>
+  </div>
+  <div class="wrap">
+    <ul class="checklist narrow">
+      <li>The same symptom answers go to each AI separately.</li>
+      <li>They have to agree before you are shown anything.</li>
+      <li>When they disagree in a way that matters, it tells you — it never hides one AI's confident guess.</li>
+      <li>If any single AI flags a warning sign, that warning is kept.</li>
+      <li>If too few of them answer properly, it refuses to answer rather than falling back to just one.</li>
+    </ul>
+    <p class="narrow muted">This cross-check is the tool's stand-in for a second
+      and third opinion, and it is built in: no copy runs with fewer than two
+      AIs. The diagrams below show where that panel sits in the whole system.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>1. Which piece is for you</h2>
+    <p>This project is one system only to the people who built it. To everyone
+      else it is five separate tools: you pick the row that describes you,
+      install only that piece, and follow only that piece's instructions. There
+      is no engine service and nothing shared while it runs. The shared core is
+      a code library that every download carries its own copy of inside itself,
+      the way two clinics might use the same textbook — same content, separate
+      books.</p>
+  </div>
+  <div class="wrap">
+    <figure>
+      <img src="diagrams/overview.svg" alt="A branching chart mapping five kinds of user to the five installable pieces: patients to the Telegram bot, clinics to the waiting-room kiosk, physicians to the InstantHPI physician tool, hospitals to the read-only Epic reader, and individuals to the experimental history-insights tool — each box noting it carries its own local copy of the shared core library.">
+      <figcaption>Each person installs only what they need. Every self-hoster
+        runs their own copy with their own credentials, so there is no central
+        place where anyone's health information accumulates, and nothing that
+        can be switched off for everyone at once.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>2. A patient's journey through the bot</h2>
+    <p>This is what a session looks like for a family using the Telegram
+      helper: a clear not-a-doctor warning first, a few structured questions, a
+      local privacy filter that strips personal identifiers before anything
+      leaves your computer, the multi-AI panel, and a plain-language result.</p>
+  </div>
+  <div class="wrap">
+    <figure>
+      <img src="diagrams/patient-journey.svg" alt="A top-to-bottom flow of a patient session: message the bot on Telegram; see a not-a-doctor, emergencies-go-to-real-care warning first; answer a few structured questions with red-flag screening; a local privacy filter strips emails, phone numbers and ID numbers; two or more independent AI models answer separately; if they agree you get plain-language considerations and next steps, and if they disagree you are told; a short FAQ; and you arrive at your next doctor visit prepared.">
+      <figcaption>The goal of every session is the last step: arriving at a
+        real doctor visit prepared, with organized symptoms, history, and
+        questions — even where that visit may be far away. It prepares for care;
+        it does not replace it.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>3. A physician's daily loop</h2>
+    <p>The physician version reads a doctor's own inbox and drafts replies,
+      referrals, and faxes using the same panel. Nothing is ever sent
+      automatically: the physician approves, edits, or dismisses every card and
+      remains the author of record, the same relationship as with a scribe or
+      dictation service.</p>
+  </div>
+  <div class="wrap">
+    <figure>
+      <img src="diagrams/physician-loop.svg" alt="A flow of a physician's daily loop: unread patient messages in the Spruce inbox; the physician's own assistant session drafts a reply using the multi-AI panel; a review card shows what the patient said, the panel recommendation, numbered plan options, and a pre-drafted reply; the physician decides — approve, edit then approve, dismiss, or handle it themselves — with nothing sent without them; on approval it can send the reply, generate a referral or form PDF, and fax via the physician's own account, then mark it sent and move to the next card.">
+      <figcaption>The AI drafts; the physician stays the author of record.
+        Every message, referral, and fax is reviewed and approved by the doctor,
+        and nothing goes out without them.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>4. Inside the multi-AI panel</h2>
+    <p>This is the committee up close. One structured case goes to each model
+      separately; every answer is parsed and checked on its own. If too few
+      answer properly the panel fails hard rather than quietly downgrading to a
+      single model. Warning signs are kept by union — one model raising a flag is
+      enough — and material disagreement is surfaced, not resolved by picking a
+      favorite.</p>
+  </div>
+  <div class="wrap">
+    <figure>
+      <img src="diagrams/ai-panel.svg" alt="A detailed flow inside the panel: one schema-validated case goes to several models such as Anthropic, DeepSeek, and a local Ollama model; each answer is parsed and schema-checked independently; if fewer than the required number answer properly the panel throws a hard failure instead of falling back to one model; otherwise the answers are merged with considerations clustered and next steps deduplicated; red flags are kept by a safety-first union where one flag is enough; and any material disagreement sets a divergence flag that is surfaced to the user with the most cautious summary chosen.">
+      <figcaption>In a clinic a physician reviews the AI's output. In a free
+        worldwide deployment there is no physician behind every session, so the
+        panel's required consensus is what substitutes for that oversight — and
+        its disagreement is always shown rather than hidden.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>5. The deployment topology</h2>
+    <p>Finally, the whole picture: many independent nodes and no center. Each
+      deployment stands alone and keeps working regardless of what happens to
+      any other — including this project's original host. The code is
+      permissively licensed and downloadable as self-contained archives, so any
+      node can seed new ones, and nearby nodes can work together using the same
+      card formats and portable summaries.</p>
+  </div>
+  <div class="wrap">
+    <figure>
+      <img src="diagrams/topology.svg" alt="A network picture of separate nodes with no center: a family's node running the bot, a physician's node running InstantHPI with their own credentials, a clinic's node running the kiosk carousel, and a hospital's node — all pointing to a marked absence of any central server, described as nothing to subpoena, breach, monetize, or switch off. Dotted links show a patient carrying a portable PDF summary from a family node to a physician node, and a clinic and physician sharing the same review-card format.">
+      <figcaption>There is deliberately no central server: nothing to subpoena,
+        breach, monetize, or switch off. Each node keeps working on its own, and
+        copies do not need to know about each other to work.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="warn narrow">
+      <strong>This is not a doctor, and not emergency care.</strong> It helps
+      you prepare for real care and understand your options; it does not
+      diagnose or treat. In an emergency, get in-person help immediately.
+      Self-hosting it does not by itself make it "HIPAA compliant."
+    </div>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <h2>Start your own</h2>
+    <p>Pick who you are and follow only that page.
+      <a href="index.html#who">Find your starting point →</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

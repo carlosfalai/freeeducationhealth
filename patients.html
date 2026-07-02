@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>For patients &amp; families — FreeEducationHealth</title>
+<meta name="description" content="Set up a free health-preparation chatbot on Telegram for your household. It asks structured symptom questions, has two or more AIs cross-check each other, and gives plain-language information plus a summary for your next doctor visit. Runs on your own computer.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Patients &amp; families</span>
+    <h1>A health helper for your household.</h1>
+    <p class="lede">You are setting up a free health-preparation chatbot on
+      Telegram for yourself, your family, or your community. It asks structured
+      questions about a symptom, has at least two independent AI models answer
+      and cross-check each other, and gives back plain-language considerations
+      and next steps. It is not a doctor and never pretends to be one.</p>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap narrow">
+    <p>Everything runs on your own computer with your own accounts. Nobody
+      else — including the people who wrote this — can see what you or your
+      family type. You arrive at whatever medical care you can reach with your
+      story already organized.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What you need</h2>
+    <ul class="checklist narrow">
+      <li>A computer that stays on while the bot is in use (any laptop works).</li>
+      <li>A free Telegram bot token — Telegram's own @BotFather gives you one in two minutes.</li>
+      <li>Access to at least 2 AI models: two API keys (for example Anthropic, DeepSeek, OpenAI, a small pay-as-you-go cost), or a free local model via Ollama.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="section-lead">
+  <div class="wrap">
+    <h2>Set it up in three steps</h2>
+    <div class="steps narrow">
+
+      <div class="step">
+        <div class="n">1</div>
+        <div>
+          <h3>Download your piece (only this one)</h3>
+          <p>Get the patients-and-families bot from the
+            <a href="download.html">download page</a> and unzip it. That single
+            file contains the bot and everything it needs. You do not need
+            anything else from this project.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">2</div>
+        <div>
+          <h3>Install a free AI assistant app (recommended)</h3>
+          <p>The easiest way to set this up is to let an AI assistant do it for
+            you. No coding is needed on your part: you install the app, then ask
+            it in plain words to set up the bot and it reads the runbook inside
+            the folder you just unzipped. This project was built and tested with
+            Claude Code, but any capable assistant works.</p>
+          <div class="code">
+<span class="c"># Windows (PowerShell)</span>
+irm https://claude.ai/install.ps1 | iex
+<span class="c"># macOS / Linux</span>
+curl -fsSL https://claude.ai/install.sh | bash
+<span class="c"># Or, if you already use Node.js</span>
+npm install -g @anthropic-ai/claude-code
+          </div>
+          <p>Then open a terminal inside the unzipped folder, start the
+            assistant, and ask it to set up the Telegram bot and walk you
+            through getting your bot token and AI keys. It asks you only for the
+            things that must be yours.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="n">3</div>
+        <div>
+          <h3>Or run the setup wizard yourself</h3>
+          <p>You do not strictly need an assistant. Open a terminal in the
+            unzipped folder and run the wizard:</p>
+          <div class="code">
+node bot/setup.cjs
+          </div>
+          <p>It is a friendly question-and-answer wizard. It helps you connect
+            your own keys for two or more different AIs (it suggests
+            OpenAI/ChatGPT, Google Gemini, and DeepSeek, with the link to get
+            each), typed in hidden so they never show on screen. It writes your
+            settings file for you and never sends anything anywhere. Then accept
+            the consent notice and start the bot:</p>
+          <div class="code">
+node bot/accept-consent.cjs
+node bot/index.cjs
+          </div>
+          <p class="muted">Prefer editing files by hand? <code>SETUP.md</code>
+            section "Setting up the Telegram bot (patients)" and
+            <code>bot/README.md</code> cover that too.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="warn narrow">
+      <strong>Before you rely on it: this is not a doctor, and not emergency
+      care.</strong> Every session starts with a banner saying so, and that
+      emergencies go to real care immediately. That banner cannot be turned off.
+    </div>
+    <ul class="checklist narrow">
+      <li>Don't type names, phone numbers, or ID numbers. The bot filters likely identifiers out of what it sends to the AI providers, but the filter is best-effort, and the habit is the real protection.</li>
+      <li>Whoever runs the bot (you) can see what people send it. Only give your bot's address to people who know and accept that.</li>
+      <li>Be careful with anyone online claiming to be a licensed physician while just passing along AI output. Many places publish a free public register where you can verify a doctor's license by name.</li>
+    </ul>
+    <p class="narrow muted">Want to understand the cross-checking panel before
+      you start? <a href="how-it-works.html">See how it works →</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
