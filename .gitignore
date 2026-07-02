@@ -4,3 +4,6 @@ node_modules/
 .DS_Store
 dist/
 docs/superpowers/
+
+# transient loop/subagent working notes
+_*-progress.md
