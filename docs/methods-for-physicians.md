@@ -267,3 +267,83 @@ any capable AI assistant works. The point was never the assistant — it is
 that a careful intake, a cross-checked panel, and a physician who remains
 in charge fit together into a practice any physician can run on their own
 machines, for the cost of a few cents of computing per case.
+
+## Lesson: text beats voice for an AI-assisted practice
+
+If you are choosing how to run consultations, choose a **secure,
+text-based messaging platform** (Spruce-class) over speech-first
+consultation. The reason is structural: AI can do far more with text.
+
+- **Text is already machine-readable.** Every message is instantly
+  available to the intake battery, the panel, and the drafting pipeline —
+  no transcription step, no transcription errors, no audio to store.
+- **Automation reaches further.** The whole review-card pipeline —
+  drafted replies, prescriptions, referrals, PDFs, faxes — hangs directly
+  off the message thread. A voice visit must be converted to text before
+  any of that can start.
+- **Asynchronous by nature.** The patient writes when they can; the
+  physician reviews when they can; the AI works in between. No
+  scheduling, no waiting room, and the thread itself is documentation.
+- **Every language.** Text handles whatever language the patient writes
+  in, and the templates answer in kind.
+
+## Lesson: collect your proof of work, systematically
+
+A messaging practice produces something a waiting room never did: a
+clean, natural moment right after each completed consultation to ask one
+non-bothering question — *please share your experience of consulting
+with our clinic here.* Sent systematically as part of a warm exit
+message, this builds a public, verifiable track record of your work,
+review by review. After thousands of patients, the originating practice's
+collected thanks became a public wall of them:
+[www.instanthpi.ai/thankyou](https://www.instanthpi.ai/thankyou).
+
+The exit message has a fixed anatomy: a light signature line; the review
+invitation with a public review link; an optional introduction of a free
+educational bot patients can keep; a plain statement of the practice's
+scope and limits; a sign-off. A generic template — adapt language, links,
+and scope to your practice; every bracket is yours to fill:
+
+```
+[emoji storyline of your service: symptoms -> message -> care -> relief]
+
+[Your clinic name] à votre service.
+
+Merci de partager votre expérience avec notre clinique : cela aide
+d'autres personnes à comprendre nos services. Vous pouvez laisser votre
+avis ici : [your public review link]
+
+J'ai créé [your bot handle], un outil éducatif gratuit, disponible 24/7,
+dans n'importe quelle langue.
+
+C'est pour qui? Tout le monde. Les gens sur la route, les familles sans
+médecin de famille, les personnes qui ne parlent pas encore la langue
+locale, n'importe qui qui a des symptômes et ne sait pas par où
+commencer, les personnes sans accès aux médecins.
+
+Ça fait quoi? C'est un peu comme votre consultation ici, mais à titre
+éducatif seulement et sans médecin derrière. 100% IA. Vous décrivez vos
+symptômes, et l'assistant vous génère un bilan éducatif complet : résumé
+de votre situation, exemples de documents médicaux, raisonnement
+clinique, chronologie, et questions fréquentes, tout ça en quelques
+minutes.
+
+Ça aide comment? Quand vous arrivez chez un médecin avec un résumé clair
+de vos symptômes, la consultation va plus vite et rien n'est oublié.
+
+Combien ça coûte? Gratuit. Zéro. Rien. Une consultation de ce type coûte
+quelques fractions de cent en calcul.
+
+Essayez-le : [your bot link]
+
+[Plain statement of your scope: what you treat, what you do not, and who
+should seek a family physician or urgent care instead.]
+
+À bientôt.
+```
+
+Why it works: it asks once, at the natural moment of gratitude; it never
+pressures; it gives the patient something free and useful in the same
+breath; and the scope paragraph does double duty as expectation-setting
+for the next consultation. The reviews it gathers are the practice's
+proof of work — public, dated, in patients' own words.

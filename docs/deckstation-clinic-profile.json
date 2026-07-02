@@ -1,0 +1,103 @@
+{
+  "_readme": "DeckStation 'Clinic Templates' profile — the FreeEducationHealth clinical template pack as one-click paste buttons. To install: close DeckStation, open %APPDATA%\\dockstation\\config.json, and merge the 'Clinic Templates' entry below into its 'profiles' object (optionally set \"activeProfile\": \"Clinic Templates\"), then restart. Every template is a fabricated FORMAT reference — no real patient. Adapt wording/language to your practice. Buttons paste into whatever window has focus: click your chatbot's input box first, and always review before sending.",
+  "profiles": {
+    "Clinic Templates": [
+      {
+        "id": "tpl-context-control",
+        "name": "0 Context control",
+        "type": "text",
+        "target": "IMPORTANT CONTEXT CONTROL\nThe case we are working on is the last patient discussed immediately before this message. Any SOAP / prescription / referral / imaging templates I provide are FORMAT EXAMPLES ONLY.\nDO NOT reuse the demographics, diagnosis, or treatment from the examples. DO NOT mix cases. DO NOT summarize or restate the example case.\nApply the example template structure, populated only with data from the current case. If ambiguous, default to the most recently discussed patient and plan, not the example.\nFORMATTING, ALWAYS: no code-block wrapping, no bold, no dashes as punctuation, no extra commentary around the documents. Patient-facing text is written in the patient's own language. Clinical documents never mention the messaging medium.",
+        "slotIndex": 0,
+        "icon": ""
+      },
+      {
+        "id": "tpl-soap",
+        "name": "SOAP",
+        "type": "text",
+        "target": "Give the SOAP note for the case just discussed, following this template structure to the letter (structure only, fabricated example):\nS: Homme de 24 ans consultant pour une toux productive persistante depuis le 20 juillet 2025. Expectorations claires a blanches, adherentes dans la gorge, soulagees temporairement par l'eau et l'expectoration. Aucun symptome systemique associe. N'a pas tente de traitement pharmacologique. Pas de fievre, dyspnee, douleur thoracique, exposition connue, antecedent d'asthme, allergies ou RGO. Symptomes constants, non aggraves la nuit ou en position couchee. Etat general bon.\nA: Toux chronique probablement post-infectieuse avec hypersecretion bronchique. Composante bacterienne persistante possible.\nP: Azithromycine (Z-Pak) x 5 jours et Ventolin PRN. Prescription a faxer a sa pharmacie des que l'information sera transmise. Suivi recommande dans 7 jours. Si amelioration <70 %, envisager CXR.",
+        "slotIndex": 1,
+        "icon": ""
+      },
+      {
+        "id": "tpl-rx",
+        "name": "Ordonnances",
+        "type": "text",
+        "target": "Prepare the prescriptions for the case just discussed using this template (one numbered block per medication, one document per visit; fabricated format example):\n1. Azithromycine (Z-Pak)\n500 mg PO jour 1, puis 250 mg PO DIE jours 2 a 5\nQuantite: 6 comprimes\nRenouvellements: 0\n2. Ventolin (Salbutamol) 100 mcg inhalateur-doseur\n2 inhalations PO q4-6h PRN toux ou oppression\nQuantite: 1 inhalateur (200 doses)\nRenouvellements: 0",
+        "slotIndex": 2,
+        "icon": ""
+      },
+      {
+        "id": "tpl-labs",
+        "name": "Labs",
+        "type": "text",
+        "target": "Give the laboratory requests for the case just discussed. One test per line, no bullets, no parentheses, no blank lines, no explanations. Format example:\nFSC\nCRP\nESR\nTSH\nFree T4\nCreatinine",
+        "slotIndex": 3,
+        "icon": ""
+      },
+      {
+        "id": "tpl-referral",
+        "name": "Referral",
+        "type": "text",
+        "target": "Prepare a referral for the case just discussed using this three-block structure to the letter (specialty + explicit ask / brief clinical summary / urgency window). TELEMEDICINE ROUTING RULE: when a telemedicine patient needs in-person evaluation, refer to primary care / family medicine, not a specialist, unless I specify otherwise. Fabricated format example:\nChirurgie generale: Merci d'evaluer cette patiente pour cholecystectomie laparoscopique elective. Bilan preoperatoire et imagerie en cours.\n\nFemme de 25 ans presentant des douleurs abdominales post-prandiales typiques de colique biliaire depuis 6 mois, avec progression de la frequence des episodes, intensite 7/10, declenchees par les aliments gras, associees a des nausees. Traitement actuel: citalopram 30mg pour anxiete.\n\nSemi-urgent - consultation dans les 2-4 semaines",
+        "slotIndex": 4,
+        "icon": ""
+      },
+      {
+        "id": "tpl-imaging",
+        "name": "Imaging",
+        "type": "text",
+        "target": "Prepare the imaging requisition(s) for the case just discussed using this template (study and views, then what to look for; clinical summary; urgency window; separate multiple studies with a line of X's). Fabricated format example:\nEchographie abdominale complete: Recherche de lithiase vesiculaire, evaluation de l'epaisseur de la paroi vesiculaire, recherche de signes de cholecystite chronique, evaluation du parenchyme hepatique et des voies biliaires intra et extra-hepatiques, evaluation du pancreas.\n\nFemme de 25 ans presentant des douleurs abdominales post-prandiales declenchees par les aliments gras depuis 6 mois, avec progression de la frequence des episodes, nausees associees, intensite 7/10.\n\nUrgent - dans les 48-72 heures",
+        "slotIndex": 5,
+        "icon": ""
+      },
+      {
+        "id": "tpl-leave-dx",
+        "name": "Arret (dx)",
+        "type": "text",
+        "target": "Prepare a work-leave note for the case just discussed using this exact one-sentence template with DD/MM/YYYY dates (fabricated example):\nAbsence justifiee du 14/10/2025 au 16/10/2025 inclus pour gastro-enterite aigue necessitant repos et hydratation a domicile. Reprise du travail/cours/activites prevue le 17/10/2025 sous reserve d'amelioration clinique.",
+        "slotIndex": 6,
+        "icon": ""
+      },
+      {
+        "id": "tpl-leave-nodx",
+        "name": "Arret (no dx)",
+        "type": "text",
+        "target": "Prepare a work-leave note for the case just discussed, without diagnosis for patient privacy, using this exact one-sentence template with DD/MM/YYYY dates (fabricated example):\nAbsence justifiee du 14/10/2025 au 16/10/2025 inclus pour raison medicale. Reprise du travail/cours/activites prevue le 17/10/2025 sous reserve d'amelioration clinique.",
+        "slotIndex": 7,
+        "icon": ""
+      },
+      {
+        "id": "tpl-summary",
+        "name": "Summary",
+        "type": "text",
+        "target": "Give the case summary for the case just discussed as one paragraph with the fixed opening \"Summary:\" (fabricated format example):\nSummary: A 32-year-old pregnant woman at 8.6 weeks gestation presents with vaginal bleeding, abdominal pain (7/10), fatigue, and night sweats. The clinical picture is consistent with threatened miscarriage, but ectopic pregnancy and other serious first-trimester complications must be excluded urgently. Immediate transvaginal ultrasound and hCG quantification are essential to determine fetal viability and guide management.\nThen one line: a single-sentence thesis of what is confirmed versus what remains unanswered and why that matters.",
+        "slotIndex": 8,
+        "icon": ""
+      },
+      {
+        "id": "tpl-timeline",
+        "name": "Timeline",
+        "type": "text",
+        "target": "Give me a horizontal ASCII timeline of this patient's symptom evolution from start of symptoms to today: exact dates, Day-N counts at each event, text symbols only (no color emoji) marking onset, trigger, worsening, improvement, and today. No wrapping.",
+        "slotIndex": 9,
+        "icon": ""
+      },
+      {
+        "id": "tpl-flow",
+        "name": "Decision flow",
+        "type": "text",
+        "target": "Show the clinical reasoning of the case just discussed as a vertical ASCII decision flow: presenting problem; what we know (check marks); what we need (unknowns); must rule out with the consequence of missing each; the decision threshold; the resulting action. Mirror how we actually reasoned this case, including what each test can and cannot answer. No wrapping.",
+        "slotIndex": 10,
+        "icon": ""
+      },
+      {
+        "id": "tpl-p7",
+        "name": "#7 Patient",
+        "type": "text",
+        "target": "#7 Patient explanation paragraph for the case just discussed. One single warm, natural paragraph in the patient's own language, at the very top of your reply, never wrapped in a box, no bullets, no lists, no dashes. Open with what I believe is going on; name each treatment I am proposing, what it is, how it works, how it is taken, which side effects to watch for and how to minimize them; use the future tense (je vais vous prescrire), never the past; no generalized promises; draw only on the plan already discussed in this case. Telemedicine rules: never offer an in-person appointment; if in-person evaluation is needed, say I will provide a referral note so they do not have to re-explain everything (a doctor-to-doctor document, already organized), note they arrange that visit themselves, and offer 1 to 3 days of work leave so they can arrange it without pressure. Never end with promises of follow-up.",
+        "slotIndex": 11,
+        "icon": ""
+      }
+    ]
+  }
+}

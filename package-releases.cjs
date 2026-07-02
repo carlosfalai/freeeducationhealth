@@ -351,8 +351,12 @@ const BUNDLES = [
   },
   {
     filename: 'freeeducationhealth-docs-only.zip',
-    description: 'docs/ + README/SETUP/CLAUDE/INTEGRATION (reading only, no code)',
-    include: (rel) => rel.startsWith('docs/') || DOCS_BUNDLE_ROOT_FILES.has(rel),
+    description:
+      'docs/ + site/ + README/SETUP/CLAUDE/INTEGRATION (reading + the whole website, no code) — site/ is plain static HTML anyone can re-host as-is',
+    include: (rel) =>
+      rel.startsWith('docs/') ||
+      rel.startsWith('site/') ||
+      DOCS_BUNDLE_ROOT_FILES.has(rel),
   },
 ];
 
