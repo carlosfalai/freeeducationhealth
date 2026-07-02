@@ -21,6 +21,33 @@ began as his own practice tooling, built through direct clinical practice
 and hands-on iteration over several years, then generalized and released
 for anyone to run.
 
+## What this is, in one minute
+
+- **A medical visit-preparation system.** AI interviews the patient first
+  (phone, waiting-room tablet, or desktop), organizes symptoms, history,
+  and questions, and hands both patient and doctor a prepared, structured
+  starting point — a **communication tool between patient and doctor**, so
+  scarce physician time is spent deciding, not collecting.
+- **Doctors guide treatment and keep oversight.** The AI prepares and
+  drafts; the physician reviews, decides, and remains the author of record.
+- **Multiple AIs triangulate, like doctors discussing a case.** At least
+  two — normally three or four — independent models work every case;
+  consensus is consolidated, material disagreement is flagged, never
+  silently resolved. A fully debated multi-model case costs on the order of
+  **one Canadian cent** at current provider pricing.
+- **Works with any LLM system online.** The app runs on your machine; the
+  models run on their providers' servers online (Anthropic, OpenAI,
+  DeepSeek, Gemini, or any OpenAI-compatible endpoint — including a fully
+  local model), under **your own accounts and keys**.
+- **Reshape it with an AI coding agent.** Open the repo in Claude Code and
+  ask it to break the system down and rebuild it to fit your style,
+  purpose, or structure — your language, your intake questions, your
+  report formats. `CLAUDE.md` is the runbook that makes that safe.
+
+The full plain-language explanation — including how this works in regions
+with one doctor per 50,000 people — is in
+[`docs/what-this-is.md`](docs/what-this-is.md).
+
 ## Who are you? Start with YOUR page — install only your piece
 
 To the people who built it, this is one system. To you, it is one tool —
