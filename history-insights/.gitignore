@@ -1,0 +1,11 @@
+# Runtime secrets -- never commit real credentials.
+.env
+
+# Exported reports (they contain whatever health history the person pasted;
+# per this repo's hard PHI rule, generated output must never be committed).
+*.pdf
+*.report.txt
+*.report.json
+
+# Standard.
+node_modules/

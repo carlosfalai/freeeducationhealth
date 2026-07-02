@@ -22,6 +22,7 @@ const { getFaqBlock } = require('./faq.cjs');
 const { buildPanelConfigFromEnv } = require('./config.cjs');
 const session = require('./session.cjs');
 const intake = require('./intake.cjs');
+const { deidentifyIntakeAnswers } = require('./deidentify.cjs');
 
 // --- Startup gates ---------------------------------------------------------
 // Order matters: consent is checked before touching Telegram or any
@@ -170,9 +171,18 @@ async function runRecommendation(ctx, s) {
 
   const intakeAnswers = intake.buildIntakeAnswers(s);
 
+  // Best-effort local PII scrub (regex-only, no network/model call) applied
+  // to the copy that leaves this process for the configured AI providers.
+  // The un-redacted session/intake state is untouched, so nothing the bot
+  // sends back to the patient ever shows "[removed: ...]" placeholders.
+  // See bot/deidentify.cjs for what it catches and, importantly, what it
+  // can miss -- the emergency banner's "don't share identifying details"
+  // instruction remains the primary defense, not this filter.
+  const redactedIntakeAnswers = deidentifyIntakeAnswers(intakeAnswers);
+
   let recommendation;
   try {
-    recommendation = await getRecommendation(intakeAnswers, panelConfig);
+    recommendation = await getRecommendation(redactedIntakeAnswers, panelConfig);
   } catch (err) {
     console.error(`getRecommendation failed for chat ${ctx.chat.id}:`, err);
     await say(ctx, locale, 'errorGeneric');

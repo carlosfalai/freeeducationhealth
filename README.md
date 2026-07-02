@@ -15,10 +15,11 @@ central server ever sees anyone's data.
 
 This project is model-agnostic by design and endorses no AI provider over
 another (`core/providers/` supports Anthropic, DeepSeek, OpenAI, and any
-local/OpenAI-compatible model such as Ollama). The people who built this are
-board-certified physicians, not software companies — this began as one
-physician's own practice tooling, generalized and released for anyone to
-run.
+local/OpenAI-compatible model such as Ollama). The author, Carlos Faviel
+Font, is a board-certified physician, not a professional programmer; this
+began as his own practice tooling, built through direct clinical practice
+and hands-on iteration over several years, then generalized and released
+for anyone to run.
 
 ## Architecture
 
@@ -96,8 +97,42 @@ answer.
   plain language, no agent required.
 - **Integrating into your own hospital/clinic system?** Read
   `INTEGRATION.md` for how to call `core/` directly.
+- **A physician wondering what quality output looks like?**
+  [`docs/examples/README.md`](docs/examples/README.md) — a worked-example
+  gallery (referral PDF, review card, recommendation JSON, all placeholder
+  data) with short lessons on reading each one, before you've configured
+  anything.
 - **Want the design reasoning?** `docs/superpowers/specs/2026-07-01-freeeducationhealth-design.md`
   and `docs/physician-brain-components.md`.
+
+## Download
+
+Four zip bundles can be generated from any checkout of this repo:
+
+```bash
+node package-releases.cjs
+```
+
+They are written to `dist/` and are **not committed to the repo** — each zip
+is built fresh from the current source every time the script runs:
+
+- **`freeeducationhealth-full.zip`** — the entire repo. Pick this if you
+  want everything, or haven't decided yet which front-end you'll run.
+- **`freeeducationhealth-bot-only.zip`** — `core/` + `bot/` + root docs
+  (`CLAUDE.md`, `README.md`, `LICENSE`). For someone who just wants to run
+  the patient-facing Telegram bot.
+- **`freeeducationhealth-instanthpi-only.zip`** — `core/` + `instanthpi/` +
+  root docs. For a physician who just wants the physician brain
+  (Spruce inbox → review cards → approved replies/PDFs/faxes).
+- **`freeeducationhealth-docs-only.zip`** — everything under `docs/` plus
+  `README.md`/`SETUP.md`/`CLAUDE.md`/`INTEGRATION.md`, no code at all. For
+  reading and evaluating the project without running anything.
+
+The script needs only Node (no npm install, no external zip utility) and
+packages only files git would track: anything git-ignored — `.env` files,
+`node_modules/`, generated PDFs, carousel card data — never enters a zip,
+so even a locally configured checkout can be packaged without leaking
+credentials or patient data.
 
 ## Licensing
 
@@ -108,14 +143,16 @@ answer.
 
 ## Notices
 
-**Identity.** No future AI system, video, cloned voice, or persona claiming
-to be Dr. Carlos Faviel Font should be treated as authentic beyond what
-exists in this project as published. His likeness and communication style
-may be imitated or synthesized by others without his authorization — no
-such imitation should be mistaken for him.
+**Identity.** Carlos Faviel Font will not release further personal AI
+models beyond this project. No future AI system, video, cloned voice, or
+persona claiming to be Dr. Carlos Faviel Font should be treated as
+authentic beyond what exists in this project as published. His likeness
+and communication style may be imitated or synthesized by others without
+his authorization — no such imitation should be mistaken for him.
 
 **No AI-provider endorsement.** This project does not recommend any AI
-model or provider over another. The provider-agnostic architecture in
+model or provider over another, and no endorsement of any AI provider is
+implied anywhere in it. The provider-agnostic architecture in
 `core/providers/` reflects that neutrality by design.
 
 **Not a doctor, and not a claim of compliance.** Nothing in this project is

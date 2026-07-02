@@ -92,6 +92,34 @@ before this runbook's "call core for a recommendation" step will work,
 matching `core/INTERFACE.md`. You can still exercise every other step
 (Spruce read, card review UI, PDF, fax) independently in the meantime.
 
+## HIPAA / compliance self-check
+
+The physician can literally say to Claude Code (or whatever agent is
+driving this runbook): **"run verify-hipaa and tell me if my setup is
+compliant."** When asked that, run:
+
+```bash
+node verify-hipaa.cjs
+```
+
+from `instanthpi/`, and explain the report in plain language. It checks
+everything that *can* be checked automatically: whether the current Claude
+Code session itself is on the BAA-covered Bedrock path
+(`CLAUDE_CODE_USE_BEDROCK` + `AWS_REGION` set) or the direct Anthropic API,
+whether `instanthpi/.env` exists and is git-ignored (it never reads `.env`'s
+contents), and whether the AI provider keys named in `.env.example` are
+present as real, non-placeholder values in the environment. Exit code 0
+means the automatable checks passed; non-zero means something needs fixing.
+
+When explaining the results, be explicit about the part the script cannot
+check and why: accepting the AWS Business Associate Addendum happens
+manually in AWS Artifact, is a legal agreement only the physician's own
+practice can accept, and AWS exposes no API to confirm it -- so a passing
+run does **not** by itself mean "HIPAA compliant." Point the physician to
+`docs/hipaa-bedrock-guide.md` for that step. Run this check before the
+first real patient-data run on a new machine, and again whenever the
+environment or Claude Code profile changes.
+
 ## The daily loop
 
 Do these steps in order. Steps 1-4 you (the agent) do directly by reading
@@ -297,6 +325,7 @@ instanthpi/
   RUNBOOK.md              <- this file
   package.json            <- npm deps: express, cookie-parser, dotenv, pdf-lib
   .env.example            <- copy to .env and fill in your own credentials
+  verify-hipaa.cjs        <- HIPAA/compliance self-check (see section above)
   carousel/
     cards-server.cjs       <- card store (library) + PIN-gated review server
     card-schema.md          <- card JSON shape, full worked example

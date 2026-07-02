@@ -90,6 +90,17 @@ or `npm start`. The bot polls Telegram for updates; stop it with Ctrl+C.
   Telegram bots work, not specific to this project). Do not point this bot
   at a public group chat expecting private health information to stay
   private from you.
+- Before intake text is sent to any AI provider, a local, regex-only PII
+  pre-filter (`deidentify.cjs`) redacts likely email addresses, phone
+  numbers, 8+-digit ID/health-card-style numbers, and probable full names
+  (a Title-Case heuristic) from the copy that leaves your server --
+  replacing them with placeholders like `[removed: possible phone number]`.
+  It runs entirely in-process (no network or model call) and never touches
+  what the patient sees. **It is best-effort, not a guarantee**: it will
+  miss names at the start of a message, single-word names, non-Latin
+  scripts, and oddly formatted identifiers, and it will occasionally redact
+  harmless capitalized phrases. The emergency banner's instruction not to
+  share identifying details remains the primary defense.
 
 ## File map
 
@@ -99,6 +110,7 @@ or `npm start`. The bot polls Telegram for updates; stop it with Ctrl+C.
 | `session.cjs` | Ephemeral in-memory per-chat session state, no persistence. |
 | `intake.cjs` | Fixed follow-up question sequence; builds a schema-valid `IntakeAnswers`. |
 | `safety-gate.cjs` | Hard-coded emergency banner + one-time operator consent gate. |
+| `deidentify.cjs` | Local regex-only PII pre-filter applied to the copy of intake text sent to AI providers (see "Data handling" above for its limits). |
 | `accept-consent.cjs` | Run once to record operator consent. |
 | `faq.cjs` | Short FAQ block sent after each recommendation. |
 | `strings.cjs` | Every user-facing string, keyed by locale -- the seam for future translation. |

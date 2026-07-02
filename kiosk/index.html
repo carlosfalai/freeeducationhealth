@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Check in for your visit</title>
+<!--
+  FreeEducationHealth kiosk/ -- waiting-room intake page.
+
+  Runs on any tablet/iPad/phone browser pointed at kiosk/server.cjs; no app
+  install, no patient login. One question per screen, large touch targets.
+  Mirrors bot/'s intake sequence (chief complaint -> onset -> severity ->
+  red-flag screen -> associated symptoms -> age range -> sex) and POSTs the
+  structured answers to /api/intake. The recommendation is NEVER shown here
+  -- it becomes a physician review card in instanthpi/carousel.
+
+  Self-contained: no external fonts, scripts, or stylesheets, so it works on
+  a clinic LAN with no internet beyond the AI provider calls made server-side.
+-->
+<style>
+  :root {
+    --ink: #1a2233;
+    --muted: #5a6478;
+    --accent: #0b5d3b;
+    --accent-dark: #084a2f;
+    --danger: #a11212;
+    --danger-bg: #fdeaea;
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --line: #d7dce3;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 20px;
+    line-height: 1.45;
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 24px 20px 48px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .step { display: none; }
+  .step.active { display: block; }
+  h1 { font-size: 1.9rem; margin: 0.4em 0; }
+  h2 { font-size: 1.5rem; margin: 0.6em 0; }
+  p { margin: 0.6em 0; }
+  .muted { color: var(--muted); font-size: 0.95rem; }
+  .banner {
+    background: var(--danger-bg);
+    border: 2px solid var(--danger);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--danger);
+    font-weight: 600;
+    margin: 16px 0;
+  }
+  .privacy {
+    background: #eef3fb;
+    border: 1px solid #b9c9e4;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 0.95rem;
+  }
+  .progress { color: var(--muted); font-size: 0.9rem; margin-bottom: 4px; }
+  textarea, input[type="text"] {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 14px;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--ink);
+    margin: 10px 0 18px;
+  }
+  textarea { min-height: 140px; resize: vertical; }
+  textarea:focus, input:focus { outline: 3px solid var(--accent); border-color: var(--accent); }
+  button {
+    font-size: 1.25rem;
+    font-weight: 600;
+    min-height: 64px;
+    padding: 14px 22px;
+    border-radius: 14px;
+    border: 2px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    width: 100%;
+    margin: 6px 0;
+  }
+  button:active { background: var(--accent-dark); }
+  button.secondary {
+    background: var(--card);
+    color: var(--accent);
+  }
+  button.subtle {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--muted);
+    min-height: 52px;
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+  .choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0 6px;
+  }
+  .choice-grid.cols-5 { grid-template-columns: repeat(5, 1fr); }
+  .choice-grid button { margin: 0; }
+  .choice-grid button.selected {
+    background: var(--accent);
+    color: #fff;
+  }
+  .choice-grid button.choice {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+  }
+  .choice-grid button.choice.selected {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .yesno button { min-height: 84px; font-size: 1.5rem; }
+  .urgent-note {
+    display: none;
+    background: var(--danger-bg);
+    border: 2px solid var(--danger);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--danger);
+    font-weight: 700;
+    margin: 14px 0;
+  }
+  dl.review { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 6px 16px; }
+  dl.review dt { font-weight: 600; margin-top: 12px; color: var(--muted); font-size: 0.9rem; }
+  dl.review dd { margin: 2px 0 10px; }
+  .spinner {
+    width: 44px; height: 44px;
+    border: 5px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    margin: 24px auto;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .thanks-check { font-size: 4rem; color: var(--accent); text-align: center; margin: 12px 0 0; }
+  .center { text-align: center; }
+  footer { margin-top: auto; padding-top: 24px; color: var(--muted); font-size: 0.8rem; text-align: center; }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- 0. Welcome -->
+  <section class="step active" id="step-welcome">
+    <h1>Check in for your visit</h1>
+    <p>Answering a few questions here means your doctor already knows why
+    you came in before calling you &mdash; it usually takes under two
+    minutes.</p>
+    <div class="banner">
+      If you are having severe difficulty breathing, chest pain, heavy
+      bleeding, or feel you might pass out, do not use this screen &mdash;
+      tell the reception staff <u>right now</u>.
+    </div>
+    <div class="privacy">
+      <strong>Please do not type your name, phone number, or health-card
+      number anywhere on this screen.</strong> The clinic already has those
+      &mdash; this screen only needs your symptoms.
+    </div>
+    <button id="btn-start">Start</button>
+  </section>
+
+  <!-- 1. Chief complaint -->
+  <section class="step" id="step-cc">
+    <p class="progress">Question 1 of 7</p>
+    <h2 id="q-cc"></h2>
+    <textarea id="in-cc" autocomplete="off" autocapitalize="sentences"></textarea>
+    <p class="muted" id="cc-hint" style="display:none;color:var(--danger)">Please describe, even briefly, what is bothering you today.</p>
+    <button data-next="cc">Continue</button>
+  </section>
+
+  <!-- 2. Onset -->
+  <section class="step" id="step-onset">
+    <p class="progress">Question 2 of 7</p>
+    <h2 id="q-onset"></h2>
+    <textarea id="in-onset" autocomplete="off"></textarea>
+    <button data-next="onset">Continue</button>
+    <button class="subtle" data-skip="onset">Skip this question</button>
+  </section>
+
+  <!-- 3. Severity -->
+  <section class="step" id="step-severity">
+    <p class="progress">Question 3 of 7</p>
+    <h2 id="q-severity"></h2>
+    <div class="choice-grid cols-5" id="severity-grid"></div>
+    <button class="subtle" data-skip="severity">Skip this question</button>
+  </section>
+
+  <!-- 4. Red-flag screen -->
+  <section class="step" id="step-redflag">
+    <p class="progress">Question 4 of 7</p>
+    <h2 id="q-redflag"></h2>
+    <div class="choice-grid yesno">
+      <button class="choice" data-redflag="yes">YES</button>
+      <button class="choice" data-redflag="no">NO</button>
+    </div>
+    <div class="urgent-note" id="redflag-urgent">
+      Please tell the reception staff right now that you answered YES to
+      this question. You can finish the rest afterwards.
+    </div>
+    <button id="btn-redflag-continue" style="display:none" data-next="redflag">Continue</button>
+  </section>
+
+  <!-- 5. Associated symptoms -->
+  <section class="step" id="step-assoc">
+    <p class="progress">Question 5 of 7</p>
+    <h2 id="q-assoc"></h2>
+    <textarea id="in-assoc" autocomplete="off"></textarea>
+    <button data-next="assoc">Continue</button>
+    <button class="subtle" data-skip="assoc">Nothing else</button>
+  </section>
+
+  <!-- 6. Age range -->
+  <section class="step" id="step-age">
+    <p class="progress">Question 6 of 7</p>
+    <h2 id="q-age"></h2>
+    <div class="choice-grid" id="age-grid"></div>
+    <button class="subtle" data-skip="age">Prefer not to say</button>
+  </section>
+
+  <!-- 7. Sex -->
+  <section class="step" id="step-sex">
+    <p class="progress">Question 7 of 7</p>
+    <h2 id="q-sex"></h2>
+    <div class="choice-grid">
+      <button class="choice" data-sex="male">Male</button>
+      <button class="choice" data-sex="female">Female</button>
+    </div>
+    <button class="subtle" data-skip="sex">Prefer not to say</button>
+  </section>
+
+  <!-- 8. Review -->
+  <section class="step" id="step-review">
+    <h2>Please check your answers</h2>
+    <dl class="review" id="review-list"></dl>
+    <button id="btn-submit">Finish check-in</button>
+    <button class="secondary" id="btn-restart">Start over</button>
+  </section>
+
+  <!-- Submitting -->
+  <section class="step" id="step-sending">
+    <h2 class="center">Sending your answers&hellip;</h2>
+    <div class="spinner"></div>
+  </section>
+
+  <!-- 9. Thank you -->
+  <section class="step" id="step-done">
+    <p class="thanks-check">&#10003;</p>
+    <h1 class="center">Thank you, please have a seat</h1>
+    <p class="center">Your doctor will have this ready when you're called.</p>
+    <div class="urgent-note" id="done-urgent">
+      Reminder: you answered YES to the urgent-symptoms question. If you
+      have not told the reception staff yet, please tell them now.
+    </div>
+    <p class="muted center" id="reset-countdown"></p>
+  </section>
+
+  <!-- Error -->
+  <section class="step" id="step-error">
+    <h2>Sorry &mdash; the kiosk could not save your answers</h2>
+    <p>Please tell the reception staff, and they will check you in
+    instead. Nothing you typed was saved.</p>
+    <p class="muted" id="error-detail"></p>
+    <button id="btn-retry">Try sending again</button>
+    <button class="secondary" id="btn-error-restart">Start over</button>
+  </section>
+
+  <footer>
+    This kiosk collects symptoms only. It is not a diagnosis and does not
+    replace your visit &mdash; your doctor reviews everything you enter here.
+  </footer>
+</main>
+
+<script>
+'use strict';
+
+// Question wording mirrors bot/strings.cjs so kiosk and Telegram intakes
+// read identically in the physician's carousel queue.
+var QUESTIONS = {
+  cc: "What's the main problem or symptom that's bothering you today? Describe it in your own words.",
+  onset: 'When did this start, and has it been getting better, getting worse, or staying the same?',
+  severity: 'On a scale of 1 to 10, how severe does it feel right now?',
+  redflag: 'Right now, are you having any of the following: trouble breathing, chest pain, fainting or near-fainting, confusion, or heavy bleeding?',
+  assoc: 'Is anything else happening along with this? Describe any other symptoms.',
+  age: 'What is your approximate age range?',
+  sex: "Biological sex, if you're comfortable sharing."
+};
+var AGE_BRACKETS = ['0-1', '2-11', '12-17', '18-39', '40-64', '65+'];
+
+var answers = null;
+function blankAnswers() {
+  return { cc: null, onset: null, severity: null, redflag: null, assoc: null, age: null, sex: null };
+}
+
+var STEPS = ['welcome', 'cc', 'onset', 'severity', 'redflag', 'assoc', 'age', 'sex', 'review', 'sending', 'done', 'error'];
+var current = 'welcome';
+
+function show(step) {
+  current = step;
+  STEPS.forEach(function (s) {
+    document.getElementById('step-' + s).classList.toggle('active', s === step);
+  });
+  window.scrollTo(0, 0);
+  armIdleReset();
+}
+
+function resetKiosk() {
+  answers = blankAnswers();
+  document.getElementById('in-cc').value = '';
+  document.getElementById('in-onset').value = '';
+  document.getElementById('in-assoc').value = '';
+  document.getElementById('cc-hint').style.display = 'none';
+  document.getElementById('redflag-urgent').style.display = 'none';
+  document.getElementById('btn-redflag-continue').style.display = 'none';
+  document.querySelectorAll('.choice.selected').forEach(function (b) { b.classList.remove('selected'); });
+  show('welcome');
+}
+
+// --- Idle reset: if someone walks away mid-flow, wipe their answers so the
+// --- next patient never sees them. Not armed on the welcome screen.
+var idleTimer = null;
+var IDLE_MS = 3 * 60 * 1000;
+function armIdleReset() {
+  if (idleTimer) clearTimeout(idleTimer);
+  if (current === 'welcome') return;
+  idleTimer = setTimeout(resetKiosk, IDLE_MS);
+}
+['click', 'keydown', 'touchstart'].forEach(function (evt) {
+  document.addEventListener(evt, armIdleReset, { passive: true });
+});
+
+// --- Populate question text and button grids
+Object.keys(QUESTIONS).forEach(function (k) {
+  var el = document.getElementById('q-' + (k === 'cc' ? 'cc' : k));
+  if (el) el.textContent = QUESTIONS[k];
+});
+
+var severityGrid = document.getElementById('severity-grid');
+for (var i = 1; i <= 10; i++) {
+  (function (n) {
+    var b = document.createElement('button');
+    b.className = 'choice';
+    b.textContent = String(n);
+    b.addEventListener('click', function () {
+      answers.severity = n;
+      selectOnly(severityGrid, b);
+      setTimeout(function () { show('redflag'); }, 150);
+    });
+    severityGrid.appendChild(b);
+  })(i);
+}
+
+var ageGrid = document.getElementById('age-grid');
+AGE_BRACKETS.forEach(function (bracket) {
+  var b = document.createElement('button');
+  b.className = 'choice';
+  b.textContent = bracket + (bracket === '65+' ? ' years' : ' years old');
+  b.addEventListener('click', function () {
+    answers.age = bracket;
+    selectOnly(ageGrid, b);
+    setTimeout(function () { show('sex'); }, 150);
+  });
+  ageGrid.appendChild(b);
+});
+
+function selectOnly(container, button) {
+  container.querySelectorAll('.selected').forEach(function (x) { x.classList.remove('selected'); });
+  button.classList.add('selected');
+}
+
+// --- Navigation handlers
+document.getElementById('btn-start').addEventListener('click', function () {
+  answers = blankAnswers();
+  show('cc');
+  document.getElementById('in-cc').focus();
+});
+
+document.querySelector('[data-next="cc"]').addEventListener('click', function () {
+  var text = document.getElementById('in-cc').value.trim();
+  if (!text) {
+    document.getElementById('cc-hint').style.display = 'block';
+    return;
+  }
+  answers.cc = text;
+  show('onset');
+});
+
+document.querySelector('[data-next="onset"]').addEventListener('click', function () {
+  var text = document.getElementById('in-onset').value.trim();
+  answers.onset = text || null;
+  show('severity');
+});
+document.querySelector('[data-skip="onset"]').addEventListener('click', function () {
+  answers.onset = null;
+  show('severity');
+});
+
+document.querySelector('[data-skip="severity"]').addEventListener('click', function () {
+  answers.severity = null;
+  show('redflag');
+});
+
+document.querySelectorAll('[data-redflag]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var yes = b.getAttribute('data-redflag') === 'yes';
+    answers.redflag = yes;
+    selectOnly(b.parentElement, b);
+    document.getElementById('redflag-urgent').style.display = yes ? 'block' : 'none';
+    if (yes) {
+      // Give the urgent instruction a moment on screen; require an explicit tap.
+      document.getElementById('btn-redflag-continue').style.display = 'block';
+    } else {
+      setTimeout(function () { show('assoc'); }, 150);
+    }
+  });
+});
+document.querySelector('[data-next="redflag"]').addEventListener('click', function () {
+  show('assoc');
+});
+
+document.querySelector('[data-next="assoc"]').addEventListener('click', function () {
+  var text = document.getElementById('in-assoc').value.trim();
+  answers.assoc = text || null;
+  show('age');
+});
+document.querySelector('[data-skip="assoc"]').addEventListener('click', function () {
+  answers.assoc = 'none';
+  show('age');
+});
+
+document.querySelector('[data-skip="age"]').addEventListener('click', function () {
+  answers.age = null;
+  show('sex');
+});
+
+document.querySelectorAll('[data-sex]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    answers.sex = b.getAttribute('data-sex');
+    selectOnly(b.parentElement, b);
+    setTimeout(renderReview, 150);
+  });
+});
+document.querySelector('[data-skip="sex"]').addEventListener('click', function () {
+  answers.sex = 'unspecified';
+  renderReview();
+});
+
+// --- Review + submit
+function renderReview() {
+  var dl = document.getElementById('review-list');
+  dl.textContent = '';
+  var rows = [
+    ['Main problem', answers.cc],
+    ['When it started / course', answers.onset || '(skipped)'],
+    ['Severity (1-10)', answers.severity === null ? '(skipped)' : String(answers.severity)],
+    ['Urgent symptoms right now', answers.redflag ? 'YES' : 'No'],
+    ['Other symptoms', answers.assoc === 'none' ? 'Nothing else' : (answers.assoc || '(skipped)')],
+    ['Age range', answers.age || '(prefer not to say)'],
+    ['Sex', answers.sex === 'unspecified' ? '(prefer not to say)' : answers.sex]
+  ];
+  rows.forEach(function (row) {
+    var dt = document.createElement('dt');
+    dt.textContent = row[0];
+    var dd = document.createElement('dd');
+    dd.textContent = row[1];
+    dl.appendChild(dt);
+    dl.appendChild(dd);
+  });
+  show('review');
+}
+
+function buildPayload() {
+  return {
+    chiefComplaint: answers.cc,
+    onsetAndDuration: answers.onset,
+    followUps: [
+      { question: QUESTIONS.onset, answer: answers.onset, topic: 'onset-duration' },
+      { question: QUESTIONS.severity, answer: answers.severity, topic: 'severity' },
+      { question: QUESTIONS.redflag, answer: answers.redflag, topic: 'red-flag-screen' },
+      { question: QUESTIONS.assoc, answer: answers.assoc, topic: 'associated-symptoms' },
+      { question: QUESTIONS.age, answer: answers.age, topic: 'demographics' },
+      { question: QUESTIONS.sex, answer: answers.sex, topic: 'demographics' }
+    ],
+    ageRange: answers.age,
+    sex: answers.sex,
+    locale: 'en'
+  };
+}
+
+var RESET_AFTER_DONE_MS = 20000;
+var doneCountdownTimer = null;
+
+function submit() {
+  show('sending');
+  fetch('/api/intake', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(buildPayload())
+  }).then(function (res) {
+    if (!res.ok) {
+      return res.json().catch(function () { return {}; }).then(function (body) {
+        throw new Error(body.error || ('Server responded ' + res.status));
+      });
+    }
+    document.getElementById('done-urgent').style.display = answers.redflag ? 'block' : 'none';
+    show('done');
+    startDoneCountdown();
+  }).catch(function (err) {
+    document.getElementById('error-detail').textContent = err && err.message ? err.message : '';
+    show('error');
+  });
+}
+
+function startDoneCountdown() {
+  var remaining = RESET_AFTER_DONE_MS / 1000;
+  var label = document.getElementById('reset-countdown');
+  if (doneCountdownTimer) clearInterval(doneCountdownTimer);
+  function tick() {
+    label.textContent = 'This screen will clear itself in ' + remaining + ' seconds.';
+    if (remaining <= 0) {
+      clearInterval(doneCountdownTimer);
+      resetKiosk();
+    }
+    remaining -= 1;
+  }
+  tick();
+  doneCountdownTimer = setInterval(tick, 1000);
+}
+
+document.getElementById('btn-submit').addEventListener('click', submit);
+document.getElementById('btn-retry').addEventListener('click', submit);
+document.getElementById('btn-restart').addEventListener('click', resetKiosk);
+document.getElementById('btn-error-restart').addEventListener('click', resetKiosk);
+
+answers = blankAnswers();
+</script>
+</body>
+</html>

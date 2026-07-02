@@ -1,0 +1,19 @@
+{
+  "name": "freeeducationhealth-kiosk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FreeEducationHealth kiosk/ front-end -- browser-based waiting-room intake kiosk for clinic tablets. Walks a walk-in patient through the same chief-complaint + targeted-question flow as bot/, calls core/'s AI panel, and files the result as a review card in instanthpi/carousel's card store for the physician. Self-hosted, bring your own AI provider keys.",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "server.cjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.cjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

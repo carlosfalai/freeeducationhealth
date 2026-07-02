@@ -16,6 +16,9 @@
 const STRINGS = {
   en: {
     emergencyBanner:
+      'This tool helps you prepare for a doctor visit: it organizes your symptoms, ' +
+      'history, and questions into something you can bring to a consultation -- even ' +
+      'if that visit is some time away. ' +
       'IMPORTANT: This is a health information tool, not a doctor. ' +
       'It cannot examine you, cannot diagnose you, and cannot replace medical care. ' +
       'If this is a medical emergency (e.g. severe difficulty breathing, chest pain, ' +
@@ -76,13 +79,23 @@ const STRINGS = {
       '\n---\n' +
       'About this bot\n' +
       '\n' +
-      "What it is: a free, self-hosted health-information helper. It asks a few\n" +
-      'questions about a symptom and shares back plain-language possibilities and\n' +
-      'next steps, checked by more than one independent AI reviewer.\n' +
+      'What it is: a free, self-hosted helper for preparing a doctor visit. It asks\n' +
+      'a few questions about a symptom and organizes your symptoms, history, and\n' +
+      'questions into plain-language possibilities and next steps you can bring to a\n' +
+      'consultation, checked by more than one independent AI reviewer -- useful even\n' +
+      'where that visit may be a long way off.\n' +
       '\n' +
       "What it isn't: a doctor, a diagnosis, or a treatment plan. It cannot examine\n" +
-      'you, order tests, or prescribe anything. In an emergency, seek in-person help\n' +
-      'immediately rather than waiting on this bot.\n' +
+      'you, order tests, or prescribe anything, and it is not a standalone source of\n' +
+      'diagnosis. In an emergency, seek in-person help immediately rather than\n' +
+      'waiting on this bot.\n' +
+      '\n' +
+      'A caution about "doctors" online: some people falsely claim to be licensed\n' +
+      'physicians -- with real-sounding or fabricated credentials -- while simply\n' +
+      'passing along AI output without genuinely reviewing it themselves. If someone\n' +
+      'presents medical advice as physician-reviewed, verify their credentials\n' +
+      'independently where possible (many jurisdictions publish a free public\n' +
+      'register of licensed physicians you can check by name).\n' +
       '\n' +
       'How it works: your answers are sent to the AI provider(s) this bot operator\n' +
       'configured, which independently review the case; the combined result is\n' +

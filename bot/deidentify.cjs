@@ -34,7 +34,9 @@
  * never re-matched by a later pass):
  *   1. Email addresses.
  *   2. Phone numbers -- formatted (parens/dashes/dots/spaces, optional
- *      leading "+" country code) and common bare lengths (7-11 digits).
+ *      leading "+" country code, minimum 7 total digits so short clinical
+ *      pairs like "40-64" or "120-80" survive) and common bare lengths
+ *      (7-11 digits).
  *   3. Any remaining run of 8+ consecutive digits (e.g. a health-card/NAM
  *      number, an insurance ID, a long unformatted ID) that phone matching
  *      didn't already catch -- this also catches digits glued directly onto
@@ -57,7 +59,16 @@ const EMAIL_REGEX = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
 // 2-4 joined by at least one separator (space/dot/dash/parens). Requiring
 // at least one separator-joined group is what distinguishes this from a
 // bare digit blob (handled separately below and by the ID/health-card pass).
+// A candidate match is only redacted if it contains at least
+// MIN_PHONE_DIGITS total digits (see redactText) -- short, clinically
+// meaningful pairs like an age bracket "40-64", a blood pressure "120-80",
+// or "10-15 minutes" are not phone numbers and must survive.
 const PHONE_FORMATTED_REGEX = /(?:\+\d{1,3}[-.\s]?)?\(?\d{2,4}\)?(?:[-.\s]\d{2,4}){1,4}\b/g;
+
+// Fewer digits than this and a separator-formatted digit run is treated as
+// ordinary content (a range, a BP reading, a date fragment), not a phone
+// number. 7 = the shortest common local phone number length.
+const MIN_PHONE_DIGITS = 7;
 
 // Bare (unformatted) digit runs of a typical phone-number length. Bounded by
 // word boundaries so it does not match the digit suffix of an alphanumeric
@@ -134,7 +145,15 @@ function redactProbableNames(text) {
   while ((match = NAME_CANDIDATE_REGEX.exec(text)) !== null) {
     const candidate = match[0];
     const start = match.index;
-    if (isSentenceStart(text, start) || isAllCommonWords(candidate)) {
+    if (isSentenceStart(text, start)) {
+      // Only the FIRST word's capitalization is explained by sentence casing;
+      // a name may still begin at the second word (e.g. "Hello Jane Example").
+      // Resume scanning right after the first word instead of skipping the
+      // whole greedy match, or the trailing name would silently leak.
+      NAME_CANDIDATE_REGEX.lastIndex = start + candidate.search(/\s/);
+      continue;
+    }
+    if (isAllCommonWords(candidate)) {
       continue;
     }
     result += text.slice(lastEnd, start) + '[removed: possible name]';
@@ -156,7 +175,10 @@ function redactText(text) {
 
   let out = text;
   out = out.replace(EMAIL_REGEX, '[removed: possible email address]');
-  out = out.replace(PHONE_FORMATTED_REGEX, '[removed: possible phone number]');
+  out = out.replace(PHONE_FORMATTED_REGEX, (match) => {
+    const digitCount = (match.match(/\d/g) || []).length;
+    return digitCount >= MIN_PHONE_DIGITS ? '[removed: possible phone number]' : match;
+  });
   out = out.replace(PHONE_BARE_REGEX, '[removed: possible phone number]');
   out = out.replace(LONG_DIGIT_REGEX, '[removed: possible ID/health card number]');
   out = redactProbableNames(out);

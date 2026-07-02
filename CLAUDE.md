@@ -60,13 +60,20 @@ freeeducationhealth/
     inviter/                 <- phase-2/optional, NOT built (docs only — see inviter/README.md)
     RUNBOOK.md               <- the physician-facing agent runbook; read this before driving instanthpi/
   epic/                   <- SMART on FHIR front-end (Epic sandbox-first), read-only, no write-back
+  kiosk/                  <- waiting-room intake kiosk (tablet browser, no patient login); files cards into instanthpi/carousel's store
+  history-insights/       <- EXPERIMENTAL: paste your own health history -> FAQ-structured education report (CLI only)
+    analyze.cjs             <- topic detection + intake building + panel orchestration + FAQ mapping
+    cli.cjs                  <- entry point: file/stdin -> report on stdout, optional --pdf export
+    pdf-export.cjs           <- self-contained pdf-lib export (portable patient PDF)
   docs/
     superpowers/specs/      <- design spec (internal rationale; do not copy personal narrative into public docs)
     physician-brain-components.md
 ```
 
-`kiosk/` and `history-insights/` are referenced in the design spec as future
-modules; they do not exist in this checkout yet. Do not assume they exist.
+`kiosk/` and `history-insights/` were originally spec-only future modules
+but are now built (see `kiosk/README.md` and `history-insights/README.md`).
+`history-insights/` is explicitly EXPERIMENTAL — read its README before
+touching it or pointing anyone at it.
 
 ## The one rule that shapes everything: `core/` has no side effects
 
@@ -95,7 +102,7 @@ call into `core/`.
 
 ## Install dependencies
 
-Four independent Node projects, each with its own `package.json` and
+Six independent Node projects, each with its own `package.json` and
 `node_modules` — there is no root `package.json` and no workspace tooling.
 Install each one you intend to run:
 
@@ -104,6 +111,8 @@ cd core && npm install && cd ..
 cd bot && npm install && cd ..
 cd instanthpi && npm install && cd ..
 cd epic && npm install && cd ..
+cd kiosk && npm install && cd ..
+cd history-insights && npm install && cd ..
 ```
 
 `instanthpi/pdf/fill.py` additionally needs a Python dependency:
@@ -241,8 +250,9 @@ re-run it before retrying.
 ## Running tests
 
 ```bash
-cd core && npm test          # node's built-in test runner
-cd bot && npm test           # jest
+cd core && npm test              # node's built-in test runner
+cd bot && npm test               # jest
+cd history-insights && npm test  # node's built-in test runner (offline, no AI keys needed)
 ```
 
 `core`'s `package.json` test script is `node --test test/`; on some
@@ -269,6 +279,31 @@ exist or fails to load yet, `server.cjs` automatically falls back to
 `lib/mock-core.cjs`, a clearly-labeled `[DEMO PLACEHOLDER]` responder — this
 is expected and lets you exercise the FHIR-read pipeline before `core/` has
 real credentials wired up. Full walkthrough: `epic/README.md`.
+
+## Running `history-insights/` (EXPERIMENTAL)
+
+Read `history-insights/README.md` first — it states the module's privacy
+model honestly (no project-run server exists, but the *user's configured AI
+provider* sees the history text unless they run a fully local model; it is
+not "HIPAA compliant" and must never be described as such).
+
+```bash
+cd history-insights && npm install
+cp .env.example .env   # same PANEL_PROVIDERS/PANEL_SIZE env vars as bot/
+npm test               # offline suite, no AI keys needed
+```
+
+Smoke-test without any AI calls or keys (uses obviously-fake history text —
+never paste real patient data as a test input):
+
+```bash
+printf 'Type 2 diabetes 2019.\nMetformin 500 mg twice daily.' | node cli.cjs --dry-run
+```
+
+Expect JSON showing `topicsDetected` including diabetes and the exact
+(locally redacted) intake payloads a real run would send. A real run
+(`node cli.cjs history.txt [--pdf report.pdf]`) needs >= 2 configured
+providers and performs one `core/` panel run per section.
 
 ## Hard rules for you, the agent, across this whole repo
 
