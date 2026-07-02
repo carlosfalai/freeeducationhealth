@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DeckStation — free template dock for clinicians — FreeEducationHealth</title>
+<meta name="description" content="A free, always-on-top Windows dock that pastes your clinical templates with one click — Stream Deck software without the hardware. Ships with the clinical template pack pre-loaded. Offered honestly: it has known bugs, listed in full, and it is source-included so an AI coding assistant can fix your copy.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="mark">+</span> FreeEducationHealth</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="how-it-works.html">How it works</a>
+      <a href="concept.html">Run your own</a>
+      <a href="manifesto.html">Manifesto</a>
+      <a href="download.html">Download</a>
+      <a class="cta" href="index.html#who">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill">Free tool · Windows · source included</span>
+    <h1>DeckStation</h1>
+    <p class="lede">An always-on-top dock of buttons that floats above every
+      window — Stream Deck software without the $200 hardware. One click pastes
+      a stored text into whatever app you are working in. For a clinician using
+      the <a href="method-templates.html">template method</a>, that means
+      press-SOAP, press-Prescription, press-Referral — straight into your
+      chatbot. It ships with the clinical template pack already loaded as a
+      "Clinic Templates" profile.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>What it does</h2>
+    <ul class="checklist">
+      <li><strong>Six button types:</strong> open a website, launch an app or protocol, run a program, send a hotkey, and — the one clinicians use most — <strong>paste a stored text</strong> (up to 5,000 characters) into the focused window with one click. The dock never steals focus; your chatbot stays active.</li>
+      <li><strong>Multiple named profiles</strong> — the bundled "Clinic Templates" profile carries the full template pack: context control, SOAP, prescriptions, labs, referral, imaging, two work-leave variants, summary, timeline, decision flow, and the #7 patient paragraph.</li>
+      <li><strong>Stream Deck import</strong> — profiles already installed in the official Stream Deck software are detected and converted.</li>
+      <li><strong>Show/hide from anywhere</strong> — double-tap Left Alt, or Ctrl+Alt+Space / Ctrl+Alt+D, or the tray icon.</li>
+      <li><strong>No account, no server, no telemetry.</strong> Your buttons live in one local file (<code>%APPDATA%\dockstation\config.json</code>). The only network listener is a local-only bridge (127.0.0.1) for the optional Stream Deck plugin.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>Known bugs — read this before relying on it</h2>
+    <p>This tool is offered free and honestly: it works, and it has real rough
+      edges. This list comes from a full multi-model audit run before
+      publication, written so you know exactly what you are getting.</p>
+    <div class="warn"><strong>The paste button types into whatever window has
+      focus.</strong> There is a short delay between click and paste, and no
+      check of where the text lands. If focus shifts in that gap — a popup, an
+      alt-tab, a misclick — your canned text lands in the wrong app or the
+      wrong patient thread. <strong>Click into the exact input box first, watch
+      the paste land, and always review before sending.</strong> Never use it
+      blind.</div>
+    <ul class="checklist">
+      <li><strong>Clipboard notes:</strong> the paste works through the Windows clipboard, so the pasted text stays on your clipboard afterward — and Windows clipboard history (Win+V) or cloud clipboard sync may retain it. On a shared machine, clear it after use. In rare cases under load the previous clipboard contents can paste instead — one more reason to watch every paste land.</li>
+      <li><strong>First-click misses:</strong> after moving your mouse onto the dock, the first click or two can be eaten by the overlay's click-through logic. If a button doesn't fire, click again.</li>
+      <li><strong>Overlay glitches:</strong> rarely, the invisible overlay can wedge into a state where it eats clicks (desktop feels frozen) or the dock is invisible while logically shown. Toggling with Ctrl+Alt+Space or restarting from the tray recovers it.</li>
+      <li><strong>Hotkey footprint:</strong> the app registers Ctrl+Alt+Space and Ctrl+Alt+D system-wide and watches for double-Alt taps (it inspects only the Alt key — no keylogging). A quick double Alt in any app can toggle the dock, and after remote-desktop or sleep the double-Alt toggle can silently die (the Ctrl+Alt shortcuts keep working).</li>
+      <li><strong>Electron 29 base:</strong> the app runs on an older Electron with known CVEs; it loads no remote content, which limits practical exposure, but an upgrade is on the roadmap.</li>
+      <li><strong>Back up your buttons:</strong> your whole configuration is one file — <code>%APPDATA%\dockstation\config.json</code>. Copy it somewhere safe once your buttons are set up.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <div class="panel tint">
+      <h3>If it breaks, have an AI assistant fix YOUR copy</h3>
+      <p style="margin-bottom:0">DeckStation is distributed source-included on
+        purpose. If something misbehaves, open its folder in an AI coding
+        assistant (built and tested with Claude Code; any capable one works)
+        and describe the problem in plain words — "the dock stopped staying on
+        top, fix it" or "make the paste button confirm the target window
+        first." The assistant reads the code and repairs your copy. That is not
+        a workaround; it is the intended way to own software like this — the
+        same philosophy as everything else on this site.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap narrow">
+    <h2>Get it</h2>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h3>Download</h3>
+        <p>The free bundle (portable app + full source + the Clinic Templates profile) is on the <a href="download.html">download page</a>. No installer needed for the portable version — one .exe you run directly.</p>
+      </div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h3>First run</h3>
+        <p>Launch it, and switch the profile selector to "Clinic Templates". Windows SmartScreen may warn on an unsigned free tool — that is expected for unsigned software; proceed only if you downloaded it from this project's official page.</p>
+      </div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h3>Use it with the template method</h3>
+        <p>Open your chatbot, click into its input box, and drive your documentation one button at a time: <a href="method-templates.html">the template method</a>.</p>
+      </div></div>
+    </div>
+    <div class="warn"><strong>Scope note.</strong> DeckStation itself holds no
+      patient data unless you put patient text into a button — don't. Buttons
+      are for reusable templates; the patient specifics live in your chatbot
+      conversation and your chart system, under the privacy rules of the
+      template method.</div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>FreeEducationHealth</h4>
+        <p style="color:#a7b8b2;margin:0">Free, open-source, self-hosted health education and physician documentation. No central server.</p>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <ul>
+          <li><a href="patients.html">Patients &amp; families</a></li>
+          <li><a href="physicians.html">Physicians</a></li>
+          <li><a href="clinics.html">Clinics</a></li>
+          <li><a href="hospitals.html">Hospitals</a></li>
+          <li><a href="individuals.html">Individuals</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="how-it-works.html">How it works</a></li>
+          <li><a href="concept.html">Run your own</a></li>
+          <li><a href="manifesto.html">Manifesto</a></li>
+          <li><a href="methods.html">Methods for physicians</a></li>
+          <li><a href="deckstation.html">DeckStation</a></li>
+          <li><a href="download.html">Download &amp; rebuild</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine">
+      Nothing here is a substitute for professional medical care. This project
+      recommends no AI provider over another and runs no shared server; every
+      self-hoster brings their own accounts. Anything claiming to be Dr. Carlos
+      Faviel Font is not necessarily authentic — verify against the project's
+      official channels. Code MIT-licensed; clinical style guide CC BY-NC. This
+      entire website can be downloaded and re-hosted by anyone.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
