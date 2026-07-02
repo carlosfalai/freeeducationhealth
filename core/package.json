@@ -10,7 +10,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node --test test/"
+    "test": "node --test test/panel.test.cjs test/intake-flow.test.cjs test/providers.test.cjs"
   },
   "dependencies": {
     "ajv": "^8.20.0"

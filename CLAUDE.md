@@ -255,14 +255,14 @@ cd bot && npm test               # jest
 cd history-insights && npm test  # node's built-in test runner (offline, no AI keys needed)
 ```
 
-`core`'s `package.json` test script is `node --test test/`; on some
-Windows/git-bash combinations passing a bare directory to `node --test` can
-fail with `MODULE_NOT_FOUND` due to shell glob expansion quirks. If that
-happens, run `node --test test/*.test.cjs` instead — same suite, explicit
-file list. `epic/` and `instanthpi/` have no automated test suite in this
-checkout; verify them with the smoke tests above and by starting their
-servers (`npm start` in `epic/`, `node carousel/cards-server.cjs` in
-`instanthpi/`) and hitting them manually.
+The `core` and `history-insights` test scripts list their test files
+explicitly (a bare `node --test test/` directory argument fails with
+`MODULE_NOT_FOUND` on some Windows/Node combinations) — when you add a new
+test file, add it to that package's `test` script too. `epic/` and
+`instanthpi/` have no automated test suite in this checkout; verify them
+with the smoke tests above and by starting their servers (`npm start` in
+`epic/`, `node carousel/cards-server.cjs` in `instanthpi/`) and hitting
+them manually.
 
 ## Running `epic/` (SMART on FHIR sandbox)
 

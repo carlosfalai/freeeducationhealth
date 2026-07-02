@@ -21,7 +21,9 @@ see the "What this project cannot promise" section near the end).
 | `bot/` | Patients, run by anyone | A Telegram chatbot: a patient describes their symptoms, answers a few follow-up questions, and gets back plain-language considerations and next steps. |
 | `instanthpi/` | A physician, running their own practice tools | Reads a physician's own Spruce Health inbox, drafts replies/PDFs/faxes using the AI panel, and waits for the physician to approve each one before anything is sent. |
 | `epic/` | Hospitals/clinics using Epic | A sandbox-first tool that reads a patient's chart from Epic and shows the clinician an AI-panel-reviewed set of considerations. Never writes anything back into Epic. |
-| `docs/` | Anyone wanting the full design reasoning | The original design spec and a survey of which production features were ported into `instanthpi/`. |
+| `kiosk/` | Clinics, on a waiting-room tablet | A browser check-in page: the patient answers the structured intake while waiting, and a review card is filed into the same queue `instanthpi/` uses — so the physician walks in with a premade pre-visit summary. |
+| `history-insights/` | Individuals (EXPERIMENTAL) | Paste your own past diagnoses/medications/labs as plain text and get back a plain-language education report, organized as FAQs per health topic, with an optional PDF you can carry to any provider. |
+| `docs/` | Anyone wanting the full design reasoning | The original design spec, worked output examples for physicians, and a survey of which production features were ported into `instanthpi/`. |
 
 You do not need all of these. Pick the one that matches what you want to
 run.
@@ -54,6 +56,8 @@ cd core && npm install
 cd ../bot && npm install
 cd ../instanthpi && npm install
 cd ../epic && npm install
+cd ../kiosk && npm install
+cd ../history-insights && npm install
 ```
 
 (There is no single "install everything" command at the repo root on
@@ -149,6 +153,36 @@ Setup steps, if you're preparing the environment for that agent to use:
 
 This never writes anything back into a real Epic chart — it only reads and
 shows the clinician an AI-drafted set of considerations to review.
+
+## Setting up `kiosk/` (clinic waiting rooms)
+
+1. Edit `kiosk/panel.config.js` to list AI providers you have keys for, and
+   set the matching environment variables (same pattern as `epic/` above).
+2. `cd kiosk && npm install && node server.cjs`
+3. Open `http://localhost:4646/` in the tablet's browser on the clinic
+   network. Completed intakes are filed as review cards into
+   `instanthpi/carousel/cards/`, where the physician reviews them exactly
+   like Spruce-driven cards.
+
+Keep the kiosk on the clinic's own local network only — the check-in page
+is deliberately open (patients don't log in), and reading the filed cards
+stays behind the carousel's PIN. Details: `kiosk/README.md`.
+
+## Trying `history-insights/` (EXPERIMENTAL)
+
+Read `history-insights/README.md` first — it explains honestly what this
+module can and cannot promise about privacy (your configured AI provider
+sees the history text you submit unless you run a fully local model).
+
+```bash
+cd history-insights && npm install
+cp .env.example .env    # list your AI providers, same pattern as bot/
+npm test                # offline self-check, no AI keys needed
+node cli.cjs --dry-run  # paste obviously-fake text to see what would be sent
+```
+
+A real run is `node cli.cjs your-history.txt`, with `--pdf report.pdf` to
+also produce a portable PDF summary you can keep on your phone.
 
 ## Quick sanity check: generate a sample PDF
 

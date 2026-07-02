@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "node cli.cjs",
-    "test": "node --test test/"
+    "test": "node --test test/analyze.test.cjs"
   },
   "dependencies": {
     "dotenv": "^17.4.2",

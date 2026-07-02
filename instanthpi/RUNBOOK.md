@@ -250,16 +250,34 @@ Either way, do not proceed to execution for a card until its `status` is
 ### 6. Execute each approved card
 
 ```js
+const fs = require('fs');
+const path = require('path');
 const { readCard, resolveReplyText, markSent } = require('./carousel/cards-server.cjs');
 const spruce = require('./spruce/client.cjs');
 const { generateReferralLetter } = require('./pdf/generate.cjs');
 const { sendFax } = require('./fax/send.cjs');
 
 const card = readCard(id);
-const replyText = resolveReplyText(card); // prefers decision.editedReply if set
-const action = card.planOptions.find(
+const chosen = card.planOptions.find(
   (o) => o.number === card.decision.chosenPlanOption,
-)?.action || { type: 'spruce_reply' };
+);
+
+// Send NOTHING unless the approved card carries an explicit, automatable
+// action. `"none"` means the physician handles it outside this tool (see
+// card-schema.md), and a card approved without a selected plan option gets
+// the same treatment: record it as handled and move on -- do NOT default
+// to messaging the patient.
+if (!chosen || !chosen.action || chosen.action.type === 'none') {
+  spruce.markHandled(card.source.conversationId, {
+    lastInboundAt: card.source.lastInboundAt,
+    decidedBy: card.decision.decidedBy,
+  });
+  markSent(card.id, { sentVia: 'none', faxResult: null, pdfPath: null });
+  return; // next card
+}
+
+const action = chosen.action;
+const replyText = resolveReplyText(card); // prefers decision.editedReply if set
 
 await spruce.sendMessage(card.source.conversationId, replyText);
 
@@ -267,7 +285,8 @@ let pdfPath = null;
 let faxResult = null;
 
 if (action.type === 'spruce_reply_and_pdf' || action.type === 'spruce_reply_and_fax') {
-  pdfPath = `./pdf/generated/${card.id}.pdf`; // pick a real path; this dir is gitignored via *.pdf
+  pdfPath = `./pdf/generated/${card.id}.pdf`; // gitignored via *.pdf
+  fs.mkdirSync(path.dirname(pdfPath), { recursive: true }); // generate.cjs does not create dirs
   await generateReferralLetter(pdfPath, action.pdfValues || {});
 }
 
