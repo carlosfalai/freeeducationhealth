@@ -21,11 +21,33 @@ began as his own practice tooling, built through direct clinical practice
 and hands-on iteration over several years, then generalized and released
 for anyone to run.
 
+## Who are you? Start with YOUR page — install only your piece
+
+To the people who built it, this is one system. To you, it is one tool —
+yours. Each page below is complete on its own: your download, your
+instructions, nothing about the rest.
+
+| You are… | Your page | Your download |
+|---|---|---|
+| A patient or family | [`start/patients.md`](start/patients.md) | the Telegram bot |
+| A physician | [`start/physicians.md`](start/physicians.md) | the physician brain (Spruce + review cards + PDF + fax) |
+| A clinic | [`start/clinics.md`](start/clinics.md) | the waiting-room kiosk + review carousel |
+| A hospital / health system | [`start/hospitals.md`](start/hospitals.md) | the Epic SMART-on-FHIR reader (read-only) |
+| An individual with their own health history | [`start/individuals.md`](start/individuals.md) | history-insights (EXPERIMENTAL) |
+
+Each page's recommended path is the same: download your one zip, install
+an AI coding agent (built and tested with Claude Code — installers in
+every start page), open the folder, and say **"set this up for me."**
+
 ## Architecture
 
-One shared engine (`core/`), four independent front-ends that consume it.
-`core/` never talks to Telegram, Spruce, or Epic directly, and it has no
-side effects — every front-end is responsible for its own I/O.
+**You install only the piece you need.** Each front-end is its own
+standalone tool with its own instructions and its own download; nothing
+here is a shared service. What unifies them is source code only: every
+front-end bundles its own local copy of the engine library (`core/`),
+called in-process on your own machine. `core/` never talks to Telegram,
+Spruce, or Epic directly, and it has no side effects — every front-end is
+responsible for its own I/O.
 
 ```
                         ┌─────────────────────────────────────────┐

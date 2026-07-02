@@ -17,7 +17,7 @@ see the "What this project cannot promise" section near the end).
 
 | Folder | Who it's for | What it does |
 |---|---|---|
-| `core/` | Nobody directly — it's the shared engine | Talks to your chosen AI provider(s), runs a multi-AI "panel" so at least two independent models have to agree, and returns a structured recommendation. |
+| `core/` | Nobody installs this by itself — it's the engine library bundled into whichever piece you run | Talks to your chosen AI provider(s), runs a multi-AI "panel" so at least two independent models have to agree, and returns a structured recommendation. |
 | `bot/` | Patients, run by anyone | A Telegram chatbot: a patient describes their symptoms, answers a few follow-up questions, and gets back plain-language considerations and next steps. |
 | `instanthpi/` | A physician, running their own practice tools | Reads a physician's own Spruce Health inbox, drafts replies/PDFs/faxes using the AI panel, and waits for the physician to approve each one before anything is sent. |
 | `epic/` | Hospitals/clinics using Epic | A sandbox-first tool that reads a patient's chart from Epic and shows the clinician an AI-panel-reviewed set of considerations. Never writes anything back into Epic. |

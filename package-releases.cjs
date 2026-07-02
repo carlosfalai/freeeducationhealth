@@ -5,8 +5,15 @@
 //
 // Usage:   node package-releases.cjs
 // Output:  dist/freeeducationhealth-full.zip           (whole repo)
-//          dist/freeeducationhealth-bot-only.zip       (core/ + bot/ + root docs)
-//          dist/freeeducationhealth-instanthpi-only.zip (core/ + instanthpi/ + root docs)
+//          dist/freeeducationhealth-bot-only.zip       (core/ + bot/ + root docs — patients/families)
+//          dist/freeeducationhealth-instanthpi-only.zip (core/ + instanthpi/ + root docs — physicians)
+//          dist/freeeducationhealth-clinic-kiosk.zip   (core/ + kiosk/ + instanthpi/ + root docs — clinics;
+//                                                       kiosk files cards into instanthpi/'s carousel, so
+//                                                       the review side ships with it)
+//          dist/freeeducationhealth-epic-only.zip      (core/ + epic/ + root docs — hospitals on Epic)
+//          dist/freeeducationhealth-history-insights.zip (core/ + history-insights/ + bot/deidentify.cjs
+//                                                       + root docs — individuals, EXPERIMENTAL;
+//                                                       analyze.cjs requires ../bot/deidentify.cjs)
 //          dist/freeeducationhealth-docs-only.zip      (docs/ + README/SETUP/CLAUDE/INTEGRATION, no code)
 //
 // ZIP TOOLING CHOICE (documented per the repo convention): this script uses
@@ -312,6 +319,34 @@ const BUNDLES = [
     include: (rel) =>
       rel.startsWith('core/') ||
       rel.startsWith('instanthpi/') ||
+      CODE_BUNDLE_ROOT_DOCS.has(rel),
+  },
+  {
+    filename: 'freeeducationhealth-clinic-kiosk.zip',
+    description:
+      'core/ + kiosk/ + instanthpi/ + root docs (clinic bundle: waiting-room kiosk plus the physician review carousel it files cards into)',
+    include: (rel) =>
+      rel.startsWith('core/') ||
+      rel.startsWith('kiosk/') ||
+      rel.startsWith('instanthpi/') ||
+      CODE_BUNDLE_ROOT_DOCS.has(rel),
+  },
+  {
+    filename: 'freeeducationhealth-epic-only.zip',
+    description: 'core/ + epic/ + root docs (hospital bundle: Epic SMART on FHIR, read-only)',
+    include: (rel) =>
+      rel.startsWith('core/') ||
+      rel.startsWith('epic/') ||
+      CODE_BUNDLE_ROOT_DOCS.has(rel),
+  },
+  {
+    filename: 'freeeducationhealth-history-insights.zip',
+    description:
+      'core/ + history-insights/ + bot/deidentify.cjs + root docs (individuals, EXPERIMENTAL; analyze.cjs requires ../bot/deidentify.cjs for the local PII scrub)',
+    include: (rel) =>
+      rel.startsWith('core/') ||
+      rel.startsWith('history-insights/') ||
+      rel === 'bot/deidentify.cjs' ||
       CODE_BUNDLE_ROOT_DOCS.has(rel),
   },
   {

@@ -7,33 +7,50 @@ the diagram says so explicitly.
 
 ---
 
-## 1. The whole project at a glance — one engine, an audience for every front-end
+## 1. Which piece is for me? — each person installs ONLY what they need
+
+This project is one system only to the people who built it. To everyone
+else it is five separate tools: **you pick the one row below that describes
+you, install only that piece, and follow only that piece's instructions**
+— each folder ships with its own complete setup guide, and each is
+available as its own standalone download.
+
+There is **no engine service and nothing shared at runtime**. `core/` is a
+code *library* — the intake/panel/recommendation logic — and every
+deployment carries its **own copy inside itself**, called as a local
+function on the self-hoster's own machine. What the five front-ends share
+is source code, the way two clinics might use the same textbook: same
+content, separate books.
 
 ```mermaid
 flowchart TD
-    subgraph CORE["core/ — the shared engine (no side effects, no persistence)"]
-        INTAKE["Structured intake<br/>(medical-school-style<br/>question flow)"]
-        PANEL["Multi-AI panel<br/>(minimum 2 independent<br/>models must agree)"]
-        SCHEMA["Structured recommendation<br/>(schema-constrained, never<br/>free-form chat)"]
-        INTAKE --> PANEL --> SCHEMA
+    PATIENTS(["Patients, anywhere"]) --- BOT
+    CLINICS(["Clinics"]) --- KIOSK
+    PHYSICIANS(["Physicians"]) --- IHPI
+    HOSPITALS(["Hospitals"]) --- EPIC
+    INDIVIDUALS(["Individuals"]) --- HI
+
+    subgraph BOT["bot/ — Telegram chatbot"]
+        C1["Telegram intake +<br/>its own local copy of core/<br/>(intake -> multi-AI panel -><br/>structured recommendation)"]
     end
-
-    PATIENTS(["Patients, anywhere"]) --- BOT["bot/<br/>Telegram chatbot"]
-    CLINICS(["Clinics"]) --- KIOSK["kiosk/<br/>waiting-room tablet"]
-    PHYSICIANS(["Physicians"]) --- IHPI["instanthpi/<br/>physician's own<br/>Claude Code session"]
-    HOSPITALS(["Hospitals"]) --- EPIC["epic/<br/>reads Epic charts<br/>(SMART on FHIR, read-only)"]
-    INDIVIDUALS(["Individuals"]) --- HI["history-insights/<br/>EXPERIMENTAL personal<br/>history reports"]
-
-    BOT <-->|"intake in,<br/>recommendation out"| CORE
-    KIOSK <-->|"intake in,<br/>recommendation out"| CORE
-    IHPI <-->|"intake in,<br/>recommendation out"| CORE
-    EPIC <-->|"intake in,<br/>recommendation out"| CORE
-    HI <-->|"intake in,<br/>recommendation out"| CORE
+    subgraph KIOSK["kiosk/ — waiting-room tablet"]
+        C2["check-in page +<br/>its own local copy of core/"]
+    end
+    subgraph IHPI["instanthpi/ — the physician brain"]
+        C3["your coding-agent session +<br/>Spruce, cards, PDF, fax +<br/>its own local copy of core/"]
+    end
+    subgraph EPIC["epic/ — Epic reader, read-only"]
+        C4["SMART on FHIR chart read +<br/>its own local copy of core/"]
+    end
+    subgraph HI["history-insights/ — EXPERIMENTAL"]
+        C5["personal history reports +<br/>its own local copy of core/"]
+    end
 ```
 
 Every self-hoster runs their own copy with their own credentials. There is
-no shared server, so no central place where anyone's health information
-accumulates.
+no shared server and no shared engine, so there is no central place where
+anyone's health information accumulates — and nothing that can be switched
+off for everyone at once.
 
 ---
 
