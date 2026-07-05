@@ -13,7 +13,11 @@
  * Run `node bot/accept-consent.cjs` once before the first `node bot/index.cjs`.
  */
 
-require('dotenv').config();
+// Load bot/.env script-relative (not cwd-relative), so the documented
+// repo-root invocation `node bot/index.cjs` finds the same .env that
+// `cd bot && node index.cjs` does. Mirrors kiosk/server.cjs and
+// history-insights/cli.cjs.
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 const { Bot } = require('grammy');
 
 const { assertOperatorConsent } = require('./safety-gate.cjs');
@@ -37,6 +41,11 @@ try {
 }
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
+// Optional, opt-in: if the operator sets DONATION_URL to their OWN donation
+// link, the bot appends a donation ask as the final message of a session.
+// Empty/unset (the default) means no monetary ask is ever shown -- the
+// open-source bot stays donation-free unless an operator turns this on.
+const DONATION_URL = (process.env.DONATION_URL || '').trim();
 if (!BOT_TOKEN) {
   console.error(
     'BOT_TOKEN is not set. Copy bot/.env.example to bot/.env, add your token from @BotFather, and try again.'
@@ -99,16 +108,50 @@ function localeFromCtx(ctx) {
 }
 
 /**
- * Resets a chat's session, shows the fixed emergency banner (always, every
- * new topic -- this is not skippable), and asks the first question.
+ * Resets a chat's session and shows, in fixed order and every new topic
+ * (none of this is skippable): the "educational simulation, not a medical
+ * consultation" disclaimer, then the emergency banner, then the patient
+ * consent prompt. No intake question is asked until the patient
+ * affirmatively agrees -- the session parks in AWAITING_CONSENT and the
+ * message router (below) advances to the first question only on agreement.
  * @param {import('grammy').Context} ctx
  */
 async function startNewTopic(ctx) {
   const locale = localeFromCtx(ctx);
   const s = session.resetSession(ctx.chat.id, locale);
+  await say(ctx, locale, 'simulationDisclaimer');
   await say(ctx, locale, 'emergencyBanner');
-  s.stage = session.STAGES.AWAITING_CHIEF_COMPLAINT;
-  await say(ctx, locale, 'askChiefComplaint');
+  s.stage = session.STAGES.AWAITING_CONSENT;
+  await say(ctx, locale, 'consentPrompt');
+}
+
+/**
+ * Interprets a patient's reply to the consent prompt. Consent must be
+ * affirmative and explicit -- only a clear agreement passes; silence,
+ * ambiguity, "no", or anything else is treated as NOT consenting. This is
+ * deliberately strict (agreement is opt-in, refusal is the default) because
+ * it gates whether an educational medical simulation runs at all.
+ * @param {string} rawText
+ * @returns {boolean}
+ */
+function isAffirmativeConsent(rawText) {
+  const text = String(rawText == null ? '' : rawText)
+    .trim()
+    .toLowerCase()
+    .replace(/[.!]+$/, '');
+  const AGREEMENTS = new Set([
+    'i agree',
+    'agree',
+    'yes',
+    'y',
+    'i understand',
+    'understood',
+    'ok',
+    'okay',
+    'i consent',
+    'consent',
+  ]);
+  return AGREEMENTS.has(text);
 }
 
 /**
@@ -194,6 +237,9 @@ async function runRecommendation(ctx, s) {
   await ctx.reply(getFaqBlock(locale));
   s.stage = session.STAGES.DONE;
   await say(ctx, locale, 'doneFollowUp');
+  // Opt-in donation ask, always the final message and only when the operator
+  // configured their own DONATION_URL. Never shown on a default deployment.
+  if (DONATION_URL) await say(ctx, locale, 'donationAsk', { url: DONATION_URL });
 }
 
 bot.command('start', async (ctx) => {
@@ -211,6 +257,23 @@ bot.on('message:text', async (ctx) => {
   switch (s.stage) {
     case session.STAGES.NEW: {
       await startNewTopic(ctx);
+      return;
+    }
+
+    case session.STAGES.AWAITING_CONSENT: {
+      if (isAffirmativeConsent(ctx.message.text)) {
+        s.consented = true;
+        session.touch(s);
+        s.stage = session.STAGES.AWAITING_CHIEF_COMPLAINT;
+        await say(ctx, s.locale, 'askChiefComplaint');
+      } else {
+        // Not an affirmative agreement -> do not start the simulation.
+        // Send them back to a clean, unstarted state so a later /start (or
+        // a fresh "I agree") re-shows the disclaimer rather than resuming
+        // mid-flow without consent.
+        session.clearSession(ctx.chat.id);
+        await say(ctx, s.locale, 'consentDeclined');
+      }
       return;
     }
 

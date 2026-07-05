@@ -24,8 +24,8 @@ for physicians, aimed at regions with severe physician scarcity. There is
 Every person who runs this brings their own:
 
 - Telegram bot token (for `bot/`)
-- AI provider API key(s) — Anthropic, DeepSeek, OpenAI, or a local/Ollama
-  endpoint (for `core/`, used by every front-end)
+- AI provider API key(s) — Anthropic, DeepSeek, OpenAI, Gemini, or a
+  local/Ollama endpoint (for `core/`, used by every front-end)
 - Spruce Health account + token (for `instanthpi/`, optional)
 - SRFax account (for `instanthpi/fax/`, optional)
 - Epic developer app registration (for `epic/`, optional)
@@ -47,7 +47,7 @@ freeeducationhealth/
     LICENSE-PERSONA.md    <- CC BY-NC, applies only to core/persona/ contents
     INTERFACE.md           <- the contract every front-end codes against; READ THIS before touching core/ or any front-end
     index.cjs               <- entry point: getRecommendation(intakeAnswers, config)
-    providers/               <- anthropic.cjs, deepseek.cjs, openai.cjs, local.cjs (Ollama/OpenAI-compatible)
+    providers/               <- anthropic.cjs, deepseek.cjs, openai.cjs, gemini.cjs, local.cjs (Ollama/OpenAI-compatible)
     panel/                   <- N-model orchestration, consensus/divergence detection
     intake/                  <- structured HPI-style intake flow (optional; front-ends may build IntakeAnswers directly)
     schema/                  <- intake.schema.json + recommendation.schema.json (JSON Schema 2020-12)
@@ -326,6 +326,21 @@ providers and performs one `core/` panel run per section.
    Every capability here is bring-your-own-credentials, self-hosted. If a
    task seems to imply adding billing, a shared API key, or a
    Carlos-operated backend, stop and flag it instead of building it.
+   *One narrow, explicit exception:* an **opt-in** client for the InstantHPI
+   node network (spec: `instanthpi-nodes/API.md`) may be built here. It must
+   be off by default, submit only de-identified case abstracts, show
+   `strings.cjs`'s `sharingDisclosure` to the patient before any submission,
+   and its absence must never degrade the bot. The network service itself
+   (registration, payments, review) is still never built in this repo.
+   *A second narrow exception:* an **opt-in** donation ask. `bot/` reads a
+   `DONATION_URL` env var; when — and only when — an operator sets it to
+   *their own* donation link, the bot appends an optional "help keep this
+   free" message (`strings.cjs`'s `donationAsk`) as the last message of a
+   session. It is OFF by default, never gates access (using the bot is always
+   free), and no donation link is ever hardcoded or committed — every operator
+   supplies their own via their untracked `.env`. This is still not a
+   shared/hosted backend or a fee: charging for access, or committing a
+   specific link, remains forbidden.
 5. **Keep `core/persona/` generic-only.** The PHI-scrub gate
    (`docs/design-decisions.md`, Licensing section) is a hard requirement:
    real mined practice-style data does not enter this repo until an

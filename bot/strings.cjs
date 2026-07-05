@@ -15,6 +15,36 @@
 /** @type {Record<string, LocaleStrings>} */
 const STRINGS = {
   en: {
+    simulationDisclaimer:
+      'PLEASE READ FIRST -- THIS IS NOT A MEDICAL CONSULTATION.\n' +
+      '\n' +
+      'Despite whatever the AI tells you, this is NOT a medical consultation. ' +
+      'The AI here is built to run a SIMULATION, so it will play the role of a ' +
+      'clinician -- it may speak as if it is examining you, diagnosing you, or ' +
+      'prescribing for you. It is not, and it cannot. The AI is also capable of ' +
+      'making things up (hallucinating), so anything it says may simply be wrong. ' +
+      'For that reason, do NOT treat this in any way as a replacement for seeing a ' +
+      'real, licensed doctor or physician.\n' +
+      '\n' +
+      'Anyone with an AI can pretend to be a doctor and give you recommendations ' +
+      'that sound just like these. This entire conversation and chatbot is for ' +
+      'EDUCATIONAL PURPOSES ONLY. It does NOT and WILL NOT be reviewed by a real ' +
+      'doctor or physician unless YOU take it to a doctor yourself and get it ' +
+      'validated by them.',
+
+    consentPrompt:
+      'Before we begin: do you understand that this is an educational simulation, ' +
+      'NOT real medical advice, and NOT a substitute for seeing a licensed doctor? ' +
+      'Reply "I agree" to continue, or "no" (or anything else) to stop here.',
+    consentDeclined:
+      'No problem. This simulation will not continue. ' +
+      'For any real health concern, please see a licensed doctor or physician, and ' +
+      'if this is an emergency, seek in-person help immediately. ' +
+      'Type /start if you change your mind and want to try the educational simulation.',
+    consentReminder:
+      'To use this educational simulation you first need to agree. ' +
+      'Reply "I agree" to continue, or "no" to stop.',
+
     emergencyBanner:
       'This tool helps you prepare for a doctor visit: it organizes your symptoms, ' +
       'history, and questions into something you can bring to a consultation -- even ' +
@@ -73,6 +103,36 @@ const STRINGS = {
     doneFollowUp:
       'That is everything for this topic. Type /start any time to go through this ' +
       'again for a new concern.',
+
+    // Shown as the very LAST message, ONLY on deployments whose operator set
+    // a DONATION_URL (their OWN donation link). Off by default -- the
+    // open-source bot never asks for money unless an operator opts in. {{url}}
+    // is the operator's configured link. Using the bot is always free.
+    donationAsk:
+      'One last thing -- would you like to help keep this free?\n' +
+      '\n' +
+      'This educational simulation costs money to run, and it stays free for ' +
+      'anyone who needs it thanks to donations. If it helped you and you would ' +
+      'like to chip in any amount, you can donate here:\n' +
+      '{{url}}\n' +
+      '\n' +
+      'Thank you for your donations -- they are what keep this free and available ' +
+      'to anyone using it. Using this bot is always free; a donation is completely ' +
+      'optional.',
+
+    // Shown BEFORE any case is submitted to the InstantHPI node network —
+    // only relevant on deployments whose operator opted in to sharing.
+    // Required by the network's listing rules: users of a sharing node must
+    // be told up front, before their case leaves this bot.
+    sharingDisclosure:
+      'One more thing you should know: the person running this bot shares ' +
+      'anonymized case summaries with a review network, where licensed ' +
+      'physicians grade the quality of the AI’s answers. What is shared is a ' +
+      'de-identified abstract only — your age range, the clinical picture, and ' +
+      'what the AI concluded. Never your name, contact details, exact dates, ' +
+      'or anything identifying. This grading happens after the fact and is ' +
+      'about checking the AI — it is not a doctor reviewing your case or ' +
+      'giving you care.',
     alreadyDonePrompt: 'This topic is finished. Type /start to ask about something new.',
 
     faqBlock:
